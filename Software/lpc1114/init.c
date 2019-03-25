@@ -21,5 +21,4 @@ LPC_SYSCON->MAINCLKSEL                = 0x03;                   //set system osc
 LPC_SYSCON->MAINCLKUEN                &= ~(1);                 //write a zero to the MAINCLKUEN register,
                                                                 //necessary for MAINCLKSEL to update
 LPC_SYSCON->MAINCLKUEN                |= 1;                     //write a one to the MAINCLKUEN register 
-
 }
