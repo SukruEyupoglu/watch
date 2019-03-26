@@ -1,3 +1,4 @@
+#include "LPC11xx.h"
 //USE INTERNAL CRYSTAL TO GENERATE INTERNAL SYSTEM CLOCK
 void init(void)
 {
