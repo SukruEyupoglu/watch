@@ -1,19 +1,11 @@
-#include "ets_sys.h"
-#include "sccb.h"
-#include "basic.h"
-
-
-
-
-
-void ICACHE_FLASH_ATTR sccb_init(void)
+void sccb_init(void)
 {
 	select_way(SCCB_WAY);
 	SCL_UP;
 	SDA_UP;
 }
 
-void ICACHE_FLASH_ATTR sccb_start(void)
+void sccb_start(void)
 {
 SCL_UP;
 SDA_UP;
@@ -24,7 +16,7 @@ SCL_DOWN;
 Delay_Us;
 }
 
-void ICACHE_FLASH_ATTR sccb_stop(void)
+void sccb_stop(void)
 {
 SDA_DOWN;
 SCL_DOWN;
@@ -35,7 +27,7 @@ SDA_UP;
 Delay_Us;
 }
 
-unsigned char ICACHE_FLASH_ATTR sccb_write( unsigned char data)
+unsigned char sccb_write( unsigned char data)
 {
 	unsigned char i, err = 0;
 	for(i = 0 ; i < 8 ; i++)
@@ -67,7 +59,7 @@ unsigned char ICACHE_FLASH_ATTR sccb_write( unsigned char data)
 	SDA_DIR_OUT;
 	return err;
 }
-unsigned char ICACHE_FLASH_ATTR sccb_read(void)
+unsigned char sccb_read(void)
 {
 	unsigned char i,data;
 	SDA_DIR_INN;
@@ -95,7 +87,7 @@ unsigned char ICACHE_FLASH_ATTR sccb_read(void)
 	SDA_UP; //SDA_DOWN;
 	return data;
 }
-void ICACHE_FLASH_ATTR ov7670_write(unsigned char reg, unsigned char data)
+void ov7670_write(unsigned char reg, unsigned char data)
 {
 	//	WRITING MUST BE 3 PHASE
 	sccb_start();
@@ -111,7 +103,7 @@ void ICACHE_FLASH_ATTR ov7670_write(unsigned char reg, unsigned char data)
 	sccb_stop();
 }
 
-unsigned char ICACHE_FLASH_ATTR ov7670_read(unsigned char reg)
+unsigned char ov7670_read(unsigned char reg)
 {
 	unsigned char data;
 	//	READING MUST BE 2 PHASE
@@ -140,7 +132,7 @@ unsigned char ICACHE_FLASH_ATTR ov7670_read(unsigned char reg)
 	//uart_send(reg_data[0]);
 	return data;
 }
-void ICACHE_FLASH_ATTR ov7670_init(void)
+void ov7670_init(void)
 {
 	sccb_init();
 	//	soft reset for ov7670
