@@ -1,15 +1,7 @@
-/*
- * nrf_init.c
- *
- *  Created on: 9 Tem 2018
- *      Author: root
- */
-#include "init.h"
-#include "inc/LPC11xx.h"
-
+#include "LPC11xx.h"
 void nrf_gpio_init(void)
 {
-//	NRF RECEIVER TRANSCEIVER SETTINGS
+	//	NRF RECEIVER TRANSCEIVER SETTINGS
 	LPC_GPIO1->DIR					&=	~(1 << 5);
 	//	NRF IRQ SETTINGS
 	LPC_GPIO2->DIR					&=	~(1 << 2);
@@ -28,7 +20,7 @@ void nrf_gpio_init(void)
 	//	SET RX FOR NRF
 	//	NRF_RX_INIT();
 	//	MESAFE AYARI BUTONU
-//	LPC_GPIO0->DIR					&=	~(1 << 1);
+	//	LPC_GPIO0->DIR					&=	~(1 << 1);
 
 	/*
 	//	GPIO INTEERUPT FOR MODE GPIO0_1 SAME AS ISP BUTTON
@@ -44,9 +36,9 @@ void nrf_gpio_init(void)
 	LPC_GPIO0->IC					|=	(1 << 1);
 	delay(2);
 	*/
-//	LED0_OFF;
-//	LED1_OFF;
-//	LED2_OFF;
+	//	LED0_OFF;
+	//	LED1_OFF;
+	//	LED2_OFF;
 }
 
 void NRF_TX_INIT(void)
@@ -54,17 +46,17 @@ void NRF_TX_INIT(void)
 	// config registerini set et default tx modu zaten 1.5ms bekle
 	NRF_write_reg(W_REGISTER | CONFIG , (1 << 1) | (1 << 3));
 	delay(1500);
-	// pipe0 iÃ§in auto ack set et
+	// pipe0 icin auto ack set et
 	NRF_write_reg(W_REGISTER | EN_AA , (1 << 0));
 	// sadece pipe 0 aktif olsun
 	NRF_write_reg(W_REGISTER | EN_RXADDR , (1 << 0));
 	//	transfer retry miktari 4000us de bir 15 defa tekrar et
 	NRF_write_reg(W_REGISTER | SETUP_RETR , 0xFF);
-	// 250kbps seÃ§ -18db seÃ§
+	// 250kbps sec -18db sec
 	NRF_write_reg(W_REGISTER | RF_SETUP , (1 << 5));
-	// rx 5 byte payload beklesin pipe 0 iÃ§in ayarÄ±
+	// rx 5 byte payload beklesin pipe 0 icin ayari
 	NRF_write_reg(W_REGISTER | RX_PW_P0 , 0x05);
-	// ack'li veri tranferi aktif etme ayarÄ±
+	// ack'li veri tranferi aktif etme ayari
 	NRF_write_reg(W_REGISTER | DYNPD , (1 << 0));
 	NRF_write_reg(W_REGISTER | FEATURE , (1 << 1) | (1 << 2));
 }
@@ -73,17 +65,17 @@ void NRF_RX_INIT(void)
 	// config registerini set et rx olarak 1.5ms bekle
 	NRF_write_reg(W_REGISTER | CONFIG , (1 << 1) | (1 << 3) | (1 << 0));
 	delay(1500);
-	// pipe0 iÃ§in auto ack set et
+	// pipe0 icin auto ack set et
 	NRF_write_reg(W_REGISTER | EN_AA , (1 << 0));
 	// sadece pipe 0 aktif olsun
 	NRF_write_reg(W_REGISTER | EN_RXADDR , (1 << 0));
 	//	transfer retry miktari 4000us de bir 15 defa tekrar et
 	NRF_write_reg(W_REGISTER | SETUP_RETR , 0xFF);
-	// 250kbps seÃ§ -18db seÃ§
+	// 250kbps sec -18db sec
 	NRF_write_reg(W_REGISTER | RF_SETUP , (1 << 5));
-	// rx 5 byte payload beklesin pipe 0 iÃ§in ayarÄ±
+	// rx 5 byte payload beklesin pipe 0 icin ayari
 	NRF_write_reg(W_REGISTER | RX_PW_P0 , 0x05);
-	// ack'li veri tranferi aktif etme ayarÄ±
+	// ack'li veri tranferi aktif etme ayari
 	NRF_write_reg(W_REGISTER | DYNPD , (1 << 0));
 	NRF_write_reg(W_REGISTER | FEATURE , (1 << 1) | (1 << 2));
 }
@@ -93,17 +85,17 @@ void NRF_TX_INIT_NO_ACK(void)
 	// config registerini set et default tx modu zaten 1.5ms bekle
 	NRF_write_reg(W_REGISTER | CONFIG , (1 << 1) | (1 << 4) | (1 << 6));
 	delay(1500);
-	// pipe0 iÃ§in auto ack set et
+	// pipe0 icin auto ack set et
 	NRF_write_reg(W_REGISTER | EN_AA , 0x00);
 	// sadece pipe 0 aktif olsun
 	NRF_write_reg(W_REGISTER | EN_RXADDR , (1 << 0));
 	//	transfer retry miktari 4000us de bir 15 defa tekrar et
 	NRF_write_reg(W_REGISTER | SETUP_RETR , 0x00);
-	// 250kbps seÃ§ -18db seÃ§
+	// 250kbps sec -18db sec
 	NRF_write_reg(W_REGISTER | RF_SETUP , (1 << 5));
-	// rx 5 byte payload beklesin pipe 0 iÃ§in ayarÄ±
+	// rx 5 byte payload beklesin pipe 0 icin ayari
 	NRF_write_reg(W_REGISTER | RX_PW_P0 , 0x05);
-	// ack'li veri tranferi aktif etme ayarÄ±
+	// ack'li veri tranferi aktif etme ayari
 	NRF_write_reg(W_REGISTER | FEATURE , (1 << 0));
 }
 void NRF_RX_INIT_NO_ACK(void)
@@ -111,17 +103,17 @@ void NRF_RX_INIT_NO_ACK(void)
 	// config registerini set et rx olarak 1.5ms bekle
 	NRF_write_reg(W_REGISTER | CONFIG , (1 << 1) | (1 << 4) | (1 << 0) | (1 << 5));
 	delay(1500);
-	// pipe0 iÃ§in auto ack set et
+	// pipe0 icin auto ack set et
 	NRF_write_reg(W_REGISTER | EN_AA , 0x00);
 	// sadece pipe 0 aktif olsun
 	NRF_write_reg(W_REGISTER | EN_RXADDR , (1 << 0));
 	//	transfer retry miktari 4000us de bir 15 defa tekrar et
 	//NRF_write_reg(W_REGISTER | SETUP_RETR , 0xFF);
-	// 250kbps seÃ§ -18db seÃ§
+	// 250kbps sec -18db sec
 	NRF_write_reg(W_REGISTER | RF_SETUP , (1 << 5));
-	// rx 5 byte payload beklesin pipe 0 iÃ§in ayarÄ±
+	// rx 5 byte payload beklesin pipe 0 icin ayari
 	NRF_write_reg(W_REGISTER | RX_PW_P0 , 0x05);
-	// ack'li veri tranferi aktif etme ayarÄ±
+	// ack'li veri tranferi aktif etme ayari
 	NRF_write_reg(W_REGISTER | FEATURE , (1 << 0));
 }
 
