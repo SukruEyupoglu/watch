@@ -16,12 +16,12 @@ void i2c_init(void)
 	LPC_I2C->SCLL				=	0x3C;
 }
 /* this must be re written
-void i2c_write(unsigned char reg,unsigned char data)
+void i2c_write(unsigned char addr,unsigned char reg,unsigned char data)
 {
-	LPC_I2C->CONCLR				=	(1 << 5) | (1 << 3) | (1 << 2);
+	LPC_I2C->CONCLR				=	(1 << 5) | (1 << 4) | (1 << 3)| (1 << 2);
 	LPC_I2C->CONSET				|=	(1 << 5);
 	while(LPC_I2C->STAT != 0x08);
-	LPC_I2C->DAT				=	0x42;
+	LPC_I2C->DAT				=	addr; // for write last bit must be "0"
 	LPC_I2C->CONCLR				=	(1 << 5) | (1 << 3);
 	while(!((LPC_I2C->STAT == 0x20) | (LPC_I2C->STAT == 0x18)));
 	LPC_I2C->DAT				=	reg;
@@ -34,13 +34,13 @@ void i2c_write(unsigned char reg,unsigned char data)
 	LPC_I2C->CONSET				|=	(1 << 4);
 	delay(500);
 }
-unsigned char i2c_read(unsigned char reg)
+unsigned char i2c_read(unsigned char addr,unsigned char reg)
 {
 	unsigned char data;
 	LPC_I2C->CONCLR				=	(1 << 5) | (1 << 3) | (1 << 2);
 	LPC_I2C->CONSET				|=	(1 << 5);
 	while(LPC_I2C->STAT != 0x08);
-	LPC_I2C->DAT				=	0x42;
+	LPC_I2C->DAT				=	addr;
 	LPC_I2C->CONCLR				=	(1 << 5) | (1 << 3);
 	while(!((LPC_I2C->STAT == 0x20) | (LPC_I2C->STAT == 0x18)));
 	LPC_I2C->DAT				=	reg;
