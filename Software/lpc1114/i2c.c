@@ -15,7 +15,7 @@ void i2c_init(void)
 	LPC_I2C->SCLH				=	0x3C;
 	LPC_I2C->SCLL				=	0x3C;
 }
-/* this must be re written
+/* this must be rewrite with timer for error messages
 void i2c_write(unsigned char addr,unsigned char reg,unsigned char data)
 {
 	LPC_I2C->CONCLR				=	(1 << 5) | (1 << 4) | (1 << 3)| (1 << 2);
