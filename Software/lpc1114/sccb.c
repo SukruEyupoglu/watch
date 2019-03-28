@@ -1,8 +1,7 @@
 void sccb_init(void)
 {
-	select_way(SCCB_WAY);
-	SCL_UP;
-	SDA_UP;
+SCL_UP;
+SDA_UP;
 }
 
 void sccb_start(void)
@@ -40,10 +39,10 @@ unsigned char sccb_write( unsigned char data)
 		{
 			SDA_DOWN;
 		}
-	Delay_Us;
-	SCL_UP;
-	Delay_Us;
-	SCL_DOWN;
+		Delay_Us;
+		SCL_UP;
+		Delay_Us;
+		SCL_DOWN;
 	}
 	SDA_DOWN;
 	SDA_DIR_INN;
@@ -87,12 +86,12 @@ unsigned char sccb_read(void)
 	SDA_UP; //SDA_DOWN;
 	return data;
 }
-void ov7670_write(unsigned char reg, unsigned char data)
+void ov7670_write(unsigned char write_addr, unsigned char reg, unsigned char data)
 {
 	//	WRITING MUST BE 3 PHASE
 	sccb_start();
 	//	phase 1 : send writing command
-	sccb_write(0x42);
+	sccb_write(write_addr);
 	Delay_Us;
 	//	phase 2 : send reg id for write
 	sccb_write(reg);
@@ -103,13 +102,13 @@ void ov7670_write(unsigned char reg, unsigned char data)
 	sccb_stop();
 }
 
-unsigned char ov7670_read(unsigned char reg)
+unsigned char ov7670_read(unsigned char write_addr, unsigned char read_addr, unsigned char reg)
 {
 	unsigned char data;
 	//	READING MUST BE 2 PHASE
 	sccb_start();
 	//	phase 1 : send 0x42 write ov7670 command for read which reg select
-	sccb_write(0x42);
+	sccb_write(write_addr);
 	Delay_Us;
 	//	phase 2 : send reg id for reading which we want to read
 	sccb_write(reg);
@@ -123,7 +122,7 @@ unsigned char ov7670_read(unsigned char reg)
 	sccb_start();
 	Delay_Us;
 	//	phase 1 : send 0x43 reading command
-	sccb_write(0x43);
+	sccb_write(read_addr);
 	Delay_Us;
 	//	phase 2 : get the data from ov7670
 	data = sccb_read();
