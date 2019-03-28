@@ -2,6 +2,7 @@
 //USE INTERNAL CRYSTAL TO GENERATE INTERNAL SYSTEM CLOCK
 void init(void)
 {
+#ifdef USE_48MHZ
 LPC_SYSCON->SYSAHBCLKDIV              = 0x1;                    //set clock divider for core to 1
 LPC_SYSCON->MAINCLKSEL                &= ~(0x03);               //set main clock to IRC oscillator, 
                                                                 //if not system will lock up when PLL turns off
@@ -24,4 +25,10 @@ LPC_SYSCON->MAINCLKSEL                = 0x03;                   //set system osc
 LPC_SYSCON->MAINCLKUEN                &= ~(1);                  //write a zero to the MAINCLKUEN register,
                                                                 //necessary for MAINCLKSEL to update
 LPC_SYSCON->MAINCLKUEN                |= 1;                     //write a one to the MAINCLKUEN register 
+#else
+LPC_SYSCON->MAINCLKSEL                = 0x00;                   //set system oscillator to 12MHZ IRC oscillator
+LPC_SYSCON->MAINCLKUEN                &= ~(1);                  //write a zero to the MAINCLKUEN register,
+                                                                //necessary for MAINCLKSEL to update
+LPC_SYSCON->MAINCLKUEN                |= 1;                     //write a one to the MAINCLKUEN register 
+#endif
 }
