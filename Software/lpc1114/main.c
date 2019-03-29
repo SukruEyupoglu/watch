@@ -7,18 +7,18 @@
 //  94-95 == NULL
 int main(void)
 {
-unsigned char janjanli;
+unsigned char janjan_type;
 unsigned char saat[12];
 saat_simdi_ne(saat);
-saati_nekadar_janjanli_yazsin(janjanli);
-saati_yaz(saat);
+saati_nekadar_janjanli_yazsin(janjan_type);
+saati_yaz(saat,janjan_type);
 
 return 0;
 }
 void saat_simdi_ne(unsigned char dizi[12])
 {
 }
-void saati_yaz(unsigned char dizi[12])
+void saati_yaz(unsigned char dizi[12],unsigned char janjan)
 {
 }
 void saati_nekadar_janjanli_yazsin(unsigned char janjan)
