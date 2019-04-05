@@ -32,3 +32,21 @@ LPC_SYSCON->MAINCLKUEN                &= ~(1);                  //write a zero t
 LPC_SYSCON->MAINCLKUEN                |= 1;                     //write a one to the MAINCLKUEN register 
 #endif
 }
+void sleep_or_powerdown(unsigned char sleep_type)
+{
+switch(sleep_type)
+{
+ case :0 //deep power down mode enable
+ {
+ LPC_PMU->PCON |= (1 << 11); // CLEAR DEEP POWER DOWN FLAG 
+ // ALSO IF YOU NEED BEFORE ENTERED DEEP POWER DOWN MODE CHECK THIS REGISTER
+ LPC_PMU->GPREG0 = 0x12345678; // GENERAL PURPOSE REGISTERS 
+ // FOR RETAINED DATA LATER FROM DEEP POWER DOWN MODE
+
+
+
+ }
+
+}
+
+}
