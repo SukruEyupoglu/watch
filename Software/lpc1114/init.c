@@ -36,16 +36,54 @@ void sleep_or_powerdown(unsigned char sleep_type)
 {
 switch(sleep_type)
 {
- case :0 //deep power down mode enable
- {
- LPC_PMU->PCON |= (1 << 11); // CLEAR DEEP POWER DOWN FLAG 
- // ALSO IF YOU NEED BEFORE ENTERED DEEP POWER DOWN MODE CHECK THIS REGISTER
- LPC_PMU->GPREG0 = 0x12345678; // GENERAL PURPOSE REGISTERS 
- // FOR RETAINED DATA LATER FROM DEEP POWER DOWN MODE
-
-
-
- }
+  case :0 //deep power down mode enable
+  {
+  LPC_PMU->PCON |= (1 << 11);       // CLEAR DEEP POWER DOWN FLAG 
+                                    // ALSO IF YOU NEED BEFORE ENTERED DEEP POWER DOWN MODE CHECK THIS REGISTER
+  LPC_PMU->GPREG0 = 0x12345678;     // GENERAL PURPOSE REGISTERS 
+                                    // FOR RETAINED DATA LATER FROM DEEP POWER DOWN MODE
+  LPC_PMU->PCON |= (1 << 1);        // SELECT POWER DOWN MODE
+                                    // &= ~(1 << 1) FOR SLEEP OR DEEP SLEEP MODE
+  LPC_SYSCON->PDSLEEPCFG = 0x18FF;  // DISABLE WDT AND BOD AT DEEPSLEEP
+                                    // NO NEED POWER DOWN MODE
+  LPC_SYSCON->SCR |= (1 << 2);      // DEEP SLEEP SELECTING AND SLEEP MODE DESELECTING
+                                    // NO NEED POWER DOWN MODE
+  LPC_SYSCON->PDRUNCFG &= ~((1 << 0) | (1 << 1)); // NEED FOR DEEP POWER DOWN MODE
+                                    // WAKEUP PIN MUST BE PULLED HIGH DURING POWER DOWN MODE
+   __WFI();                         // WAIT FOR INTERRUPT INSTRUCTION (CMSIS)
+  }
+  case :1 //deep sleep mode enable
+  {
+  LPC_PMU->PCON |= (1 << 8);        // CLEAR DEEP SLEEP FLAG 
+                                    // ALSO IF YOU NEED BEFORE ENTERED DEEP SLEEP MODE CHECK THIS REGISTER
+  LPC_PMU->GPREG0 = 0x12345678;     // GENERAL PURPOSE REGISTERS 
+                                    // FOR RETAINED DATA LATER FROM DEEP POWER DOWN MODE
+  LPC_PMU->PCON &= ~(1 << 1);       // SELECT DEEP SLEEP MODE
+                                    // &= ~(1 << 1) FOR SLEEP OR DEEP SLEEP MODE
+  LPC_SYSCON->PDSLEEPCFG = 0x18FF;  // DISABLE WDT AND BOD AT DEEPSLEEP
+                                    // NO NEED POWER DOWN MODE
+  LPC_SYSCON->SCR |= (1 << 2);      // DEEP SLEEP SELECTING AND SLEEP MODE DESELECTING
+                                    // NO NEED POWER DOWN MODE
+  LPC_SYSCON->PDRUNCFG &= ~((1 << 0) | (1 << 1)); // NEED FOR DEEP POWER DOWN MODE
+                                    // WAKEUP PIN MUST BE PULLED HIGH DURING POWER DOWN MODE
+   __WFI();                         // WAIT FOR INTERRUPT INSTRUCTION (CMSIS)
+  }
+  case :2 //sleep mode enable
+  {
+  LPC_PMU->PCON |= (1 << 8);       // CLEAR SLEEP FLAG 
+                                    // ALSO IF YOU NEED BEFORE ENTERED SLEEP MODE CHECK THIS REGISTER
+  LPC_PMU->GPREG0 = 0x12345678;     // GENERAL PURPOSE REGISTERS 
+                                    // FOR RETAINED DATA LATER FROM DEEP POWER DOWN MODE
+  LPC_PMU->PCON &= ~(1 << 1);       // SELECT SLEEP MODE
+                                    // &= ~(1 << 1) FOR SLEEP OR DEEP SLEEP MODE
+  LPC_SYSCON->PDSLEEPCFG = 0x18FF;  // DISABLE WDT AND BOD AT DEEPSLEEP
+                                    // NO NEED POWER DOWN MODE
+  LPC_SYSCON->SCR |= (1 << 2);      // DEEP SLEEP SELECTING AND SLEEP MODE DESELECTING
+                                    // NO NEED POWER DOWN MODE
+  LPC_SYSCON->PDRUNCFG &= ~((1 << 0) | (1 << 1)); // NEED FOR DEEP POWER DOWN MODE
+                                    // WAKEUP PIN MUST BE PULLED HIGH DURING POWER DOWN MODE
+   __WFI();                         // WAIT FOR INTERRUPT INSTRUCTION (CMSIS)
+  }
 
 }
 
