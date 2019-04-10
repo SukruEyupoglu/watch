@@ -90,14 +90,12 @@ unsigned char sccb_read(void)
 }
 void ov7670_write(unsigned char write_addr, unsigned char reg, unsigned char data)
 {
-	//	WRITING MUST BE 3 PHASE
+	//	3 PHASE WRITING
 	sccb_start();
 	//	phase 1 : send writing command
 	sccb_write(write_addr);
-	Delay_Us;
 	//	phase 2 : send reg id for write
 	sccb_write(reg);
-	Delay_Us;
 	//	phase 3	: send reg data
 	sccb_write(data);
 	//	exiting
@@ -107,25 +105,16 @@ void ov7670_write(unsigned char write_addr, unsigned char reg, unsigned char dat
 unsigned char ov7670_read(unsigned char write_addr, unsigned char read_addr, unsigned char reg)
 {
 	unsigned char data;
-	//	READING MUST BE 2 PHASE
+	//	READING ONLY ONE BYTE
 	sccb_start();
 	//	phase 1 : send 0x42 write ov7670 command for read which reg select
 	sccb_write(write_addr);
-	Delay_Us;
 	//	phase 2 : send reg id for reading which we want to read
 	sccb_write(reg);
-	Delay_Us;
-	//	stop and start for 2 phase reading
-	sccb_stop();
-	Delay_Us;
-	Delay_Us;
-	Delay_Us;
-	Delay_Us;
-	sccb_start();
-	Delay_Us;
+	//	repeated start for reading
+	sccb_repeated_start();
 	//	phase 1 : send 0x43 reading command
 	sccb_write(read_addr);
-	Delay_Us;
 	//	phase 2 : get the data from ov7670
 	data = sccb_read();
 	//	exiting
@@ -137,5 +126,5 @@ void ov7670_init(void)
 {
 	sccb_init();
 	//	soft reset for ov7670
-	ov7670_write( 0x12, 0x80);
+	ov7670_write( 0x42,0x12,0x80);
 }
