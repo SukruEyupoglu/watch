@@ -6,9 +6,6 @@ SDA_UP;
 
 void sccb_start(void)
 {
-SCL_UP;
-SDA_UP;
-Delay_Us;
 SDA_DOWN;
 Delay_Us;
 SCL_DOWN;
@@ -18,14 +15,19 @@ Delay_Us;
 void sccb_stop(void)
 {
 SDA_DOWN;
-SCL_DOWN;
-Delay_Us;
 SCL_UP;
 Delay_Us;
 SDA_UP;
+}
+void sccb_repeated_start(void)
+{
+SDA_UP;
+SCL_UP;
+Delay_Us;
+SDA_DOWN;	
+SCL_DOWN;
 Delay_Us;
 }
-
 unsigned char sccb_write( unsigned char data)
 {
 	unsigned char i, err = 0;
@@ -42,17 +44,17 @@ unsigned char sccb_write( unsigned char data)
 		Delay_Us;
 		SCL_UP;
 		Delay_Us;
-		SCL_DOWN;
 	}
+	SCL_DOWN;
 	SDA_DOWN;
 	SDA_DIR_INN;
 	Delay_Us;
 	SCL_UP;
-	Delay_Us;
 	if((SDA_INN) == 0)
 	{
 		err = 1;
 	}
+	Delay_Us;
 	SCL_DOWN;
 	Delay_Us;
 	SDA_DIR_OUT;
@@ -61,8 +63,8 @@ unsigned char sccb_write( unsigned char data)
 unsigned char sccb_read(void)
 {
 	unsigned char i,data;
+	SDA_DOWN; // FOR REFUSE
 	SDA_DIR_INN;
-	Delay_Us;
 	for(i = 0 ; i < 8 ; i++)
 	{
 		SCL_UP;
@@ -74,16 +76,16 @@ unsigned char sccb_read(void)
 			{
 			data = 0xFE & (data << 1) ;
 			}
-		Delay_Us;
+		Delay_Us; // SCL HIGH TIME
 		SCL_DOWN;
-		Delay_Us;
+		Delay_Us; // SCL LOW TIME
 	}
 	SDA_DIR_OUT;
-	SDA_DOWN; //SDA_UP;
-	Delay_Us;
-	SCL_UP;
-	Delay_Us;
-	SDA_UP; //SDA_DOWN;
+	SDA_DOWN; // ACK_LOW = TRANFER OK
+	SCL_UP;	
+	Delay_Us; // SCL HIGH TIME
+	SCL_DOWN; // SCL DOWN
+	Delay_Us; // SCL LOW TIME
 	return data;
 }
 void ov7670_write(unsigned char write_addr, unsigned char reg, unsigned char data)
