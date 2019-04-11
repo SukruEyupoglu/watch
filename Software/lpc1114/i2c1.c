@@ -1,0 +1,146 @@
+unsigned char i2c_write_1_char(unsigned char w_addr,unsigned char reg,unsigned char data)
+{
+LPC_I2C->CONSET = I2CONSET_STA_BIT5; 
+while(LPC_I2C->STAT != I2CSTAT_START_0x08);
+LPC_I2C->DAT					=	w_addr;
+LPC_I2C->CONCLR = (I2CONCLR_SIC_BIT3 | I2CONCLR_STAC_BIT5);
+while(!((LPC_I2C->STAT == I2CSTAT_NACK_0x20) | (LPC_I2C->STAT == I2CSTAT_ACK_0x18)));
+if(LPC_I2C->STAT == I2CSTAT_ACK_0x18)
+	{
+	LPC_I2C->DAT				=	reg;
+	LPC_I2C->CONCLR = I2CONCLR_SIC_BIT3;
+	}
+else 
+	{
+	LPC_I2C->CONSET = I2CONSET_STO_BIT4; 
+	LPC_I2C->CONCLR = I2CONCLR_SIC_BIT3;  
+    	return 1;
+	}
+while(!((LPC_I2C->STAT == I2CSTAT_NACK_0x30) | (LPC_I2C->STAT == I2CSTAT_ACK_0x28)));
+if(LPC_I2C->STAT == I2CSTAT_ACK_0x28)
+	{
+	LPC_I2C->DAT				=	data;
+    	LPC_I2C->CONSET = I2CONSET_STO_BIT4; 
+	LPC_I2C->CONCLR = I2CONCLR_SIC_BIT3;
+}
+else 
+{
+	LPC_I2C->CONSET = I2CONSET_STO_BIT4; 
+	LPC_I2C->CONCLR = I2CONCLR_SIC_BIT3;  
+    	return 1;
+}
+return 0;
+}
+unsigned char i2c_read_1_char(unsigned char w_addr,unsigned char r_addr,unsigned char reg,unsigned char *data)
+{
+LPC_I2C->CONSET = I2CONSET_STA_BIT5; 
+while(LPC_I2C->STAT != I2CSTAT_START_0x08);
+LPC_I2C->DAT					=	w_addr;
+LPC_I2C->CONCLR = (I2CONCLR_SIC_BIT3 | I2CONCLR_STAC_BIT5);
+while(!((LPC_I2C->STAT == I2CSTAT_NACK_0x20) | (LPC_I2C->STAT == I2CSTAT_ACK_0x18)));
+if(LPC_I2C->STAT == I2CSTAT_ACK_0x18)
+	{
+	LPC_I2C->DAT				=	reg;
+    	LPC_I2C->CONSET = I2CONSET_RSTA_BIT5; 
+	LPC_I2C->CONCLR = I2CONCLR_SIC_BIT3;
+	}
+else 
+	{
+	LPC_I2C->CONSET = I2CONSET_STO_BIT4; 
+	LPC_I2C->CONCLR = I2CONCLR_SIC_BIT3;  
+    	return 1;
+	}
+while(LPC_I2C->STAT != I2CSTAT_START_0x10);
+LPC_I2C->DAT					=	r_addr;
+LPC_I2C->CONCLR = (I2CONCLR_SIC_BIT3 | I2CONCLR_STAC_BIT5);	
+while(!((LPC_I2C->STAT == I2CSTAT_NACK_0x48) | (LPC_I2C->STAT == I2CSTAT_ACK_0x40)));
+if(LPC_I2C->STAT == I2CSTAT_ACK_0x40)
+	{
+	// LPC_I2C->CONSET = I2CONSET_AA_BIT2; // IF MULTIBYTE READ USE THIS
+	}
+else 
+	{
+	LPC_I2C->CONSET = I2CONSET_STO_BIT4; 
+	LPC_I2C->CONCLR = I2CONCLR_SIC_BIT3;  
+    	return 1;
+	}
+while(LPC_I2C->STAT != I2CSTAT_ACK_0x58);
+*data = LPC_I2C->DAT
+LPC_I2C->CONSET = I2CONSET_STO_BIT4; 
+LPC_I2C->CONCLR = I2CONCLR_SIC_BIT3;  
+return 0;	
+}
+unsigned char i2c_read_multi_char(unsigned char w_addr,unsigned char r_addr,unsigned char start_reg,unsigned char data[19])
+{
+unsigned char i,
+LPC_I2C->CONSET = I2CONSET_STA_BIT5; 
+while(LPC_I2C->STAT != I2CSTAT_START_0x08);
+LPC_I2C->DAT					=	w_addr;
+LPC_I2C->CONCLR = (I2CONCLR_SIC_BIT3 | I2CONCLR_STAC_BIT5);
+while(!((LPC_I2C->STAT == I2CSTAT_NACK_0x20) | (LPC_I2C->STAT == I2CSTAT_ACK_0x18)));
+if(LPC_I2C->STAT == I2CSTAT_ACK_0x18)
+	{
+	LPC_I2C->DAT				=	start_reg;
+    	LPC_I2C->CONSET = I2CONSET_RSTA_BIT5; 
+	LPC_I2C->CONCLR = I2CONCLR_SIC_BIT3;
+	}
+else 
+	{
+	LPC_I2C->CONSET = I2CONSET_STO_BIT4; 
+	LPC_I2C->CONCLR = I2CONCLR_SIC_BIT3;  
+    	return 1;
+	}
+while(LPC_I2C->STAT != I2CSTAT_START_0x10);
+LPC_I2C->DAT					=	r_addr;
+LPC_I2C->CONCLR = (I2CONCLR_SIC_BIT3 | I2CONCLR_STAC_BIT5);	
+while(!((LPC_I2C->STAT == I2CSTAT_NACK_0x48) | (LPC_I2C->STAT == I2CSTAT_ACK_0x40)));
+if(LPC_I2C->STAT == I2CSTAT_ACK_0x40)
+	{
+	LPC_I2C->CONSET = I2CONSET_MULTIBYTE_AA_BIT2;
+	}
+else 
+	{
+	LPC_I2C->CONSET = I2CONSET_STO_BIT4; 
+	LPC_I2C->CONCLR = I2CONCLR_SIC_BIT3;  
+    	return 1;
+	}
+for(i=0;i<18;i++)
+{
+	while(LPC_I2C->STAT != I2CSTAT_ACK_0x50);
+	if(LPC_I2C->STAT == I2CSTAT_ACK_0x50)
+		{
+		data[i] = LPC_I2C->DAT;
+		LPC_I2C->CONCLR = I2CONCLR_SIC_BIT3;
+		}
+	else 
+		{
+		LPC_I2C->CONSET = I2CONSET_STO_BIT4; 
+		LPC_I2C->CONCLR = I2CONCLR_SIC_BIT3;  
+    		return 1;
+		}
+}
+LPC_I2C->CONCLR = I2CONCLR_MULTIBYTE_AAC_BIT2;
+while(LPC_I2C->STAT != I2CSTAT_ACK_0x58);
+data[i] = LPC_I2C->DAT;
+LPC_I2C->CONSET = I2CONSET_STO_BIT4; 
+LPC_I2C->CONCLR = I2CONCLR_SIC_BIT3;  
+return 0;		
+}
+void i2c1_init(void)
+{
+	//	ENABLE IOCON CLK
+	LPC_SYSCON->SYSAHBCLKCTRL		|=	(1 << 16);
+
+	//	IOCONFIG I2C SETTINGS
+	LPC_IOCON->PIO0_4 				=	0x1;
+	LPC_IOCON->PIO0_5 				=	0x1;
+	//	I2C CLK
+	LPC_SYSCON->SYSAHBCLKCTRL		|=	(1 << 5);
+	LPC_SYSCON->PRESETCTRL			|=	0x2;
+	LPC_I2C->CONSET					|=	(1 << 6);
+	//	400 khz setting = 3C---100 khz setting = F0
+	LPC_I2C->SCLH					=	0x3C;
+	LPC_I2C->SCLL					=	0x3C;
+}
+
+
