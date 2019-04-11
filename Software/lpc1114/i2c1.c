@@ -126,6 +126,21 @@ LPC_I2C->CONSET = I2CONSET_STO_BIT4;
 LPC_I2C->CONCLR = I2CONCLR_SIC_BIT3;  
 return 0;		
 }
+void i2c1_init(void)
+{
+	//	ENABLE IOCON CLK
+	LPC_SYSCON->SYSAHBCLKCTRL		|=	(1 << 16);
 
+	//	IOCONFIG I2C SETTINGS
+	LPC_IOCON->PIO0_4 				=	0x1;
+	LPC_IOCON->PIO0_5 				=	0x1;
+	//	I2C CLK
+	LPC_SYSCON->SYSAHBCLKCTRL		|=	(1 << 5);
+	LPC_SYSCON->PRESETCTRL			|=	0x2;
+	LPC_I2C->CONSET					|=	(1 << 6);
+	//	400 khz setting = 3C---100 khz setting = F0
+	LPC_I2C->SCLH					=	0x3C;
+	LPC_I2C->SCLL					=	0x3C;
+}
 
 
