@@ -1,26 +1,16 @@
-//  BUFFER PARTS
-//  0-59  == MINUTE
-//  60-63 == NULL
-//  64-77 == 7 SEGMENT 1
-//  78-79 == NULL
-//  80-93 == 7 SEGMENT 2
-//  94-95 == NULL
 int main(void)
 {
-unsigned char janjan_type;
-unsigned char saat[12];
-saat_simdi_ne(saat);
-saati_nekadar_janjanli_yazsin(janjan_type);
-saati_yaz(saat,janjan_type);
-
+unsigned char saat[19];
+unsigned char watch_reg;
+unsigned char minute_reg;
+main_init();
+i2c_init();
+spi_init();
+while(1){
+i2c_read_multi_char(0xD0,0xD1,0x00,saat[19]);
+watch_reg = saat[2];
+minute_reg = saat[1];
+led_write(watch_reg,minute_reg,0);
+}
 return 0;
-}
-void saat_simdi_ne(unsigned char dizi[12])
-{
-}
-void saati_yaz(unsigned char dizi[12],unsigned char janjan)
-{
-}
-void saati_nekadar_janjanli_yazsin(unsigned char janjan)
-{
 }
