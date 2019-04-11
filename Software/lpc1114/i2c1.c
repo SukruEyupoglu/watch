@@ -70,7 +70,7 @@ LPC_I2C->CONSET = I2CONSET_STO_BIT4;
 LPC_I2C->CONCLR = I2CONCLR_SIC_BIT3;  
 return 0;	
 }
-unsigned char i2c_read_multi_char(unsigned char w_addr,unsigned char r_addr,unsigned char start_reg,unsigned char *data,unsigned char size)
+unsigned char i2c_read_multi_char(unsigned char w_addr,unsigned char r_addr,unsigned char start_reg,unsigned char data[19])
 {
 unsigned char i,
 LPC_I2C->CONSET = I2CONSET_STA_BIT5; 
@@ -104,14 +104,13 @@ else
 	LPC_I2C->CONCLR = I2CONCLR_SIC_BIT3;  
     	return 1;
 	}
-for(i=0;i<(size-1);i++)
+for(i=0;i<18;i++)
 {
 	while(LPC_I2C->STAT != I2CSTAT_ACK_0x50);
 	if(LPC_I2C->STAT == I2CSTAT_ACK_0x50)
 		{
-		*data = LPC_I2C->DAT
+		data[i] = LPC_I2C->DAT;
 		LPC_I2C->CONCLR = I2CONCLR_SIC_BIT3;
-		*data++;
 		}
 	else 
 		{
@@ -122,7 +121,7 @@ for(i=0;i<(size-1);i++)
 }
 LPC_I2C->CONCLR = I2CONCLR_MULTIBYTE_AAC_BIT2;
 while(LPC_I2C->STAT != I2CSTAT_ACK_0x58);
-*data = LPC_I2C->DAT
+data[i] = LPC_I2C->DAT;
 LPC_I2C->CONSET = I2CONSET_STO_BIT4; 
 LPC_I2C->CONCLR = I2CONCLR_SIC_BIT3;  
 return 0;		
