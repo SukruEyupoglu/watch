@@ -26,7 +26,14 @@ struct ds
   unsigned char msb_temperature;
   unsigned char lsb_temperature;
   }
-  
+void led_write_janjan(unsigned char led[12])
+{
+unsigned char i;  
+for(i = 0 ; i < 12 ; i++)
+{
+    spi(led[i]);
+}
+}
   
   
   
