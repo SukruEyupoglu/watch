@@ -2,7 +2,7 @@
 
 
 
-const unsigned char month_day [12] = { 31,28,31,30,31,30,31,31,30,31,30,31 };
+const unsigned char month_day [12] = { 31,29,31,30,31,30,31,31,30,31,30,31 }; // 1 year 366 day
 #define DS_ADDR             0x68
 struct ds 
   {
