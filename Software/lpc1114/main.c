@@ -8,7 +8,8 @@ spi_init();
 i2c_read_multi_char(0xD0,0xD1,0x00,saat[19]);
 ds3231.minute = reg2time(saat[1]);
 ds3231.hour__am_pm = reg2time(saat[2]);
-led_write(watch_reg,minute_reg,0);
+led_write(ds3231.hour__am_pm,ds3231.minute,0);
+systick_second_sleep(10);
 while(1){
 
 }
