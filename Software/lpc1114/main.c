@@ -1,3 +1,7 @@
+volatile unsigned char tick_interrupt_count = 0;
+volatile unsigned char tick_second = 0;
+
+
 int main(void)
 {
 unsigned char saat[19];
