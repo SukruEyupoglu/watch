@@ -57,7 +57,12 @@ void systick_init(void)
 	SYSTICK_CSR |= (1 << SYSTICK_TICKINT_BIT);
 	
 }
-
+void restart_systick(void)
+{
+	SYSTICK_CVR = 0;
+ 	// Enable SysTick counter
+	SYSTICK_CSR |= (1 << SYSTICK_ENABLE_BIT); 
+}
 
 
 
