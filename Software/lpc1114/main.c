@@ -1,5 +1,5 @@
 volatile unsigned char tick_interrupt_count = 0;
-volatile unsigned char tick_second = 0;
+volatile unsigned char tick_second = 10;
 
 
 int main(void)
