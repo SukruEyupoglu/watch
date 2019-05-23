@@ -1,3 +1,6 @@
+#define setting_alarm_button_pressed (LPC_GPIO1->DATA & (1 << 5))
+#define setting_clk_button_pressed (LPC_GPIO1->DATA & (1 << 11))
+
 volatile unsigned char tick_interrupt_count = 0;
 volatile unsigned char tick_second = 10;
 
