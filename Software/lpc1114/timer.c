@@ -16,7 +16,7 @@ void systick_second_sleep(unsigned char second)
 }
 //Added from main file
 //volatile unsigned char tick_interrupt_count = 0;
-//volatile unsigned char tick_second = 0;
+//volatile unsigned char tick_second = 10;
 
 void SysTick_Handler(void)
 {
