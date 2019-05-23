@@ -14,9 +14,9 @@ void systick_second_sleep(unsigned char second)
 	SYSTICK_CSR |= (1 << SYSTICK_ENABLE_BIT); 
   
 }
-
-volatile unsigned char tick_interrupt_count = 0;
-volatile unsigned char tick_second = 0;
+//Added from main file
+//volatile unsigned char tick_interrupt_count = 0;
+//volatile unsigned char tick_second = 0;
 
 void SysTick_Handler(void)
 {
