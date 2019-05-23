@@ -1,0 +1,3 @@
+All gpio button pins if button pressed goes to gnd if pin is output maybe ic is FAIL set a resistor to this pins
+All gpio button pins have histeresis for fix this use capasitor
+Minimum WIDTH 0,5mm HEIGHT 0,5mm TICKNESS 0,125mm
