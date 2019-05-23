@@ -22,8 +22,36 @@ void adc_init(void)
 	LPC_ADC->CR					|=	(0x77 << 8);
 	// START CONVERSION
 	//LPC_ADC->CR					|=	(1 << 24);
-	
 }
-
-
-
+unsigned char adc_0_mic_read(void)
+{
+		
+}
+unsigned char adc_1_time_up_down_read(void)
+{
+	unsigned int x;
+	// START CONVERSION
+	LPC_ADC->CR					|=	(1 << 24);
+	while(1)
+	{
+		x = LPC_ADC->DR[0];
+		if(x && (1 << 31)
+		   {
+			   x >>= 6;
+			   x  &= 0x3FF;
+			   // 0x3FF %60 is up %30 is down
+			   // between %70 and %50 is up
+			   // between %40 and %20 is down
+			   if(x <
+		   }
+	}
+	return 0;
+}
+unsigned char adc_2_light_up_down_read(void)
+{
+		
+}
+unsigned char adc_4_pir_read(void)
+{
+		
+}
