@@ -1,7 +1,40 @@
-void timer_0_16_init(void)
+void timer_1_16_pwm_init(void)
 {
-LPC_SYSCON->SYSAHBCLKCTRL |= (1<<7);
-LPC_TMR16B0->PR  = System_Core_Clock/1000000;
+	//	ENABLE IOCON CLK
+	LPC_SYSCON->SYSAHBCLKCTRL		        |=	(1 << 16);
+	//	ENABLE TMR16B1 CLK
+	LPC_SYSCON->SYSAHBCLKCTRL			|=	(1 << 8);
+  	//  IOCON PIN CT16B1_MAT0 FUNCTION SELECT
+ 	LPC_IOCON->PIO1_9      = 0x1;
+	//	PRESCALER NOT USED HERE
+	LPC_TMR16B1->PR           = 0x0;
+	//	SET FOR RESET ON COUNTER MATCH
+	LPC_TMR16B1->MCR          = 0x10;
+	
+	LPC_TMR16B1->EMR          |= 0x20;
+	//	SET TIMER MODE
+	LPC_TMR16B1->CCR          = 0; 
+	//	SET CHANNEL ZERO TO PWM MODE
+	LPC_TMR16B1->PWMC         = 0x1;
+	//	SET VALUE FOR PERIOD = LOW AND HIGH ALL TIMES
+	//LPC_TMR16B1->MR1          = 0x32;
+	//	SET VALUE FOR DUTY CYCLE = ONLY HIGH TIMES FIRST LOW LATER HIGH
+	//LPC_TMR16B1->MR0          = 0xC;
+	//	ENABLE AND RESET COUNTER
+	//LPC_TMR16B1->TCR          |= 0x3;
+	//	CLEAR RESET BIT
+	//LPC_TMR16B1->TCR          &= ~(0x2);
+}
+void set_pwm(unsigned short pwm_period,unsigned short pwm_duty_cycle)
+{
+	//	SET VALUE FOR PERIOD = LOW AND HIGH ALL TIMES
+	LPC_TMR16B1->MR1          = pwm_period;
+	//	SET VALUE FOR DUTY CYCLE = ONLY HIGH TIMES FIRST LOW LATER HIGH
+	LPC_TMR16B1->MR0          = pwm_duty_cycle;
+	//	ENABLE AND RESET COUNTER
+	LPC_TMR16B1->TCR          |= 0x3;
+	//	CLEAR RESET BIT
+	LPC_TMR16B1->TCR          &= ~(0x2);
 }
 void systick_second_sleep(unsigned char second)
 {
