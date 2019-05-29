@@ -20,11 +20,11 @@ int main(void)
   systick_init();
   
   //READ ALL REGISTER AND SAVE TO RAW ARRAY  
-  i2c_read_multi_char(0xD0,0xD1,0x00,saat[19]);
+  i2c_read_multi_char(0xD0,0xD1,0x00,saat);
   // CONVERT RAW REGISTER DATA TO REASONABLE DATA
-  raw_to_ds_t(ds3231,saat[19]);
+  raw_to_ds_t(&ds3231,saat);
   //  CHECK ALL ALARMS
-  check_alarm(ds3231);  
+  check_alarm(&ds3231);  
   
 //WRITE MINUTE AND HOUR
 led_write(ds3231.hour__am_pm,ds3231.minute,0);
