@@ -2,6 +2,8 @@
 
 #define setting_alarm_button_pressed (LPC_GPIO1->DATA & (1 << 5))
 #define setting_clk_button_pressed (LPC_GPIO1->DATA & (1 << 11))
+#define stop_alarm_button_pressed (LPC_GPIO2->DATA & (1 << 4))
+#define sleep_button_pressed (LPC_GPIO2->DATA & (1 << 5))
 
 volatile unsigned char tick_interrupt_count = 0;
 volatile unsigned char tick_second = 10;
@@ -43,6 +45,18 @@ while(1){
   if(setting_alarm_button_pressed == 0)
   {
   setting_alarm_on();
+  }
+  if(stop_alarm_button_pressed == 0)
+  {
+  stop_alarm();
+  }
+  if(sleep_button_pressed == 0)
+  {
+  sleep();
+  }
+  if(light_up_down_button_pressed == 0)
+  {
+  
   }
 }
 return 0;
