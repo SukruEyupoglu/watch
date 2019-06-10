@@ -23,11 +23,11 @@ void setting_clk_on(void)
 	s = adc_1_time_up_down_read();
 	if(s == 5)
   	{
-		increase_time();
+		increase_hour();
   	}
 	if(s == 20)
 	{
-		reduce_time();
+		reduce_hour();
 	}
 	}
 
@@ -47,7 +47,7 @@ void sleep(void)
 	SYSTICK_RVR = 0xF;
 	restart_systick();
 }
-void increase_time(void)
+void increase_hour(void)
 {
 	if(ds3231.hour__am_pm == 23)
 	{
