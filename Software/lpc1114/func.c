@@ -16,11 +16,21 @@ void alert(unsigned int freq)
 }
 void setting_clk_on(void)
 {
+	unsigned char s;
 	tick_second = 50;
-	  if(light_up_down_button_pressed == 0)
-  {
-  
-  }
+	while(1)
+	{
+	s = adc_1_time_up_down_read();
+	if(s == 5)
+  	{
+		increase_time();
+  	}
+	if(s == 20)
+	{
+		reduce_time();
+	}
+	}
+
 	
 }
 void setting_alarm_on(void)
@@ -37,5 +47,29 @@ void sleep(void)
 	SYSTICK_RVR = 0xF;
 	restart_systick();
 }
+void increase_time(void)
+{
+	if(ds3231.hour__am_pm == 23)
+	{
+		ds3231.hour__am_pm = 0;
+	}
+	else
+	{
+		ds3231.hour__am_pm++;
+	}
+	led_write(ds3231.hour__am_pm,ds3231.minute,0);	
+	
+	
+	if(ds3231.minute == 59)
+	{
+		ds3231.minute = 0;
+	}
+	else
+	{
+		ds3231.minute++;
+	}
+	led_write(ds3231.hour__am_pm,ds3231.minute,0);	
+}
+
 
 
