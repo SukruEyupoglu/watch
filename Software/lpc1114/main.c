@@ -4,10 +4,12 @@
 #define setting_clk_button_pressed (LPC_GPIO1->DATA & (1 << 11))
 #define stop_alarm_button_pressed (LPC_GPIO2->DATA & (1 << 4))
 #define sleep_button_pressed (LPC_GPIO2->DATA & (1 << 5))
+#define alarm_gpio_output (LPC_GPIO2->DATA & (1 << 3))
 
 volatile unsigned char tick_interrupt_count = 0;
 volatile unsigned char tick_second = 10;
 
+volatile unsigned char alarm_status = 0;
 
 int main(void)
 {
@@ -57,6 +59,10 @@ while(1){
   if(light_up_down_button_pressed == 0)
   {
   
+  }
+  if(alarm_status)
+  {
+  alert();
   }
 }
 return 0;
