@@ -42,10 +42,12 @@ while(1){
 //EACH BUTTON PRESSED RESTART SYSTICK
   if(setting_clk_button_pressed == 0)
   {
-    setting_clk_on();
+  stop_alarm();
+  setting_clk_on();
   }
   if(setting_alarm_button_pressed == 0)
   {
+  stop_alarm();
   setting_alarm_on();
   }
   if(stop_alarm_button_pressed == 0)
