@@ -39,21 +39,37 @@ void setting_clk_on(void)
 	{
 		if(t == 0)
 		{
+			led_write(ds3231.hour__am_pm,ds3231.minute,0);
 			t = 1;
 		}
 		else
 		{
+			led_write(ds3231.hour__am_pm,ds3231.minute,0);
 			t = 0;
 		}
 	}
 	s = adc_1_time_up_down_read();
 	if(s == 5)
   	{
+		if(t == 0)
+		{
 		increase_minute();
+		}
+		else
+		{
+		increase_hour();
+		}
   	}
 	if(s == 20)
 	{
+		if(t == 0)
+		{
 		reduce_minute();
+		}
+		else
+		{
+		reduce_hour();
+		}
 	}
 	}
 
@@ -84,9 +100,9 @@ void increase_hour(void)
 	{
 		ds3231.hour__am_pm++;
 	}
-	led_write(ds3231.hour__am_pm,ds3231.minute,0);	
-	
-	
+}
+void increase_minute(void)
+{	
 	if(ds3231.minute == 59)
 	{
 		ds3231.minute = 0;
@@ -94,9 +110,28 @@ void increase_hour(void)
 	else
 	{
 		ds3231.minute++;
-	}
-	led_write(ds3231.hour__am_pm,ds3231.minute,0);	
+	}	
 }
-
-
+void reduce_hour(void)
+{
+	if(ds3231.hour__am_pm == 0)
+	{
+		ds3231.hour__am_pm = 23;
+	}
+	else
+	{
+		ds3231.hour__am_pm--;
+	}
+}
+void reduce_minute(void)
+{	
+	if(ds3231.minute == 00)
+	{
+		ds3231.minute = 59;
+	}
+	else
+	{
+		ds3231.minute--;
+	}	
+}
 
