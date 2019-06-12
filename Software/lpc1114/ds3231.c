@@ -51,10 +51,20 @@ void led_write(unsigned char watch,unsigned char minute,unsigned char ref)
         }
         led[i] |= x;
     }
+if(watch < 100)
+{
     led[8] = n7[(p*2)];
     led[9] = n7[(p*2)+1];
     led[10] = n7[(q*2)];
     led[11] = n7[(q*2)+1];
+}
+else
+{
+    led[8] = 0;
+    led[9] = 0;
+    led[10] = 0;
+    led[11] = 0;    
+}
 for(f=0;f<12;f++)
 {
     spi(led[f]);
