@@ -9,7 +9,7 @@
 volatile unsigned char tick_interrupt_count = 0;
 volatile unsigned char tick_second = 10;
 // FOR PWM LIGHT SETTING lowtime + hightime == MUST BE SHORT
-volatile unsigned short lowtime , hightime;
+volatile unsigned short lowtime = 0xFF , hightime = 0xFF;
 // FOR ALARM STATUS
 volatile unsigned char alarm_status = 0;
 
