@@ -9,5 +9,21 @@ void tmr16b1_pwm_init(unsigned int lowtime,unsigned int hightime)
   LPC_TMR16B1->TCR = 0x02;                                    // RESET TIMER
   LPC_TMR16B1->TCR = 0x01;                                    // ENABLE TIMER
 }
+void brightness_up(void)
+{
+  if(hightime < 0x000FFFFF)
+  {
+    hightime <<= 4;
+  }
+}
+void brightness_down(void)
+{
+  if(hightime > 0xFFFFF000)
+  {
+    hightime >>= 4;
+  }
+}
+
+
 
 
