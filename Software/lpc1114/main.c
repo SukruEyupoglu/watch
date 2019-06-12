@@ -72,7 +72,7 @@ while(1){
   }
   if(alarm_status)
   {
-  alert();
+  alert(100);
   }
 }
 return 0;
