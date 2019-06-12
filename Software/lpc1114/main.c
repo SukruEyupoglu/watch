@@ -15,6 +15,7 @@ volatile unsigned char alarm_status = 0;
 
 int main(void)
 {
+  unsigned char l;
   // DS3231 HAS 19 REGISTER ADDRESS
   unsigned char saat[19];
   // FOR CONVERTING DS REGISTERS TO REASONABLE DATA
@@ -60,9 +61,14 @@ while(1){
   {
   sleep();
   }
-  if(light_up_down_button_pressed == 0)
+  l = adc_2_light_up_down_read();
+  if(l == 20)
   {
-  
+    brightness_up();
+  }
+  if(l == 5)
+  {
+    brightness_down();
   }
   if(alarm_status)
   {
