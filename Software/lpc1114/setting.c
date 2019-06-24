@@ -1,15 +1,20 @@
 void setting(void)
 {
-  unsigned char x,s = 0;
+  unsigned char d,x,s;
   tick_second = 255;
   while(1)
   {
-    x = adc_2_light_up_down_read();
-    switch( s )
+    switch( d )
     {
       case 0 :
       {
-        
+        while(1)
+        {
+          s = adc_1_time_up_down_read();
+          x = adc_2_light_up_down_read();
+          if
+          delay(button_delay);
+        }
       }
       break;
       case 1 :
@@ -17,7 +22,12 @@ void setting(void)
         
       }
       break;
+      default :
+      {
+        d = 0;
+        return;
+      }
+      break;        
     }
-    delay(button_delay);
   }
 }
