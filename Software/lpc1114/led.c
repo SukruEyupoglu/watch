@@ -1,3 +1,13 @@
+/*
+circle = 60 valid bit + 4 blank bit 
+digit = 14 valid + 2 empty + 14 valid + 2 empty
+unsigned long long int circle , z = 1 , v = 0;
+circle = (z << 0) |     (v << 57) |
+         (z << 1) |     (z << 58) |
+         (v << 2) |     (z << 59);  // 60,61,62,63 is not matter,unvalid.
+vb..
+digit same as circle but 32 bit
+*/
 void led_hex_write(unsigned long long int circle,unsigned int digit)
 {
   unsigned char f,x;
