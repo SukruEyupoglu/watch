@@ -7,9 +7,9 @@ unsigned char reg2time(unsigned char reg)
 {
     return (((reg >> 4) * 10) + (reg % 16));
 }
+/*
 void led_write(unsigned char watch,unsigned char minute,unsigned char ref)
 {
-    unsigned char led[12];
     unsigned char i,j,l,f;
     unsigned char x,v;
     unsigned char y = (minute / 8);
@@ -19,6 +19,7 @@ void led_write(unsigned char watch,unsigned char minute,unsigned char ref)
     unsigned char m = (ref    / 8);
     unsigned char n = (ref    % 8);
     unsigned char n7[20] = {0xFF,0xF,0x3C,0x0,0xCF,0x33,0xFF,0x30,0x3C,0x3C,0xF3,0x3C,0xF3,0x3F,0x3F,0x0,0xFF,0x3F,0xFF,0x3C};
+    led[12] = {0,0,0,0,0,0,0,0,0,0,0,0};
     if ((minute < 60) & (ref == 0))
     {
         for(i=0;i<y;i++)
@@ -70,3 +71,4 @@ for(f=0;f<12;f++)
     spi(led[f]);
 }
 }
+*/
