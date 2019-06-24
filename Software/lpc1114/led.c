@@ -102,3 +102,40 @@ for(f=0;f<12;f++)
     spi(led[f]);
 }
 }
+void blink(unsigned char blink_type,unsigned int blink_shiny_time,blink_dim_time)
+{
+         unsigned long long int circle = 0;
+         unsigned int digit = 0;
+         unsigned char f,x;
+         for(f = 0 ; f < 8 ; f++)
+         {
+                  for(x = 0 ; x < 8 ; x++)
+                  {
+                           if((led[f] & (1 << x)) != 0)
+                           {
+                                    circle |= (1 << ((f * 8) + x));
+                           }
+                  }
+         }
+         for(f = 0 ; f < 4 ; f++)
+         {
+                  for(x = 0 ; x < 8 ; x++)
+                  {
+                           if((led[f + 8] & (1 << x)) != 0)
+                           {
+                                    digit |= (1 << ((f * 8) + x));
+                           }
+                  }
+         }
+         if(blink_type == 0)
+         {
+                  led_hex_write(0,digit);
+         }
+         else
+         {
+                  led_hex_write(circle,0);
+         }
+         delay(blink_dim_time);
+         led_hex_write(circle,digit);
+         delay(blink_shiny_time);
+}
