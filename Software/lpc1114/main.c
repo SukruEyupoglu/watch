@@ -5,6 +5,8 @@
 #define stop_alarm_button_pressed (LPC_GPIO2->DATA & (1 << 4))
 #define sleep_button_pressed (LPC_GPIO2->DATA & (1 << 5))
 #define alarm_gpio_output (LPC_GPIO2->DATA & (1 << 3))
+// FOR LED DATA HOLDER ARRAY EVERY FUNCTION REACABLE OPTION
+volatile unsigned char led[12] = {0,0,0,0,0,0,0,0,0,0,0,0};
 // FOR SYSTICK TIMER SETTING
 volatile unsigned char tick_interrupt_count = 0;
 volatile unsigned char tick_second = 10;
