@@ -47,6 +47,30 @@ int erase_all_external_spi_flash(void)
     return ERROR;
   }
 }
+/*
+ptr++;    // Pointer moves to the next int position (as if it was an array)
+++ptr;    // Pointer moves to the next int position (as if it was an array)
+++*ptr;   // The value of ptr is incremented
+++(*ptr); // The value of ptr is incremented
+++*(ptr); // The value of ptr is incremented
+*ptr++;   // Pointer moves to the next int position (as if it was an array). But returns the old content
+(*ptr)++; // The value of ptr is incremented
+*(ptr)++; // Pointer moves to the next int position (as if it was an array). But returns the old content
+*++ptr;   // Pointer moves to the next int position, and then get's accessed, with your code, segfault
+*(++ptr); // Pointer moves to the next int position, and then get's accessed, with your code, segfault
+
+p++;    // use it then move to next int position
+++p;    // move to next int and then use it
+++*p;   // increments the value by 1 then use it 
+++(*p); // increments the value by 1 then use it
+++*(p); // increments the value by 1 then use it
+*p++;   // use the value of p then moves to next position
+(*p)++; // use the value of p then increment the value
+*(p)++; // use the value of p then moves to next position
+*++p;   // moves to the next int location then use that value
+*(++p); // moves to next location then use that value
+
+*/
 int write_spi_flash(unsigned int address,unsigned char * buffer,unsigned int size)
 {
   unsigned char addr_8 = 0,f,x;
@@ -75,7 +99,7 @@ int write_spi_flash(unsigned int address,unsigned char * buffer,unsigned int siz
       // x =++ *buffer;
       // spi(x);
       
-      spi(*(buffer + f));
+      spi(buffer++);
     }
     /* while(size--)
     {
