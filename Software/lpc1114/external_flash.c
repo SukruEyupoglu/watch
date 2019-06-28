@@ -71,7 +71,11 @@ int write_spi_flash(unsigned int address,unsigned char * buffer,unsigned int siz
     {
       // x = *(buffer++);
       // spi(x);
-      spi(buffer[f]);
+      
+      // x =++ *buffer;
+      // spi(x);
+      
+      spi(*(buffer + f));
     }
     /* while(size--)
     {
