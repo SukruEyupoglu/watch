@@ -23,18 +23,73 @@
 
 #define SUBSECTOR_SIZE       (4*1024)
 #define SECTOR_SIZE          (64*1024)
-#define PAGE_PROGRAM_SIZE    (256)
+#define PAGE_PROGRAM_SIZE    256
 
 // spi_init();
 int erase_all_external_spi_flash(void)
 {
-  
-  CS_LOW;
-  spi(WRITE_ENABLE_COMMAND);  // for write anythink set this register
-  CS_HIGH;
-  CS_LOW;
-  spi(CHIP_ERASE_COMMAND);  // for erase all chip
-  CS_HIGH;
+  if(check_error_or_busy() == OK)
+  {
+    CS_LOW;
+    spi(WRITE_ENABLE_COMMAND);  // for write anythink set this register
+    CS_HIGH;
+    CS_LOW;
+    spi(CHIP_ERASE_COMMAND);  // for erase all chip
+    CS_HIGH;
+    return OK;
+  }
+  else if(check_error_or_busy() == BUSY)
+  {
+    return BUSY;
+  }
+  else
+  {
+    return ERROR;
+  }
+}
+int write_spi_flash(unsigned int address,unsigned char * buffer,unsigned int size)
+{
+  unsigned char addr_8 = 0,f,x;
+  if(check_error_or_busy() == OK)
+  {
+    CS_LOW;
+    spi(WRITE_ENABLE_COMMAND);  // for write anythink set this register
+    // send 24 bit adress first 24-16 bit second 16-8 bit last 8-0 bit must send
+    for(f = 0 ; f < 3 ; f++)
+    {
+      for(x = 0 ; x < 8 ; x++)
+      {
+        if((address >> (16 - (8 * f))) & (1 << x))
+        {
+          addr_8 |= (1 << x);
+        }
+      }
+      spi(addr_8);
+    }
+    // send data
+    for(f = 0 ; f < size ; f++)
+    {
+      // x = *(buffer++);
+      // spi(x);
+      spi(buffer[f]);
+    }
+    /* while(size--)
+    {
+      x = *(buffer++);
+      spi(x); 
+    }
+    */
+    CS_HIGH;
+    return OK;
+  }
+  else if(check_error_or_busy() == BUSY)
+  {
+    return BUSY;
+  }
+  else
+  {
+    return ERROR;
+  }  
 }
 int check_error_or_busy(void)
 {
