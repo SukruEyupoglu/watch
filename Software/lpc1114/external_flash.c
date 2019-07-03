@@ -71,6 +71,46 @@ p++;    // use it then move to next int position
 *(++p); // moves to next location then use that value
 
 */
+int read_spi_flash(unsigned int address,unsigned char * buffer,unsigned int size)
+{
+  if(check_error_or_busy() == OK)
+  {
+    CS_LOW;
+    spi(READ_DATA_COMMAND);  
+    // send 24 bit adress first 24-16 bit second 16-8 bit last 8-0 bit must send
+    for(f = 0 ; f < 3 ; f++)
+    {
+      for(x = 0 ; x < 8 ; x++)
+      {
+        if((address >> (16 - (8 * f))) & (1 << x))
+        {
+          addr_8 |= (1 << x);
+        }
+      }
+      spi(addr_8);
+    }
+    // get data
+    for(f = 0 ; f < size ; f++)
+    {
+      *buffer = spi(DUMMY_BYTE);
+      if(size != (f + 1))
+      {
+        buffer++;
+      {
+    }
+    CS_HIGH;
+    return OK;
+  }
+  else if(check_error_or_busy() == BUSY)
+  {
+    return BUSY;
+  }
+  else
+  {
+    return ERROR;
+  }    
+}
+
 int write_spi_flash(unsigned int address,unsigned char * buffer,unsigned int size)
 {
   unsigned char addr_8 = 0,f,x;
@@ -99,7 +139,11 @@ int write_spi_flash(unsigned int address,unsigned char * buffer,unsigned int siz
       // x =++ *buffer;
       // spi(x);
       // use it then move to next int position
-      spi(buffer++);
+      spi(*buffer);
+      if(size != (f + 1))
+      {
+        buffer++;
+      {
     }
     /* while(size--)
     {
