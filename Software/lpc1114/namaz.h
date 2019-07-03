@@ -103,7 +103,7 @@ j |= 22 - 12;               // set yatsi hour
 j <<= minute_size     // shift minute area for yatsi minute
 j |= 48;              // set yatsi minute
 
-memory area explanation for imsak + gunes + ogle
+memory area explanation for ikindi + aksam + yatsi
 j --> 00 0101 010100 1000 110000 1010 110000
 
 */
