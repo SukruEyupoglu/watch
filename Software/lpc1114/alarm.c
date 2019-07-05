@@ -3,7 +3,15 @@ start_alarm();
 stop_alarm();
 #define scream 1
 #define quiet 0
+#define E2PROM_NAMAZ_ALERT_SETTING_ADDR 0x0001
+#define E2PROM_SABAH_NAMAZI_ALERT_SETTING_ADDR 0x0002
+#define E2PROM_GUNES_NAMAZI_ALERT_SETTING_ADDR 0x0003
+#define E2PROM_OGLE_NAMAZI_ALERT_SETTING_ADDR 0x0004
+#define E2PROM_IKINDI_NAMAZI_ALERT_SETTING_ADDR 0x0005
+#define E2PROM_AKSAM_NAMAZI_ALERT_SETTING_ADDR 0x0006
+#define E2PROM_YATSI_NAMAZI_ALERT_SETTING_ADDR 0x0007
 
+unsigned char i2c_read_e2prom_1_char(unsigned char ic_addr,unsigned short read_addr,unsigned char * data)
 unsigned char check_alarm(unsigned char * ds_t)
 {
   
