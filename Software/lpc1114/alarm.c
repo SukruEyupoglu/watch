@@ -1,6 +1,8 @@
 
 start_alarm();
 stop_alarm();
+#define scream 1
+#define quiet 0
 
 unsigned char check_alarm(unsigned char * ds_t)
 {
@@ -99,5 +101,29 @@ unsigned char check_namaz_for_alert(unsigned char dakika,unsigned char saat,unsi
     }
   }
   
-  
+  if((sabah_saat == saat) & (sabah_dakika == dakika)
+     {
+       return scream;
+     }
+  if((gunes_saat == saat) & (gunes_dakika == dakika)
+     {
+       return scream;
+     }
+  if((ogle_saat == saat) & (ogle_dakika == dakika)
+     {
+       return scream;
+     }
+  if((ikindi_saat == saat) & (ikindi_dakika == dakika)
+     {
+       return scream;
+     }
+  if((aksam_saat == saat) & (aksam_dakika == dakika)
+     {
+       return scream;
+     }
+  if((yatsi_saat == saat) & (yatsi_dakika == dakika)
+     {
+       return scream;
+     }
+   return quiet;
 }
