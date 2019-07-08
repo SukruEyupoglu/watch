@@ -5,6 +5,27 @@
 #define boot_button_pressed (LPC_GPIO0->DATA & (1 << 1))
 #define write_setting_button_pressed (LPC_GPIO3->DATA & (1 << 4))
 
+void gpio_init(void)
+{
+  	//	ENABLE IOCON CLK
+	LPC_SYSCON->SYSAHBCLKCTRL		        |=	(1 << 16);
+	//	ENABLE GPIO CLK
+	LPC_SYSCON->SYSAHBCLKCTRL			|=	(1 << 6);
+	//	IOCONFIG SPI SETTINGS
+	LPC_IOCON->PIO1_5		            	=	0x0; //setting alarm
+	LPC_IOCON->PIO1_11	            	=	0x0; //setting clk
+	LPC_IOCON->PIO2_4       	        =	0x0; //stop alarm
+	LPC_IOCON->PIO2_5 		          	=	0x0; //sleep
+	LPC_IOCON->PIO0_1       	        =	0x0; //boot
+	LPC_IOCON->PIO3_4 		          	=	0x0; //write setting
+    LPC_GPIO1->DIR					&=	~(1 << 5);
+    LPC_GPIO1->DIR					&=	~(1 << 11);
+    LPC_GPIO2->DIR					&=	~(1 << 4);
+    LPC_GPIO2->DIR					&=	~(1 << 5);
+    LPC_GPIO0->DIR					&=	~(1 << 1);
+    LPC_GPIO3->DIR					&=	~(1 << 4);
+}
+
 unsigned char check_button(void)
 {
   if(setting_alarm_button_pressed != 0)
