@@ -19,6 +19,7 @@ int main(void)
   ds_t ds3231;
   //  INIT ALL NECESSARY FUNCTIONS
   main_init();
+  gpio_init();
   i2c_init();
   spi_init();
   systick_init();
