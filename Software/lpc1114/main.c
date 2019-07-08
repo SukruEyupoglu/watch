@@ -1,9 +1,5 @@
 #include "LPC11xx.h"
 
-#define setting_alarm_button_pressed (LPC_GPIO1->DATA & (1 << 5))
-#define setting_clk_button_pressed (LPC_GPIO1->DATA & (1 << 11))
-#define stop_alarm_button_pressed (LPC_GPIO2->DATA & (1 << 4))
-#define sleep_button_pressed (LPC_GPIO2->DATA & (1 << 5))
 #define alarm_gpio_output (LPC_GPIO2->DATA & (1 << 3))
 // FOR LED DATA HOLDER ARRAY EVERY FUNCTION REACABLE OPTION
 volatile unsigned char led[12] = {0,0,0,0,0,0,0,0,0,0,0,0};
@@ -17,7 +13,6 @@ volatile unsigned char alarm_status = 0;
 
 int main(void)
 {
-  unsigned char l;
   // DS3231 HAS 19 REGISTER ADDRESS
   unsigned char saat[19];
   // FOR CONVERTING DS REGISTERS TO REASONABLE DATA
@@ -42,39 +37,69 @@ led_write(ds3231.hour__am_pm,ds3231.minute,0);
 systick_second_sleep(10);
 
 while(1){
-  
-//WAIT FOR SETTING BUTTON PRESSED
-//EACH BUTTON PRESSED RESTART SYSTICK
-  if(setting_clk_button_pressed == 0)
+  //WAIT FOR SETTING BUTTON PRESSED
+  //EACH BUTTON PRESSED RESTART SYSTICK
+  switch(check_button())
   {
-  stop_alarm();
-  setting_clk_on();
-  }
-  if(setting_alarm_button_pressed == 0)
-  {
-  stop_alarm();
-  setting_alarm_on();
-  }
-  if(stop_alarm_button_pressed == 0)
-  {
-  stop_alarm();
-  }
-  if(sleep_button_pressed == 0)
-  {
-  sleep();
-  }
-  l = adc_2_light_up_down_read();
-  if(l == 20)
-  {
-    brightness_up();
-  }
-  if(l == 5)
-  {
-    brightness_down();
-  }
-  if(alarm_status)
-  {
-  alert(100);
+    case 201 :
+      {
+          stop_alarm();
+          setting_alarm_on();
+      }
+    break;
+    case 202 :
+      {
+          stop_alarm();
+          setting_clk_on();
+      }
+    break;
+    case 203 :
+      {
+          stop_alarm();
+      }
+    break;
+    case 204 :
+      {
+          stop_alarm();
+          sleep();
+      }
+    break;
+    case 205 :
+      {
+          stop_alarm();
+      }
+    break;
+    case 206 :
+      {
+          stop_alarm();
+      }
+    break;
+    case 207 :
+      {
+          stop_alarm();
+          brightness_down();
+      }
+    break;
+    case 208 :
+      {
+          stop_alarm();
+          brightness_up();
+      }
+    break;
+    case 209 :
+      {
+          stop_alarm();
+      }
+    break;
+    case 210 :
+      {
+          stop_alarm();
+      }
+    break;
+    default :
+    {
+    }
+    break;
   }
 }
 return 0;
