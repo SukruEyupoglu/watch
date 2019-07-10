@@ -1,5 +1,5 @@
 #include "LPC11xx.h"
-
+#define ds3231_addr 0xD0
 #define alarm_gpio_output (LPC_GPIO2->DATA & (1 << 3))
 // FOR LED DATA HOLDER ARRAY EVERY FUNCTION REACABLE OPTION
 volatile unsigned char led[12] = {0,0,0,0,0,0,0,0,0,0,0,0};
@@ -25,7 +25,10 @@ int main(void)
   systick_init();
   
   //READ ALL REGISTER AND SAVE TO RAW ARRAY  
-  i2c_read_multi_char(0xD0,0xD1,0x00,saat);
+  if(i2c(ds3231_addr,0,1,saat,19) == 1)
+  {
+    error();
+  }
   // CONVERT RAW REGISTER DATA TO REASONABLE DATA
   raw_to_ds_t(&ds3231,saat);
   //  CHECK ALL ALARMS
