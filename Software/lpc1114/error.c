@@ -1,3 +1,4 @@
+#define none 0
 void error(void)
 {
   write_digit('E','R');
@@ -10,6 +11,12 @@ void write_digit(unsigned char left,unsigned char right)
   unsigned char f;
   switch(left)
   {
+    case 0:
+    {
+      led[8] = 0x00;
+      led[9] = 0x00;
+    }
+    break;
     case 'A':
     {
       led[8] = 0x3F;
@@ -147,10 +154,22 @@ void write_digit(unsigned char left,unsigned char right)
       led[8] = 0xD8;
       led[9] = 0x32;
     }
+    break;
+    default:
+    {
+      led[8] = 0x00;
+      led[9] = 0x00;
+    }
     break;    
   }
   switch(right)
   {
+    case 0:
+    {
+      led[10] = 0x00;
+      led[11] = 0x00;
+    }
+    break;
     case 'A':
     {
       led[10] = 0x3F;
@@ -287,6 +306,12 @@ void write_digit(unsigned char left,unsigned char right)
     {
       led[10] = 0xD8;
       led[11] = 0x32;
+    }
+    break;
+    default:
+    {
+      led[10] = 0x00;
+      led[11] = 0x00;
     }
     break;    
   }
