@@ -1,4 +1,5 @@
 #include "LPC11xx.h"
+#define ERR 1
 #define ds3231_addr 0xD0
 #define alarm_gpio_output (LPC_GPIO2->DATA & (1 << 3))
 // FOR LED DATA HOLDER ARRAY EVERY FUNCTION REACABLE OPTION
@@ -25,7 +26,7 @@ int main(void)
   systick_init();
   
   //READ ALL REGISTER AND SAVE TO RAW ARRAY  
-  if(i2c(ds3231_addr,0,1,saat,19) == 1)
+  if(i2c(ds3231_addr,0,1,saat,19) == ERR)
   {
     error();
   }
