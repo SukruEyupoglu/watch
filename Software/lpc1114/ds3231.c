@@ -69,6 +69,7 @@ unsigned char i2c(unsigned char addr,unsigned char reg,unsigned char read_or_wri
 	}
 	else
 	{
+		while(!((LPC_I2C->STAT == I2CSTAT_NACK_0x30) | (LPC_I2C->STAT == I2CSTAT_ACK_0x28)));
 		LPC_I2C->CONSET = I2CONSET_RSTA_BIT5;
 		while(LPC_I2C->STAT != I2CSTAT_START_0x10);
 		LPC_I2C->DAT					=	addr + 1;
