@@ -7,8 +7,8 @@ volatile unsigned char led[12] = {0,0,0,0,0,0,0,0,0,0,0,0};
 // FOR SYSTICK TIMER SETTING
 volatile unsigned char tick_interrupt_count = 0;
 volatile unsigned char tick_second = 10;
-// FOR PWM LIGHT SETTING lowtime + hightime == MUST BE SHORT
-volatile unsigned short lowtime = 0xFF , hightime = 0xFF;
+// FOR PWM LIGHT SETTING
+volatile unsigned short percent = 50 , duty = 0xFFFF;
 // FOR ALARM STATUS
 volatile unsigned char alarm_status = 0;
 
