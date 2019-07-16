@@ -1,8 +1,8 @@
 #define e2prom_addr 0xA2
-#define namaz_saat_start_addr 0x0000
-#define extra_data_start_addr 0x0727
-#define extra_data_last_addr 0x4095
-
+#define namaz_saat_start_addr 0x000
+#define extra_alarm_start_addr 0x00A
+#define eeprom_last_addr 0xFFF
+// 0xFFF = 4095
 void i2c_100khz_e2prom_init(void)
 {
 	//	ENABLE IOCON CLK
