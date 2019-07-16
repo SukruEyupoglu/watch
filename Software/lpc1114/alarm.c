@@ -108,7 +108,9 @@ unsigned char check_namaz_for_alert(unsigned char dakika,unsigned char saat,unsi
       yatsi_dakika |= (1 << (f - 0));
     }
   }
-  
+  ikindi_saat += 12;
+  aksam_saat += 12;
+  yatsi_saat += 12;
   if((sabah_saat == saat) & (sabah_dakika == dakika)
      {
        return scream;
