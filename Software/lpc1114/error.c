@@ -320,4 +320,5 @@ void write_digit(unsigned char left,unsigned char right)
   {
     spi( led[f] );
   }
+  latch();
 }
