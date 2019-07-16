@@ -23,6 +23,7 @@ int main(void)
   gpio_init();
   i2c_init();
   spi_init();
+  tmr16b1_pwm_init();
   systick_init();
   
   //READ ALL REGISTER AND SAVE TO RAW ARRAY  
