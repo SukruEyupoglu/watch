@@ -1,10 +1,11 @@
 #define none 0
+#define blink_delay 3000000;
 void error(void)
 {
   write_digit('E','R');
-  delay(blink_delay);
+  delay_timer(blink_delay);
   write_digit(NONE,NONE);
-  delay(blink_delay);  
+  delay_timer(blink_delay);  
 }
 void write_digit(unsigned char left,unsigned char right)
 {
