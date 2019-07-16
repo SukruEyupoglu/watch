@@ -27,6 +27,8 @@ int main(void)
   gpio_output_init();
   systick_init();
   
+  read_eeprom_data();
+  
   //READ ALL REGISTER AND SAVE TO RAW ARRAY  
   if(i2c(ds3231_addr,0,1,saat,19) == ERR)
   {
