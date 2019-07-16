@@ -1,3 +1,27 @@
+void timer_delay_init(void)
+{
+	//	ENABLE IOCON CLK
+	LPC_SYSCON->SYSAHBCLKCTRL		        |=	(1 << 16);
+	//	ENABLE TMR32B1 CLK
+	LPC_SYSCON->SYSAHBCLKCTRL			|=	(1 << 10);
+	//	PRESCALER NOT USED HERE
+	LPC_TMR32B1->PR           = 0x0;
+	//	SET FOR RESET ON COUNTER MATCH
+	LPC_TMR32B1->MCR          = (1 << 4);
+	//	MAX VALUE FOR DELAY
+	LPC_TMR32B1->MR1          = 0xFFFFFFFF;	
+}
+// MAX VALUE FOR DLY = 4294967295
+void delay_timer(unsigned int dly)
+{
+	//	ENABLE AND RESET COUNTER
+	LPC_TMR32B1->TCR          |= 0x3;
+	//	CLEAR RESET BIT
+	LPC_TMR32B1->TCR          &= ~(1 << 1);	
+	while(LPC_TMR32B1->TC < dly);
+	LPC_TMR32B1->TCR          &= ~(1 << 0);	
+}
+
 void timer_1_16_pwm_init(void)
 {
 	//	ENABLE IOCON CLK
