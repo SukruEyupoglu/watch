@@ -8,6 +8,11 @@ circle = (z << 0) |     (v << 57) |
 vb..
 digit same as circle but 32 bit
 */
+void latch(void)
+{
+         LPC_GPIO2->DATA		|= (1 << 10);
+         LPC_GPIO2->DATA   	&= ~(1 << 10);
+}
 void led_hex_write(unsigned long long int circle,unsigned int digit)
 {
   unsigned char f,x;
@@ -38,6 +43,7 @@ void led_hex_write(unsigned long long int circle,unsigned int digit)
   {
     spi( led[f] );
   }
+         latch();
 }
 void led_write(unsigned char watch,unsigned char minute,unsigned char ref)
 {
@@ -101,8 +107,9 @@ for(f=0;f<12;f++)
 {
     spi(led[f]);
 }
+         latch();
 }
-void blink(unsigned char blink_type,unsigned int blink_shiny_time,blink_dim_time)
+void blink(unsigned char blink_type,unsigned int blink_shiny_time,unsigned int blink_dim_time)
 {
          unsigned long long int circle = 0;
          unsigned int digit = 0;
@@ -135,7 +142,7 @@ void blink(unsigned char blink_type,unsigned int blink_shiny_time,blink_dim_time
          {
                   led_hex_write(circle,0);
          }
-         delay(blink_dim_time);
+         delay_timer(blink_dim_time);
          led_hex_write(circle,digit);
-         delay(blink_shiny_time);
+         delay_timer(blink_shiny_time);
 }
