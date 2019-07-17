@@ -26,7 +26,13 @@ unsigned char reg2time(unsigned char reg)
 #define I2CSTAT_ACK_0x50 0x50
 #define I2CSTAT_ACK_0x58 0x58
 // reg addr size is byte number sample eeprom has 16bit addr size
-unsigned char i2c(unsigned char addr,unsigned int reg,unsigned char reg_addr_size,unsigned char read_or_write,unsigned char * data,unsigned int size)
+unsigned char i2c(
+	unsigned char addr,
+	unsigned int reg,
+	unsigned char reg_addr_size,
+	unsigned char read_or_write,
+	unsigned char * data,
+	unsigned int size)
 {
 	unsigned char var,f,k;
 	LPC_I2C->CONSET = I2CONSET_STA_BIT5; 
