@@ -25,9 +25,10 @@ unsigned char reg2time(unsigned char reg)
 #define I2CSTAT_ACK_0x40 0x40
 #define I2CSTAT_ACK_0x50 0x50
 #define I2CSTAT_ACK_0x58 0x58
-
-unsigned char i2c(unsigned char addr,unsigned char reg,unsigned char read_or_write,unsigned char * data,unsigned int size)
+// reg addr size is byte number sample eeprom has 16bit addr size
+unsigned char i2c(unsigned char addr,unsigned int reg,unsigned char reg_addr_size,unsigned char read_or_write,unsigned char * data,unsigned int size)
 {
+	unsigned char var,f,k;
 	LPC_I2C->CONSET = I2CONSET_STA_BIT5; 
 	while(LPC_I2C->STAT != I2CSTAT_START_0x08);
 	LPC_I2C->DAT					=	addr;
@@ -35,8 +36,19 @@ unsigned char i2c(unsigned char addr,unsigned char reg,unsigned char read_or_wri
 	while(!((LPC_I2C->STAT == I2CSTAT_NACK_0x20) | (LPC_I2C->STAT == I2CSTAT_ACK_0x18)));
 	if(LPC_I2C->STAT == I2CSTAT_ACK_0x18)
 	{
-		LPC_I2C->DAT				=	reg;
+		for(f = 0 ; f < reg_addr_size ; f++)
+		{
+			for(k = 0 ; k < 8 ; k++)
+			{
+				if(reg & (1 << (k + (f * 8))))
+				{
+					var |= (1 << k); //// yarım kaldı gökhan yüzünden
+				}
+			}
+		}
+		LPC_I2C->DAT				=	var;
 		LPC_I2C->CONCLR = I2CONCLR_SIC_BIT3;
+		while(!((LPC_I2C->STAT == I2CSTAT_NACK_0x30) | (LPC_I2C->STAT == I2CSTAT_ACK_0x28)));
 	}
 	else 
 	{
@@ -44,12 +56,12 @@ unsigned char i2c(unsigned char addr,unsigned char reg,unsigned char read_or_wri
 		LPC_I2C->CONCLR = I2CONCLR_SIC_BIT3;  
     		return 1;
 	}
+	
 	// write = 0 read = 1
 	if(read_or_write == 0)
 	{
 		while(size)
 		{
-			while(!((LPC_I2C->STAT == I2CSTAT_NACK_0x30) | (LPC_I2C->STAT == I2CSTAT_ACK_0x28)));
 			if(LPC_I2C->STAT == I2CSTAT_ACK_0x28)
 			{
 				LPC_I2C->DAT				=	* data; 
@@ -61,6 +73,7 @@ unsigned char i2c(unsigned char addr,unsigned char reg,unsigned char read_or_wri
 				LPC_I2C->CONCLR = I2CONCLR_SIC_BIT3;  
     				return 1;
 			}
+			while(!((LPC_I2C->STAT == I2CSTAT_NACK_0x30) | (LPC_I2C->STAT == I2CSTAT_ACK_0x28)));
 			data++;
 			size--;
 		}
@@ -69,7 +82,6 @@ unsigned char i2c(unsigned char addr,unsigned char reg,unsigned char read_or_wri
 	}
 	else
 	{
-		while(!((LPC_I2C->STAT == I2CSTAT_NACK_0x30) | (LPC_I2C->STAT == I2CSTAT_ACK_0x28)));
 		LPC_I2C->CONSET = I2CONSET_RSTA_BIT5;
 		while(LPC_I2C->STAT != I2CSTAT_START_0x10);
 		LPC_I2C->DAT					=	addr + 1;
