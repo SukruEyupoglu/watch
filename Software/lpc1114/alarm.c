@@ -1,36 +1,68 @@
 #define scream 1
 #define quiet 0
-#define E2PROM_NAMAZ_ALERT_SETTING_ADDR 0x0001
-#define E2PROM_SABAH_NAMAZI_ALERT_SETTING_ADDR 0x0002
-#define E2PROM_GUNES_NAMAZI_ALERT_SETTING_ADDR 0x0003
-#define E2PROM_OGLE_NAMAZI_ALERT_SETTING_ADDR 0x0004
-#define E2PROM_IKINDI_NAMAZI_ALERT_SETTING_ADDR 0x0005
-#define E2PROM_AKSAM_NAMAZI_ALERT_SETTING_ADDR 0x0006
-#define E2PROM_YATSI_NAMAZI_ALERT_SETTING_ADDR 0x0007
-
-unsigned char check_alarm(ds_t * ds3231)
+// array for using settings start 0x001 not 0x000 and 0x000 is empty
+#define E2PROM_NAMAZ_ALERT_SETTING_ADDR 0x001
+#define E2PROM_SABAH_NAMAZI_ALERT_SETTING_ADDR 0x002
+#define E2PROM_GUNES_NAMAZI_ALERT_SETTING_ADDR 0x003
+#define E2PROM_OGLE_NAMAZI_ALERT_SETTING_ADDR 0x004
+#define E2PROM_IKINDI_NAMAZI_ALERT_SETTING_ADDR 0x005
+#define E2PROM_AKSAM_NAMAZI_ALERT_SETTING_ADDR 0x006
+#define E2PROM_YATSI_NAMAZI_ALERT_SETTING_ADDR 0x007
+/*
+#define e2prom_addr 0xA2
+#define eeprom_last_addr 0xFFF
+// 0xFFF = 4095
+// 8. byte alert before namaz time if 1 look at 9. byte for how many minute
+// 9. byte minute for prepare for namaz default 0
+#define before_namaz_alert_addr 0x008
+#define minute_for_before_namaz_alert_addr 0x009
+// A. byte exta alert number how many alert saved read from here
+#define how_many_extra_alert_addr 0x00A // max 6
+0x00B = dakika
+0x00C = saat
+0x00D = gun
+0x00E = ay
+if gun and ay equal to zero then daily alarm so every day of year
+*/
+unsigned char check_alarm(ds_t * ds3231,unsigned char * eeprom_data)
 {
-  if(check_namaz_for_alert(ds3231.minute,ds3231.hour,ds3231.day,ds3231.mount))
+  if( * eeprom_data == 1)
   {
-    return scream;
+    if(check_namaz_for_alert(ds3231.minute,ds3231.hour,ds3231.day,ds3231.mount,&eeprom_data))
+    {
+      return scream;
+    }
   }
-  if(check_eeprom_alert(ds3231.minute,ds3231.hour,ds3231.day,ds3231.mount))
+  if(check_eeprom_alert(ds3231.minute,ds3231.hour,ds3231.day,ds3231.mount,&eeprom_data))
   {
     return scream;    
   }
+  /*
   if(check_ds3231_alert(ds3231.minute,ds3231.hour,ds3231.day,ds3231.mount))
   {
     return scream;    
   }
+  */
   return quiet;
 }
 
-unsigned char check_eeprom_alert(unsigned char dakika,unsigned char saat,unsigned char gun,unsigned char ay)
+unsigned char check_eeprom_alert(unsigned char dakika,unsigned char saat,unsigned char gun,unsigned char ay,unsigned char * ayar)
 {
-  // e2prom_addr
+  unsigned char f;
+  for(f = 0 ; f < *(ayar + 0x9) ; f++)
+  {
+    if((*(((f * 4) + (ayar + 0x9)) + 1) == dakika) &
+       (*(((f * 4) + (ayar + 0x9)) + 2) == saat) &
+       ((*(((f * 4) + (ayar + 0x9)) + 3) == gun) | (*(((f * 4) + (ayar + 0x9)) + 3) == 0)) &
+       ((*(((f * 4) + (ayar + 0x9)) + 4) == gun) | (*(((f * 4) + (ayar + 0x9)) + 4) == 0)))
+    {
+      return scream;
+    }
+  }
+  return quiet;
 }
 
-unsigned char check_namaz_for_alert(unsigned char dakika,unsigned char saat,unsigned char gun,unsigned char ay)
+unsigned char check_namaz_for_alert(unsigned char dakika,unsigned char saat,unsigned char gun,unsigned char ay,unsigned char * ayar)
 {
   unsigned char f;
   unsigned char sabah_saat,gunes_saat,ogle_saat,ikindi_saat,aksam_saat,yatsi_saat;
@@ -128,27 +160,27 @@ unsigned char check_namaz_for_alert(unsigned char dakika,unsigned char saat,unsi
   aksam_saat += 12;
   yatsi_saat += 12;
   
-  if((sabah_saat == saat) & (sabah_dakika == dakika)
+  if((sabah_saat == saat) & (sabah_dakika == dakika) & (*(ayar + 1) == 1))
      {
        return scream;
      }
-  if((gunes_saat == saat) & (gunes_dakika == dakika)
+  if((gunes_saat == saat) & (gunes_dakika == dakika) & (*(ayar + 2) == 1))
      {
        return scream;
      }
-  if((ogle_saat == saat) & (ogle_dakika == dakika)
+  if((ogle_saat == saat) & (ogle_dakika == dakika) & (*(ayar + 3) == 1))
      {
        return scream;
      }
-  if((ikindi_saat == saat) & (ikindi_dakika == dakika)
+  if((ikindi_saat == saat) & (ikindi_dakika == dakika) & (*(ayar + 4) == 1))
      {
        return scream;
      }
-  if((aksam_saat == saat) & (aksam_dakika == dakika)
+  if((aksam_saat == saat) & (aksam_dakika == dakika) & (*(ayar + 5) == 1))
      {
        return scream;
      }
-  if((yatsi_saat == saat) & (yatsi_dakika == dakika)
+  if((yatsi_saat == saat) & (yatsi_dakika == dakika) & (*(ayar + 6) == 1))
      {
        return scream;
      }
