@@ -1,6 +1,7 @@
 #include "LPC11xx.h"
 #define ERR 1
 #define ds3231_addr 0xD0
+#define eeprom_addr 0xA2
 #define alarm_gpio_output (LPC_GPIO2->DATA & (1 << 3))
 // FOR LED DATA HOLDER ARRAY EVERY FUNCTION REACABLE OPTION
 volatile unsigned char led[12] = {0,0,0,0,0,0,0,0,0,0,0,0};
@@ -16,6 +17,8 @@ int main(void)
 {
   // DS3231 HAS 19 REGISTER ADDRESS
   unsigned char saat[19];
+  // EEPROM ALERT SETTING REGISTERS
+  unsigned char alarm[60];
   // FOR CONVERTING DS REGISTERS TO REASONABLE DATA
   ds_t ds3231;
   //  INIT ALL NECESSARY FUNCTIONS
@@ -31,6 +34,11 @@ int main(void)
   
   //READ ALL REGISTER AND SAVE TO RAW ARRAY  
   if(i2c(ds3231_addr,0,1,1,saat,19) == ERR)
+  {
+    error();
+  }
+    //READ ALL REGISTER AND SAVE TO RAW ARRAY  
+  if(i2c(eeprom_addr,1,1,1,alarm,60) == ERR)
   {
     error();
   }
