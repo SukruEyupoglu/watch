@@ -38,7 +38,7 @@ int main(void)
     error();
   }
     //READ ALL REGISTER AND SAVE TO RAW ARRAY  
-  if(i2c(eeprom_addr,1,1,1,alarm,60) == ERR)
+  if(i2c(eeprom_addr,1,2,1,alarm,60) == ERR)
   {
     error();
   }
