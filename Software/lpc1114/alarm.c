@@ -24,6 +24,12 @@ unsigned char check_alarm(ds_t * ds3231)
   }
   return quiet;
 }
+
+unsigned char check_eeprom_alert(unsigned char dakika,unsigned char saat,unsigned char gun,unsigned char ay)
+{
+  // e2prom_addr
+}
+
 unsigned char check_namaz_for_alert(unsigned char dakika,unsigned char saat,unsigned char gun,unsigned char ay)
 {
   unsigned char f;
