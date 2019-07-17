@@ -27,12 +27,12 @@ unsigned char reg2time(unsigned char reg)
 #define I2CSTAT_ACK_0x58 0x58
 // reg addr size is byte number sample eeprom has 16bit addr size
 unsigned char i2c(
-	unsigned char addr,
-	unsigned int reg,
-	unsigned char reg_addr_size,
-	unsigned char read_or_write,
-	unsigned char * data,
-	unsigned int size)
+	unsigned char addr,			//device addr char size
+	unsigned int reg,			//if device data storage size maybe 16-24-32 bit
+	unsigned char reg_addr_size,		//if device data storage 16 = 2 , 24 = 3 byte min = 1 per byte
+	unsigned char read_or_write,		//write = 0 , read = 1
+	unsigned char * data,			//address pointer for send or receive
+	unsigned int size)			//size of send or receive data per byte
 {
 	unsigned char var,f,k;
 	LPC_I2C->CONSET = I2CONSET_STA_BIT5; 
