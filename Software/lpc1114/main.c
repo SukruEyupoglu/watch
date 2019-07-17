@@ -18,7 +18,7 @@ int main(void)
   // DS3231 HAS 19 REGISTER ADDRESS
   unsigned char saat[19];
   // EEPROM ALERT SETTING REGISTERS
-  unsigned char alarm[60];
+  unsigned char alrm[60];
   // FOR CONVERTING DS REGISTERS TO REASONABLE DATA
   ds_t ds3231;
   //  INIT ALL NECESSARY FUNCTIONS
@@ -38,14 +38,14 @@ int main(void)
     error();
   }
     //READ ALL REGISTER AND SAVE TO RAW ARRAY  
-  if(i2c(eeprom_addr,1,2,1,alarm,60) == ERR)
+  if(i2c(eeprom_addr,1,2,1,alrm,60) == ERR)
   {
     error();
   }
   // CONVERT RAW REGISTER DATA TO REASONABLE DATA
   raw_to_ds_t(&ds3231,saat);
   //  CHECK ALL ALARMS
-  check_alarm(&ds3231);  
+  check_alarm(&ds3231,alrm);  
   
 //WRITE MINUTE AND HOUR
 led_write(ds3231.hour__am_pm,ds3231.minute,0);
