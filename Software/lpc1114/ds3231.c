@@ -40,15 +40,16 @@ unsigned char i2c(unsigned char addr,unsigned int reg,unsigned char reg_addr_siz
 		{
 			for(k = 0 ; k < 8 ; k++)
 			{
-				if(reg & (1 << (k + (f * 8))))
+				if(reg & (1 << (k + (((reg_addr_size - 1) - f) * 8))))
 				{
-					var |= (1 << k); //// yarım kaldı gökhan yüzünden
+					var |= (1 << k);
 				}
 			}
+			LPC_I2C->DAT				=	var;
+			LPC_I2C->CONCLR = I2CONCLR_SIC_BIT3;
+			while(!((LPC_I2C->STAT == I2CSTAT_NACK_0x30) | (LPC_I2C->STAT == I2CSTAT_ACK_0x28)));
 		}
-		LPC_I2C->DAT				=	var;
-		LPC_I2C->CONCLR = I2CONCLR_SIC_BIT3;
-		while(!((LPC_I2C->STAT == I2CSTAT_NACK_0x30) | (LPC_I2C->STAT == I2CSTAT_ACK_0x28)));
+
 	}
 	else 
 	{
