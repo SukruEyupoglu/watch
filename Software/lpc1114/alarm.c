@@ -37,12 +37,18 @@ unsigned char check_alarm(ds_t * ds3231,unsigned char * eeprom_data)
   {
     return scream;    
   }
-  /*
-  if(check_ds3231_alert(ds3231.minute,ds3231.hour,ds3231.day,ds3231.mount))
+  if(check_ds3231_alert(ds3231.minute,ds3231.hour,alarm1_minute,alarm1_hour__am_pm))
   {
     return scream;    
   }
-  */
+  if(check_ds3231_alert(ds3231.minute,ds3231.hour,alarm2_minute,alarm2_hour__am_pm))
+  {
+    return scream;    
+  }
+  if(check_hourly_alert(ds3231.minute,ds3231.hour,&eeprom_data))
+  {
+    return scream;    
+  }  
   return quiet;
 }
 
