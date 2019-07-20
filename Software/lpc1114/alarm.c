@@ -79,7 +79,14 @@ unsigned char check_alarm(ds_t * ds3231,unsigned char * eeprom_data)
   }
   return quiet;
 }
-
+unsigned char check_ds3231_alert(unsigned char dakika,unsigned char saat,unsigned char alarm_dakika,unsigned char alarm_saat)
+{
+  if((dakika == alarm_dakika) & (saat == alarm_saat))
+  {
+    return scream;
+  }
+}
+  
 unsigned char check_eeprom_alert(unsigned char dakika,unsigned char saat,unsigned char gun,unsigned char ay,unsigned char * number)
 {
   unsigned char f;
