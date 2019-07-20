@@ -40,9 +40,9 @@ unsigned char check_alarm(ds_t * ds3231,unsigned char * eeprom_data)
       return scream;
     }
   }
-  if (  * (eeprom_data + 0x00A) != 0)
+  if (  * (eeprom_data + 0x009) != 0)
   {
-    if(check_eeprom_alert(ds3231.minute,ds3231.hour,ds3231.day,ds3231.mount, * (eeprom_data + 0x00A)))
+    if(check_eeprom_alert(ds3231.minute,ds3231.hour,ds3231.day,ds3231.mount,&eeprom_data))
     {
       return scream;    
     }
@@ -55,27 +55,30 @@ unsigned char check_alarm(ds_t * ds3231,unsigned char * eeprom_data)
   {
     return scream;    
   }
-  if(check_hourly_alert(ds3231.minute,ds3231.hour,&eeprom_data))
-  {
-    return scream;    
-  }  
   return quiet;
 }
 
-unsigned char check_eeprom_alert(unsigned char dakika,unsigned char saat,unsigned char gun,unsigned char ay,unsigned char number)
+unsigned char check_eeprom_alert(unsigned char dakika,unsigned char saat,unsigned char gun,unsigned char ay,unsigned char * number)
 {
   unsigned char f;
   unsigned char ayar[40];
-    if(i2c(eeprom_addr,0x03D,2,1,ayar,40) == ERR)
-    {
-      error();
-    }
-  for(f = 0 ; f < number ; f++)
+  if(i2c(eeprom_addr,0x03D,2,1,ayar,40) == ERR)
+  {
+    error();
+  }
+  for(f = 0 ; f < * (number + 0x009); f++)
   {
     if((ayar[f * 4] == dakika) &
        (ayar[(f * 4) + 1] == saat) &
        (ayar[(f * 4) + 2] == gun) | (ayar[(f * 4) + 2] == 0)) &
        (ayar[(f * 4) + 3] == gun) | (ayar[(f * 4) + 3] == 0)))
+    {
+      return scream;
+    }
+  }
+  if( * (number + 0x00A) == 1)
+  {
+    if((dakika == 0) & ((saat == 0) | ((saat % (* (number + 0x00B))) == 0))
     {
       return scream;
     }
