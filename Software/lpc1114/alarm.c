@@ -1,20 +1,21 @@
 #define scream 1
 #define quiet 0
 // array for using settings start 0x001 not 0x000 and 0x000 is empty
-#define E2PROM_NAMAZ_ALERT_SETTING_ADDR 0x001
-#define E2PROM_SABAH_NAMAZI_ALERT_SETTING_ADDR 0x002
-#define E2PROM_GUNES_NAMAZI_ALERT_SETTING_ADDR 0x003
-#define E2PROM_OGLE_NAMAZI_ALERT_SETTING_ADDR 0x004
-#define E2PROM_IKINDI_NAMAZI_ALERT_SETTING_ADDR 0x005
-#define E2PROM_AKSAM_NAMAZI_ALERT_SETTING_ADDR 0x006
-#define E2PROM_YATSI_NAMAZI_ALERT_SETTING_ADDR 0x007
-#define BEFORE_NAMAZ_SETTING_ADDR 0x008
-#define MINUTE_FOR_BEFORE_NAMAZ_SETTING_ADDR 0x009
-#define EXTRA_ALRT_NUMBER_SETTING_ADDR 0x00A
-#define HOURLY_ALERT_SETTING_ADDR 0x00B
-#define NUMBER_HOURLY_ALERT_SETTING_ADDR 0x00C
-#define EXTRA_ALARM_START_ADDR 0x03D // 61
-#define EXTRA_ALARM_LAST_ADDR 0x064 // 100
+// all address stored  +1 to arrays
+#define E2PROM_NAMAZ_ALERT_SETTING_ADDR 0x001             // 1 or 0
+#define E2PROM_SABAH_NAMAZI_ALERT_SETTING_ADDR 0x002      // 1 or 0
+#define E2PROM_GUNES_NAMAZI_ALERT_SETTING_ADDR 0x003      // 1 or 0
+#define E2PROM_OGLE_NAMAZI_ALERT_SETTING_ADDR 0x004       // 1 or 0
+#define E2PROM_IKINDI_NAMAZI_ALERT_SETTING_ADDR 0x005     // 1 or 0
+#define E2PROM_AKSAM_NAMAZI_ALERT_SETTING_ADDR 0x006      // 1 or 0
+#define E2PROM_YATSI_NAMAZI_ALERT_SETTING_ADDR 0x007      // 1 or 0
+#define BEFORE_NAMAZ_SETTING_ADDR 0x008                   // 1 or 0
+#define MINUTE_FOR_BEFORE_NAMAZ_SETTING_ADDR 0x009        // max 60 minute
+#define EXTRA_ALRT_NUMBER_SETTING_ADDR 0x00A              // max 10 alert
+#define HOURLY_ALERT_SETTING_ADDR 0x00B                   // 1 or 0
+#define NUMBER_HOURLY_ALERT_SETTING_ADDR 0x00C            // 1 or 2 or 3 or 4 or 6 or 12 or 24
+#define EXTRA_ALARM_START_ADDR 0x03D // 61                // 
+#define EXTRA_ALARM_LAST_ADDR 0x064 // 100                // 
 /*
 #define e2prom_addr 0xA2
 #define eeprom_last_addr 0xFFF
@@ -35,13 +36,35 @@ if gun and ay equal to zero then daily alarm so every day of year
 */
 unsigned char check_alarm(ds_t * ds3231,unsigned char * eeprom_data)
 {
+// namaz const related alert check
   if( * eeprom_data == 1)
   {
-    if(check_namaz_for_alert(ds3231.minute,ds3231.hour,ds3231.day,ds3231.mount,&eeprom_data))
+    if((* (ayar + 0x007) == 1) & (* (ayar + 0x008) < 61))
     {
-      return scream;
+         if((* (ayar + 0x008) + ds3231.minute) < 60)
+         {
+           if(check_namaz_for_alert((ds3231.minute + (* (ayar + 0x007))),ds3231.hour,ds3231.day,ds3231.mount,&eeprom_data))
+            {
+              return scream;
+            }                       
+         }
+         else
+         {
+           if(check_namaz_for_alert((ds3231.minute + (* (ayar + 0x007))) - 60,ds3231.hour + 1,ds3231.day,ds3231.mount,&eeprom_data))
+            {
+              return scream;
+            }                                  
+         }
+    }
+    else
+    {
+      if(check_namaz_for_alert(ds3231.minute,ds3231.hour,ds3231.day,ds3231.mount,&eeprom_data))
+      {
+        return scream;
+      }
     }
   }
+// eeprom saved alert check  
   if (  * (eeprom_data + 0x009) != 0)
   {
     if(check_eeprom_alert(ds3231.minute,ds3231.hour,ds3231.day,ds3231.mount,&eeprom_data))
@@ -49,11 +72,8 @@ unsigned char check_alarm(ds_t * ds3231,unsigned char * eeprom_data)
       return scream;    
     }
   }
+// ds3231 related alarm check
   if(check_ds3231_alert(ds3231.minute,ds3231.hour,alarm1_minute,alarm1_hour__am_pm))
-  {
-    return scream;    
-  }
-  if(check_ds3231_alert(ds3231.minute,ds3231.hour,alarm2_minute,alarm2_hour__am_pm))
   {
     return scream;    
   }
@@ -180,7 +200,7 @@ unsigned char check_namaz_for_alert(unsigned char dakika,unsigned char saat,unsi
       yatsi_dakika |= (1 << (f - 0));
     }
   }
-  
+
   // look at namaz.h for this information
   ikindi_saat += 12;
   aksam_saat += 12;
