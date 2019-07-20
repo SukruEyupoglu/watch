@@ -8,6 +8,11 @@
 #define E2PROM_IKINDI_NAMAZI_ALERT_SETTING_ADDR 0x005
 #define E2PROM_AKSAM_NAMAZI_ALERT_SETTING_ADDR 0x006
 #define E2PROM_YATSI_NAMAZI_ALERT_SETTING_ADDR 0x007
+#define BEFORE_NAMAZ_SETTING_ADDR 0x008
+#define MINUTE_FOR_BEFORE_NAMAZ_SETTING_ADDR 0x009
+#define EXTRA_ALRT_NUMBER_SETTING_ADDR 0x00A
+#define HOURLY_ALERT_SETTING_ADDR 0x00B
+#define NUMBER_HOURLY_ALERT_SETTING_ADDR 0x00C
 /*
 #define e2prom_addr 0xA2
 #define eeprom_last_addr 0xFFF
@@ -17,11 +22,13 @@
 #define before_namaz_alert_addr 0x008
 #define minute_for_before_namaz_alert_addr 0x009
 // A. byte exta alert number how many alert saved read from here
-#define how_many_extra_alert_addr 0x00A // max 6
-0x00B = dakika
-0x00C = saat
-0x00D = gun
-0x00E = ay
+#define how_many_extra_alert_addr 0x00A
+// extra alarm start addr 0x03D == 61
+// max extra alarm = 10
+0x03D = dakika
+0x03E = saat
+0x03F = gun
+0x040 = ay
 if gun and ay equal to zero then daily alarm so every day of year
 */
 unsigned char check_alarm(ds_t * ds3231,unsigned char * eeprom_data)
@@ -33,9 +40,12 @@ unsigned char check_alarm(ds_t * ds3231,unsigned char * eeprom_data)
       return scream;
     }
   }
-  if(check_eeprom_alert(ds3231.minute,ds3231.hour,ds3231.day,ds3231.mount,&eeprom_data))
+  if (  * (eeprom_data + 0x00A) != 0)
   {
-    return scream;    
+    if(check_eeprom_alert(ds3231.minute,ds3231.hour,ds3231.day,ds3231.mount, * (eeprom_data + 0x00A)))
+    {
+      return scream;    
+    }
   }
   if(check_ds3231_alert(ds3231.minute,ds3231.hour,alarm1_minute,alarm1_hour__am_pm))
   {
@@ -52,15 +62,20 @@ unsigned char check_alarm(ds_t * ds3231,unsigned char * eeprom_data)
   return quiet;
 }
 
-unsigned char check_eeprom_alert(unsigned char dakika,unsigned char saat,unsigned char gun,unsigned char ay,unsigned char * ayar)
+unsigned char check_eeprom_alert(unsigned char dakika,unsigned char saat,unsigned char gun,unsigned char ay,unsigned char number)
 {
   unsigned char f;
-  for(f = 0 ; f < *(ayar + 0x9) ; f++)
+  unsigned char ayar[40];
+    if(i2c(eeprom_addr,0x03D,2,1,ayar,40) == ERR)
+    {
+      error();
+    }
+  for(f = 0 ; f < number ; f++)
   {
-    if((*(((f * 4) + (ayar + 0x9)) + 1) == dakika) &
-       (*(((f * 4) + (ayar + 0x9)) + 2) == saat) &
-       ((*(((f * 4) + (ayar + 0x9)) + 3) == gun) | (*(((f * 4) + (ayar + 0x9)) + 3) == 0)) &
-       ((*(((f * 4) + (ayar + 0x9)) + 4) == gun) | (*(((f * 4) + (ayar + 0x9)) + 4) == 0)))
+    if((ayar[f * 4] == dakika) &
+       (ayar[(f * 4) + 1] == saat) &
+       (ayar[(f * 4) + 2] == gun) | (ayar[(f * 4) + 2] == 0)) &
+       (ayar[(f * 4) + 3] == gun) | (ayar[(f * 4) + 3] == 0)))
     {
       return scream;
     }
