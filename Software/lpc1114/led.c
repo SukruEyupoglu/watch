@@ -16,7 +16,7 @@ void latch(void)
 void led_hex_write(unsigned long long int circle,unsigned int digit)
 {
   unsigned char f,x;
-  led[12] = {0,0,0,0,0,0,0,0,0,0,0,0};
+  // led[12] = {0,0,0,0,0,0,0,0,0,0,0,0};
   for(f = 0 ; f < 8 ; f++)
   {
     circle >>= (f * 8);
