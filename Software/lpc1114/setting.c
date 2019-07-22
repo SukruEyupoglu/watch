@@ -81,12 +81,26 @@ void set_blink(unsigned char typ,unsigned int dim_time,unsigned int shiny_time)
   unsigned char bl[12] = {0,0,0,0,0,0,0,0,0,0,0,0};
   if(typ)
   {
-    
+    bl[11] = led[11];
+    bl[10] = led[10];
+    bl[9] = led[9];
+    bl[8] = led[8];
   }
   else
   {
-    
+    bl[7] = led[7];
+    bl[6] = led[6];
+    bl[5] = led[5];
+    bl[4] = led[4];
+    bl[3] = led[3];
+    bl[2] = led[2];
+    bl[1] = led[1];
+    bl[0] = led[0];
   }
+  yak(bl);
+  delay(dim_time);
+  yak(led);
+  delay(shiny_time);
 }
 void yak(unsigned char sh[12])
 {
