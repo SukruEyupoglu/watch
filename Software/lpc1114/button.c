@@ -62,6 +62,7 @@ unsigned char check_button(void)
     {
       return 208;
     }
+  }
   switch (adc_1_time_up_down_read())
   {
     case 5:
@@ -72,4 +73,6 @@ unsigned char check_button(void)
     {
       return 210;
     }
+  }
+return 0;
 }
