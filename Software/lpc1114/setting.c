@@ -17,6 +17,7 @@ void setting(void)
   unsigned int ee_reg = 1;
   unsigned char set;
   unsigned char btn;
+  unsigned char cho1,cho2;
   systick_second_sleep(255);
   while(1)
   {
@@ -25,6 +26,7 @@ void setting(void)
       error();
     }
     led_write(set,(60 - ee_reg),((60 - ee_reg) - 1));
+    cho1 = 0;
     while(1)
     {
       btn = check_button();
@@ -33,60 +35,64 @@ void setting(void)
         case 201:
           {
             systick_second_sleep(255);
-            
+            cho1 = 1;
           }
           break;
         case 202:
           {
             systick_second_sleep(255);
-            
+            cho1 = 1;
           }
           break;
         case 203:
           {
             systick_second_sleep(255);
-            
+            cho1 = 1;            
           }
           break;
         case 204:
           {
-            systick_second_sleep(1);            
+            systick_second_sleep(1);
+            cho1 = 1;
+            cho2 = 1;
           }
           break;
         case 205:
           {
             systick_second_sleep(255);
-            
+            cho1 = 1;            
           }
           break;
         case 206:
           {
             systick_second_sleep(255);
+            cho1 = 1;
+            cho2 = 1;
             
           }
           break;
         case 207:
           {
             systick_second_sleep(255);
-            
+            cho1 = 1;            
           }
           break;
         case 208:
           {
             systick_second_sleep(255);
-            
+            cho1 = 1;            
           }
           break;
         case 209:
           {
             systick_second_sleep(255);
-            
+            cho1 = 1;            
           }
           break;
         case 210:
           {
             systick_second_sleep(255);
-            
+            cho1 = 1;            
           }
           break;
         default:
@@ -95,6 +101,14 @@ void setting(void)
           }
           break;
       }
+      if(cho1)
+      {
+        break;
+      }
+    }
+    if(cho2)
+    {
+      break;
     }
   }
 }
