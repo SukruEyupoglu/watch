@@ -1,3 +1,17 @@
+/*
+#define SET_LRM 201
+#define SET_CLK 202
+#define STP_LRM 203
+#define SLP 204
+#define BOO 205
+#define WRT_SET 206
+#define LIG_DWN 207
+#define LIG_UP 208
+#define TM_DWN 209
+#define TM_UP 210
+*/
+
+
 void setting(void)
 {
   unsigned int ee_reg = 1;
@@ -18,51 +32,60 @@ void setting(void)
       {
         case 201:
           {
+            systick_second_sleep(255);
             
           }
           break;
         case 202:
           {
+            systick_second_sleep(255);
             
           }
           break;
         case 203:
           {
+            systick_second_sleep(255);
             
           }
           break;
         case 204:
           {
-            
+            systick_second_sleep(1);            
           }
           break;
         case 205:
           {
+            systick_second_sleep(255);
             
           }
           break;
         case 206:
           {
+            systick_second_sleep(255);
             
           }
           break;
         case 207:
           {
+            systick_second_sleep(255);
             
           }
           break;
         case 208:
           {
+            systick_second_sleep(255);
             
           }
           break;
         case 209:
           {
+            systick_second_sleep(255);
             
           }
           break;
         case 210:
           {
+            systick_second_sleep(255);
             
           }
           break;
