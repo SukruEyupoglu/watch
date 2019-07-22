@@ -78,9 +78,25 @@ void setting(void)
 // void led_write(unsigned char watch,unsigned char minute,unsigned char ref)
 void set_blink(unsigned char typ,unsigned int dim_time,unsigned int shiny_time)
 {
-  unsigned char bl[12];
+  unsigned char bl[12] = {0,0,0,0,0,0,0,0,0,0,0,0};
+  if(typ)
+  {
+    
+  }
+  else
+  {
+    
+  }
 }
-
+void yak(unsigned char sh[12])
+{
+  unsigned char f;
+  for(f = 0 ; f < 12 ; f++)
+  {
+    spi( sh[f] );
+  }
+  latch();
+}
 
 
 
