@@ -97,7 +97,7 @@ void setting(void)
           break;
         default:
           {
-            set_blink(0,);
+            set_blink(0,100000,100000);
           }
           break;
       }
