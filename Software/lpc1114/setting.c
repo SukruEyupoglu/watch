@@ -69,26 +69,52 @@ void setting(void)
             systick_second_sleep(255);
             cho1 = 1;
             cho2 = 1;
-            
-          }
-          break;
-        case 207:
-          {
-            systick_second_sleep(255);
-            cho1 = 1;            
+            write_setting(ee_reg,set,mux);
           }
           break;
         case 208:
           {
             systick_second_sleep(255);
-            cho1 = 1;            
+            cho1 = 1;
+            if(ee_reg == 0xFFF)
+            {
+              ee_reg = 1;
+            }
+            else
+            {
+              ee_reg++;
+            }
+            mux = (ee_reg % 60) + 1;
+            if(i2c(eeprom_addr,ee_reg,2,1,&set,1) == ERR)
+            {
+              error();
+            }
           }
           break;
-        case 209:
+        case 207:
           {
             systick_second_sleep(255);
             cho1 = 1;
-            if(check_registered_data(ee_reg))
+            if(ee_reg == 1)
+            {
+              ee_reg = 0xFFF;
+            }
+            else
+            {
+              ee_reg--;
+            }
+            mux = (ee_reg % 60) + 1;
+            if(i2c(eeprom_addr,ee_reg,2,1,&set,1) == ERR)
+            {
+              error();
+            }
+          }
+          break;
+        case 210:
+          {
+            systick_second_sleep(255);
+            cho1 = 1;
+            if(check_registered_data(ee_reg)) //fonksiyon yazilacak
             {
               if(set)
               {
@@ -112,7 +138,7 @@ void setting(void)
             }
           }
           break;
-        case 210:
+        case 209:
           {
             systick_second_sleep(255);
             cho1 = 1;
