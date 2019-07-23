@@ -18,14 +18,15 @@ void setting(void)
   unsigned char set;
   unsigned char btn;
   unsigned char cho1,cho2;
+  unsigned char mux = 1;
   systick_second_sleep(255);
+  if(i2c(eeprom_addr,ee_reg,2,1,&set,1) == ERR)
+  {
+    error();
+  }
   while(1)
   {
-    if(i2c(eeprom_addr,ee_reg,2,1,&set,1) == ERR)
-    {
-      error();
-    }
-    led_write(set,(60 - ee_reg),((60 - ee_reg) - 1));
+    led_write(set,(60 - ee_reg),((60 - ee_reg) - mux));
     cho1 = 0;
     while(1)
     {
@@ -86,13 +87,57 @@ void setting(void)
         case 209:
           {
             systick_second_sleep(255);
-            cho1 = 1;            
+            cho1 = 1;
+            if(check_registered_data(ee_reg))
+            {
+              if(set)
+              {
+                set = 0;
+              }
+              else
+              {
+                set = 1;
+              }
+            }
+            else
+            {
+              if(set == 255)
+              {
+                set = 0;
+              }
+              else
+              {
+                set++;
+              }
+            }
           }
           break;
         case 210:
           {
             systick_second_sleep(255);
-            cho1 = 1;            
+            cho1 = 1;
+            if(check_registered_data(ee_reg))
+            {
+              if(set)
+              {
+                set = 0;
+              }
+              else
+              {
+                set = 1;
+              }
+            }
+            else
+            {
+              if(set == 0)
+              {
+                set = 255;
+              }
+              else
+              {
+                set--;
+              }
+            }
           }
           break;
         default:
