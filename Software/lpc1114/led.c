@@ -146,3 +146,13 @@ void blink(unsigned char blink_type,unsigned int blink_shiny_time,unsigned int b
          led_hex_write(circle,digit);
          delay_timer(blink_shiny_time);
 }
+void yaz(void)
+{
+  unsigned char f;
+  for(f = 0 ; f < 12 ; f++)
+  {
+    spi( led[f] );
+  }
+  latch();         
+}        
+         
