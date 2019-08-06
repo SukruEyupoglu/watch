@@ -4,7 +4,7 @@
 // x değeri yanacak ledleri 0 - 5
 // y değeri sönecek ledleri 6 - 11
 // z değeri başlangıç noktasını 12 - 17
-// v değeri biyiş noktasını 18 - 23
+// v değeri bitiş noktasını 18 - 23
 // ifade eder
 #define dolgu 2
 // desen seçilirse rastgele iki adet 32 bit register bit olarak şekillendirilebilir.
@@ -50,7 +50,10 @@ void daire_yaz(unsigned char dakika,unsigned int dolgu,unsigned int desen_0_31,u
     break;
     case 2:
     {
-      
+      led[((dolgu >> 12) & 0x3B) / 8] = (1 << (((dolgu >> 12) & 0x3B) % 8);
+      {
+        
+      }
     }
     break;
     case 3:
