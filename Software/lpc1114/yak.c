@@ -23,9 +23,9 @@ void daire_yaz(unsigned char dakika,unsigned int dolgu,unsigned int desen_0_31,u
         {
           led[f] = 0xFF;
         }
-        if(dakika % 8)
+        for(f = 0 ; f < (dakika % 8) ; f++)
         {
-          led[dakika / 8] = (dakika % 8);
+          led[dakika / 8] |= (1 << f);
         }
       }
     }
