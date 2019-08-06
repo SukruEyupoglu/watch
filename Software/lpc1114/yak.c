@@ -52,8 +52,11 @@ void daire_yaz(unsigned char dakika,unsigned int dolgu,unsigned int desen_0_31,u
     {
       for(f = 0 ; f < 60 ; f++)
       {
-        if((f >= ((dolgu >> 12) & 0x3B)) & 
-           (f <= (((dolgu >> 12) & 0x3B) + ((dolgu >> 0) & 0x3B))
+        if( (f >= ( (dolgu >> 12) & 0x3B) ) &
+            (f <= ( (dolgu >> 18) & 0x3B) ) &
+            ( (60 - ( (dolgu >> 12) & 0x3B) )
+              (
+            )
           )
         {
           
