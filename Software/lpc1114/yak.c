@@ -12,32 +12,44 @@
 
 void daire_yaz(unsigned char dakika,unsigned int dolgu,unsigned int desen_0_31,unsigned int desen_32_59,unsigned char tip)
 {
+  unsigned char f;
   switch (tip)
   {
-    case 0 :
+    case 0:
+    {
+      if(dakika < 60)
+      {
+        for(f = 0 ; f < (dakika / 8) ; f++)
+        {
+          led[f] = 0xFF;
+        }
+        if(dakika % 8)
+        {
+          led[dakika / 8] = (dakika % 8);
+        }
+      }
+    }
+    break;
+    case 1:
     {
       
     }
     break;
-    case 1 :
+    case 2:
     {
       
     }
     break;
-    case 2 :
+    case 3:
     {
       
     }
     break;
-    case 3 :
-    {
-      
-    }
-    break;
-    default :
+    default:
     {
       
     }
     break;
   }
+  yaz();
 }
