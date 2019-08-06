@@ -12,7 +12,7 @@
 
 void daire_yaz(unsigned char dakika,unsigned int dolgu,unsigned int desen_0_31,unsigned int desen_32_59,unsigned char tip)
 {
-  unsigned char f;
+  unsigned char f,j;
   switch (tip)
   {
     case 0:
@@ -32,7 +32,13 @@ void daire_yaz(unsigned char dakika,unsigned int dolgu,unsigned int desen_0_31,u
     break;
     case 1:
     {
-      
+      for(f = 0 ; f < 4 ; f++)
+      {
+        for(j = 0 ; j < 8 ; j++)
+        {
+          
+        }
+      }
     }
     break;
     case 2:
