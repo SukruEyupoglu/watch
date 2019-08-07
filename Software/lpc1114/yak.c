@@ -54,17 +54,14 @@ void daire_yaz(unsigned char dakika,unsigned int dolgu,unsigned int desen_0_31,u
       {
         if( (f >= ( (dolgu >> 12) & 0x3B) ) &
             (f <= ( (dolgu >> 18) & 0x3B) ) &
-            ( (60 - ( (dolgu >> 12) & 0x3B) )
-              (
+            (   ( (59 - ( (dolgu >> 12) & 0x3B) ) % ( (dolgu >> 0) & 0x3B) + (dolgu >> 6) & 0x3B) ) ) -
+                (dolgu >> 6) & 0x3B) >
+                ( (f % ( (dolgu >> 0) & 0x3B) + (dolgu >> 6) & 0x3B) ) ) - (dolgu >> 6) & 0x3B) )
             )
           )
         {
-          
+          led[f / 8] |= (1 << (f % 8));
         }
-      }
-      led[((dolgu >> 12) & 0x3B) / 8] = (1 << (((dolgu >> 12) & 0x3B) % 8);
-      {
-        
       }
     }
     break;
