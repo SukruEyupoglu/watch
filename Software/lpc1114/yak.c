@@ -93,7 +93,7 @@ void limit_yaz(unsigned char x,unsigned char y)
 void limit_sil(unsigned char x,unsigned char y)
 {
   unsigned char f;
-  led_zero();
+  led_one();
   if(x < 60)
   {
     for(f = y ; f <= x ; f++)
