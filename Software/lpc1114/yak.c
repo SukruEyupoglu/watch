@@ -78,15 +78,27 @@ void daire_yaz(unsigned char dakika,unsigned int dolgu,unsigned int desen_0_31,u
   }
   yaz();
 }
-void limit_yaz(unsigned char x)
+void limit_yaz(unsigned char x,unsigned char y)
 {
   unsigned char f;
   led_zero();
   if(x < 60)
   {
-    for(f = 0 ; f <= x ; f++)
+    for(f = y ; f <= x ; f++)
     {
       led_yan(f);
+    }
+  }
+}
+void limit_sil(unsigned char x,unsigned char y)
+{
+  unsigned char f;
+  led_zero();
+  if(x < 60)
+  {
+    for(f = y ; f <= x ; f++)
+    {
+      led_son(f);
     }
   }
 }
