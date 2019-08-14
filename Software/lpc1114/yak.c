@@ -81,11 +81,25 @@ void daire_yaz(unsigned char dakika,unsigned int dolgu,unsigned int desen_0_31,u
 // 1 - 60 between
 void led_yan(unsigned char x)
 {
-  led[x / 8] = 
+  if(x < 61)
+  {
+    if( x == 0)
+    {
+      x = 60;
+    }
+    led[x / 8] |= (1 << (x % 8) );
+  }
 }
 void led_son(unsigned char x)
 {
-  
+  if(x < 61)
+  {
+    if( x == 0)
+    {
+      x = 60;
+    }
+    led[x / 8] &= ~(1 << (x % 8) );
+  }  
 }
 
 
