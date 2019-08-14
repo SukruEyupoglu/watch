@@ -90,6 +90,7 @@ void led_yan(unsigned char xx)
     }
     led[x / 8] |= (1 << (x % 8) );
   }
+  // yaz();
 }
 // 0 - 60 between
 void led_son(unsigned char xx)
@@ -102,7 +103,8 @@ void led_son(unsigned char xx)
       x = 60;
     }
     led[x / 8] &= ~(1 << (x % 8) );
-  }  
+  }
+  // yaz();
 }
 
 
