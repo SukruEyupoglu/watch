@@ -78,9 +78,10 @@ void daire_yaz(unsigned char dakika,unsigned int dolgu,unsigned int desen_0_31,u
   }
   yaz();
 }
-// 1 - 60 between
-void led_yan(unsigned char x)
+// 0 - 60 between
+void led_yan(unsigned char xx)
 {
+  unsigned char x = xx;
   if(x < 61)
   {
     if( x == 0)
@@ -90,8 +91,10 @@ void led_yan(unsigned char x)
     led[x / 8] |= (1 << (x % 8) );
   }
 }
-void led_son(unsigned char x)
+// 0 - 60 between
+void led_son(unsigned char xx)
 {
+  unsigned char x = xx;
   if(x < 61)
   {
     if( x == 0)
