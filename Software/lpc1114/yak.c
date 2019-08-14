@@ -78,3 +78,18 @@ void daire_yaz(unsigned char dakika,unsigned int dolgu,unsigned int desen_0_31,u
   }
   yaz();
 }
+// 1 - 60 between
+void led_yan(unsigned char x)
+{
+  led[x / 8] = 
+}
+void led_son(unsigned char x)
+{
+  
+}
+
+
+
+
+
+
