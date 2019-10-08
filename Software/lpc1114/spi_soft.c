@@ -41,10 +41,9 @@ unsigned char spi_soft(unsigned char x)
     {
       MOSI_LOW;
     }
-    spi_delay;
     CLK_HIGH;
     // LSB FIRST
-    if( (MISO & (1 << f) ) != 0)
+    if( (MISO != 0)
     {
       y |= (1 << f);
     }
@@ -53,8 +52,10 @@ unsigned char spi_soft(unsigned char x)
       y &= ~(1 << f);
     }
     spi_delay;
-    CLK_LOW;    
+    CLK_LOW;
+    spi_delay;
   }
+  return y;
 }
 
 
