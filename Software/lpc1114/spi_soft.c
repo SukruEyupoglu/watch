@@ -6,6 +6,7 @@ void spi_soft_init(void);
 #define MOSI_HIGH LPC_GPIO1->DATA |= (1 << 0)
 #define MOSI_LOW LPC_GPIO1->DATA &= ~(1 << 0)
 #define MISO LPC_GPIO1->DATA & (1 << 1)
+#define spi_delay delay(1000)  // half pulse delay time
 
 void spi_soft_init(void)
 {
@@ -30,7 +31,11 @@ unsigned char spi_soft(unsigned char x)
   unsigned char y,f;
   for(f = 0 ; f < 8 ; f++)
   {
-    
+    CLK_HIGH;
+    if( (x & (1 << f) ) != 0)
+    {
+      
+    }
   }
 }
 
