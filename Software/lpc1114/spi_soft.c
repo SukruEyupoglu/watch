@@ -1,6 +1,5 @@
-void spi_soft_send(unsigned char x);
+unsigned char spi_soft(unsigned char x);
 void spi_soft_init(void);
-unsigned char spi_soft_get(void);
 
 #define CLK_HIGH LPC_GPIO1->DATA |= (1 << 2)
 #define CLK_LOW LPC_GPIO1->DATA &= ~(1 << 2)
@@ -26,16 +25,14 @@ void spi_soft_init(void)
   LPC_GPIO1_DATA &= ~((1 << 0) | (1 << 2));
 }
 
-
-
-
-
-
-void spi_soft_send(unsigned char x)
+unsigned char spi_soft(unsigned char x)
 {
-  
+  unsigned char y,f;
+  for(f = 0 ; f < 8 ; f++)
+  {
+    
+  }
 }
-unsigned char spi_soft_get(void)
-{
-  
-}
+
+
+
