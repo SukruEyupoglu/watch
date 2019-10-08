@@ -1,12 +1,18 @@
 unsigned char spi_soft(unsigned char x);
 void spi_soft_init(void);
+void delay(unsigned int x);
 
 #define CLK_HIGH LPC_GPIO1->DATA |= (1 << 2)
 #define CLK_LOW LPC_GPIO1->DATA &= ~(1 << 2)
 #define MOSI_HIGH LPC_GPIO1->DATA |= (1 << 0)
 #define MOSI_LOW LPC_GPIO1->DATA &= ~(1 << 0)
-#define MISO LPC_GPIO1->DATA & (1 << 1)
+#define MISO (LPC_GPIO1->DATA & (1 << 1))
 #define spi_delay delay(1000)  // half pulse delay time
+
+void delay(unsigned int x)
+{
+  while(x--);
+}
 
 void spi_soft_init(void)
 {
@@ -23,7 +29,7 @@ void spi_soft_init(void)
   LPC_GPIO1->DIR |= (1 << 0) | (1 << 2);
   LPC_GPIO1->DIR &= ~(1 << 1);
   
-  LPC_GPIO1_DATA &= ~((1 << 0) | (1 << 2));
+  LPC_GPIO1->DATA &= ~((1 << 0) | (1 << 2));
 }
 
 
@@ -43,7 +49,7 @@ unsigned char spi_soft(unsigned char x)
     }
     CLK_HIGH;
     // LSB FIRST
-    if( (MISO != 0)
+    if(MISO != 0)
     {
       y |= (1 << f);
     }
