@@ -26,6 +26,7 @@ void spi_soft_init(void)
   LPC_GPIO1_DATA &= ~((1 << 0) | (1 << 2));
 }
 
+// LSB FIRST
 unsigned char spi_soft(unsigned char x)
 {
   unsigned char y,f;
