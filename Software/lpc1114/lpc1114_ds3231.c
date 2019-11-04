@@ -16,6 +16,14 @@ void read_ds3231_data(void)
   raw_to_ds_t(&ds3231,saat);
 }
 
+void write_ds3231_data(unsigned char * data,unsigned char size,unsigned int start_addr)
+{
+  if(i2c(ds3231_addr,start_addr,1,0,data,size) == ERR)
+  {
+    error();
+  }
+}
+
 unsigned char time2reg(unsigned char time)
 {
     return (((time / 10) << 4) + (time % 10));
