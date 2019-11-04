@@ -5,7 +5,7 @@
 - Date   :
 - Version:
 
-- File: lpc_i2c.c
+- File: lpc1114_i2c.c
 
 - Description: This file includes functions related with memory operations
 
