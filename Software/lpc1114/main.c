@@ -3,8 +3,7 @@
 #define ds3231_addr 0xD0
 #define eeprom_addr 0xA2
 #define alarm_gpio_output (LPC_GPIO2->DATA & (1 << 3))
-// FOR LED DATA HOLDER ARRAY EVERY FUNCTION REACABLE OPTION
-volatile unsigned char led[12] = {0,0,0,0,0,0,0,0,0,0,0,0};
+
 // FOR SYSTICK TIMER SETTING
 volatile unsigned char tick_interrupt_count = 0;
 volatile unsigned char tick_second = 10;
@@ -13,6 +12,12 @@ volatile unsigned short percent = 50 , duty = 0xFFFF;
 // FOR ALARM STATUS
 volatile unsigned char alarm_status = 0;
 
+// SAAT DATA FROM DS3231 EVERY FUNCTION REACABLE OPTION
+volatile ds_t ds3231;
+
+// FOR LED DATA HOLDER ARRAY EVERY FUNCTION REACABLE OPTION
+volatile unsigned char led[12] = {0,0,0,0,0,0,0,0,0,0,0,0};
+
 int main(void)
 {
   // DS3231 HAS 19 REGISTER ADDRESS
@@ -20,7 +25,7 @@ int main(void)
   // EEPROM ALERT SETTING REGISTERS
   unsigned char alrm[60];
   // FOR CONVERTING DS REGISTERS TO REASONABLE DATA
-  ds_t ds3231;
+  // ds_t ds3231;
   //  INIT ALL NECESSARY FUNCTIONS
   main_init();
   gpio_init();
