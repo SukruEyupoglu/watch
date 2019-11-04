@@ -20,8 +20,6 @@ volatile unsigned char led[12] = {0,0,0,0,0,0,0,0,0,0,0,0};
 
 int main(void)
 {
-  // DS3231 HAS 19 REGISTER ADDRESS
-  unsigned char saat[19];
   // EEPROM ALERT SETTING REGISTERS
   unsigned char alrm[60];
   // FOR CONVERTING DS REGISTERS TO REASONABLE DATA
@@ -35,20 +33,16 @@ int main(void)
   gpio_output_init();
   systick_init();
   
+  read_ds3231_data();
+  
   read_eeprom_data();
   
-  //READ ALL REGISTER AND SAVE TO RAW ARRAY  
-  if(i2c(ds3231_addr,0,1,1,saat,19) == ERR)
-  {
-    error();
-  }
     //READ ALL REGISTER AND SAVE TO RAW ARRAY  
   if(i2c(eeprom_addr,1,2,1,alrm,60) == ERR)
   {
     error();
   }
-  // CONVERT RAW REGISTER DATA TO REASONABLE DATA
-  raw_to_ds_t(&ds3231,saat);
+
   //  CHECK ALL ALARMS
   check_alarm(&ds3231,alrm);  
   
