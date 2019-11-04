@@ -25,7 +25,7 @@ unsigned char reg2time(unsigned char reg)
     return (((reg >> 4) * 10) + (reg % 16));
 }
 
-void raw_to_ds_t(ds_t * ds,unsigned char * array[19])
+void raw_to_ds_t(ds_t * ds,unsigned char array[19])
 {
   // UPPERLINE IS 0 -->> WITHOUT UPPERLINE IS 1
   ds.second = reg2time(array[0]);
