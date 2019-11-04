@@ -2,9 +2,10 @@
 #include "lpc1114_error.h"
 #include "lpc1114_ds3231.h"
 
-void get_ds3231_data(void)
+void read_ds3231_data(void)
 {
   // volatile ds3231; // at main file
+  // DS3231 HAS 19 REGISTER
   unsigned char saat[19];
   //READ ALL REGISTER AND SAVE TO RAW ARRAY  
   if(i2c(ds3231_addr,0,1,1,saat,19) == ERR)
