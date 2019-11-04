@@ -1,3 +1,18 @@
+/*-----------------------------------------------------------------------------
+          Copyright (c) AUTHOR NAME - All Rights Reserved
+ 
+- Author :  
+- Date   :
+- Version:
+
+- File: lpc_i2c.c
+
+- Description: This file includes functions related with memory operations
+
+- Warnings \
+-----------------------------------------------------------------------------*/
+
+/*------------------------------ TAB INCLUDE --------------------------------*/
 
 
 #define I2CONSET_STA_BIT5 (1 << 5)
@@ -18,6 +33,8 @@
 #define I2CSTAT_ACK_0x40 0x40
 #define I2CSTAT_ACK_0x50 0x50
 #define I2CSTAT_ACK_0x58 0x58
+
+void i2c_init(void);
 
 unsigned char i2c(
 	unsigned char addr,			        //7 bit device addr
