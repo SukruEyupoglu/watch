@@ -1,7 +1,7 @@
 #define E2PROM_ADDR                                       0xA2              // DEVICE ADDR FOR I2C
 #define E2PROM_END_ADDR                                   0xFFF             // MAX ADDR
-
-
+#define E2PROM_BYTE_COUNT_ADDR                            0x000             // FIRSTLY READ THIS BYTE
+                                                                            // HOW MANY BYTE MUST BE READ AT START
 
 #define E2PROM_NAMAZ_ALERT_SETTING_ADDR                   0x001             // 1 or 0 NAMAZ SAATLERINDE CALSINMI
 #define E2PROM_ALL_NAMAZ_ALERT_SETTING_ADDR               0x002             // 1 or 0 BUTUN NAMAZ SAATLERINDE CALSINMI
