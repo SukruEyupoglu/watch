@@ -40,6 +40,7 @@
 #define EXTRA_ALARM_START_ADDR                            0x100              // 1 BYTE MINUTE             MAX 59 MIN 0
                                                                              // 1 BYTE WATCH OR CLOCK     MAX 23 MIN 0
                                                                              // 1 BYTE DAY IN MOUNT       MAX 31 MIN 1
-                                                                             // 3 BYTE TOTAL PER 1 SPECIAL DATE
+                                                                             // 1 BYTE MOUNT IN YEAR      MAX 12 MIN 1
+                                                                             // 4 BYTE TOTAL PER 1 SPECIAL DATE
                                                                              // 0x100 FIRST DATA
 
