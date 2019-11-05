@@ -1,4 +1,4 @@
-#define DS_ADDR             0x68
+#define DS3231_ADDR             0x68
 typedef struct ds_t
   {
   unsigned char second;
@@ -44,7 +44,7 @@ const unsigned char month_day [12] = { 31,29,31,30,31,30,31,31,30,31,30,31 }; //
 #define DS3231_msb_temperature            0x11
 #define DS3231_lsb_temperature            0x12
 
-
+void write_ds3231_data(unsigned char * data,unsigned char size,unsigned int start_addr);
 void read_ds3231_data(void);
 unsigned char time2reg(unsigned char time);
 unsigned char reg2time(unsigned char reg);
