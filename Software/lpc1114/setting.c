@@ -1,4 +1,4 @@
-/*
+
 #define SET_LRM 201
 #define SET_CLK 202
 #define STP_LRM 203
@@ -9,7 +9,7 @@
 #define LIG_UP 208
 #define TM_DWN 209
 #define TM_UP 210
-*/
+
 
 
 void setting(void)
@@ -33,38 +33,38 @@ void setting(void)
       btn = check_button();
       switch(btn)
       {
-        case 201:
+        case SET_LRM:
           {
             systick_second_sleep(255);
             cho1 = 1;
           }
           break;
-        case 202:
+        case SET_CLK:
           {
             systick_second_sleep(255);
             cho1 = 1;
           }
           break;
-        case 203:
+        case STP_LRM:
           {
             systick_second_sleep(255);
             cho1 = 1;            
           }
           break;
-        case 204:
+        case SLP:
           {
             systick_second_sleep(1);
             cho1 = 1;
             cho2 = 1;
           }
           break;
-        case 205:
+        case BOO:
           {
             systick_second_sleep(255);
             cho1 = 1;            
           }
           break;
-        case 206:
+        case WRT_SET:
           {
             systick_second_sleep(255);
             cho1 = 1;
@@ -72,7 +72,7 @@ void setting(void)
             write_setting(ee_reg,set,mux);
           }
           break;
-        case 208:
+        case LIG_UP:
           {
             systick_second_sleep(255);
             cho1 = 1;
@@ -91,7 +91,7 @@ void setting(void)
             }
           }
           break;
-        case 207:
+        case LIG_DWN:
           {
             systick_second_sleep(255);
             cho1 = 1;
@@ -110,7 +110,7 @@ void setting(void)
             }
           }
           break;
-        case 210:
+        case TM_UP:
           {
             systick_second_sleep(255);
             cho1 = 1;
@@ -138,7 +138,7 @@ void setting(void)
             }
           }
           break;
-        case 209:
+        case TM_DWN:
           {
             systick_second_sleep(255);
             cho1 = 1;
