@@ -45,6 +45,6 @@
                                                                              // 1 BYTE WATCH OR CLOCK     MAX 23 MIN 0
                                                                              // 1 BYTE DAY IN MOUNT       MAX 31 MIN 1
                                                                              // 1 BYTE MOUNT IN YEAR      MAX 12 MIN 1
-                                                                             // 4 BYTE TOTAL PER 1 SPECIAL DATE
+#define EXTRA_ALARM_TOTAL_BYTE_PER_DATA                   4                  // 4 BYTE TOTAL PER 1 SPECIAL DATE
                                                                              // 0x100 FIRST DATA
 
