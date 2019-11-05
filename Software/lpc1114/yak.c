@@ -78,6 +78,7 @@ void daire_yaz(unsigned char dakika,unsigned int dolgu,unsigned int desen_0_31,u
   }
   yaz();
 }
+// BELKI BOZUK OLABILIR
 void desen_yaz(unsigned char x,unsigned char y)
 {
   unsigned char f;
@@ -89,6 +90,9 @@ void desen_yaz(unsigned char x,unsigned char y)
     }
   }
 }
+// BELIRLI BIR ALANDAKI LEDLERI YAKAN FONKSIYON
+// x DEN BASLAYARAK y YE KADAR OLAN LEDLERI YAKAR
+// SAAT YADA DAKIKA YAZMAK ICIN UYGUNDUR
 void limit_yaz(unsigned char x,unsigned char y)
 {
   unsigned char f;
@@ -101,6 +105,8 @@ void limit_yaz(unsigned char x,unsigned char y)
     }
   }
 }
+// BELIRLI BIR ALANDAKI LEDLERI SONDUREN FONSIYON 
+// ORNEGIN x DEN BASLAYARAK y YE KADAR SIL
 void limit_sil(unsigned char x,unsigned char y)
 {
   unsigned char f;
@@ -114,6 +120,7 @@ void limit_sil(unsigned char x,unsigned char y)
   }
 }
 // 0 - 60 between
+// SADECE BIR LEDI YAKAN FONKSIYON
 void led_yan(unsigned char xx)
 {
   unsigned char x = xx;
@@ -128,6 +135,7 @@ void led_yan(unsigned char xx)
   // yaz();
 }
 // 0 - 60 between
+// SADECE BIR LEDI SONDUREN FONKSIYON
 void led_son(unsigned char xx)
 {
   unsigned char x = xx;
@@ -141,6 +149,7 @@ void led_son(unsigned char xx)
   }
   // yaz();
 }
+// BUTUN LEDLERI SONDUREN FONKSIYON
 void led_zero(void)
 {
   unsigned char f = 60;
@@ -150,6 +159,7 @@ void led_zero(void)
     f--;
   }
 }
+// BUTUN LEDLERI YAKAN FONKSIYON
 void led_one(void)
 {
   unsigned char f = 60;
