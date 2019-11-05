@@ -23,5 +23,18 @@
 #define REPEATED_ALARM_SETTING_ADDR                       0x00B             // 1 or 0 KOLAY UYANAMAYANLAR ICIN ALARM UZATMA
 #define NUMBER_REPEATED_ALERT_SETTING_ADDR                0x00C             // 1 or 2 or 3 or 4 or 6 or 12 or 24
 
-#define LED_LIGHT_SETTING_DUTY_ADDR                       0x03D             // MAX 0xFFFF 
-#define LED_LIGHT_SETTING_PERCENT_ADDR                    0x064             // DEFAULT %50 IF EMPTY
+                                                                            // MSB+LSB = DUTY
+#define LED_LIGHT_SETTING_DUTY_LSB_ADDR                   0x00D             // MAX 0xFF 
+#define LED_LIGHT_SETTING_DUTY_MSB_ADDR                   0x00E             // MAX 0xFF 
+#define LED_LIGHT_SETTING_PERCENT_ADDR                    0x00F             // DEFAULT %50 IF EMPTY MAX 99 MIN 1
+
+#define TWO_HOURLY_ALERT_SETTING_ADDR                     0x010             // HER IKI SAAT BASI CALMA AYARI
+#define THREE_HOURLY_ALERT_SETTING_ADDR                   0x011             // HER UC SAAT BASI CALMA AYARI
+#define FOUR_HOURLY_ALERT_SETTING_ADDR                    0x012             // HER DORT SAAT BASI CALMA AYARI
+#define FIVE_HOURLY_ALERT_SETTING_ADDR                    0x013             // HER BES SAAT BASI CALMA AYARI
+#define SIX_HOURLY_ALERT_SETTING_ADDR                     0x014             // HER ALTI SAAT BASI CALMA AYARI
+#define TWEVE_HOURLY_ALERT_SETTING_ADDR                   0x015             // HER ONIKI SAAT BASI CALMA AYARI
+#define HOURLY_ALERT_START_SETTING_ADDR                   0x016             // SAAT BASI CALMA AYARI BASLANGIC SAATI
+                                                                            // HANGI SAATTEN SONRA SAYMAYA BASLASIN
+
+
