@@ -8,7 +8,7 @@ void read_ds3231_data(void)
   // DS3231 HAS 19 REGISTER
   unsigned char saat[19];
   //READ ALL REGISTER AND SAVE TO RAW ARRAY  
-  if(i2c(ds3231_addr,0,1,1,saat,19) == ERR)
+  if(i2c(DS3231_ADDR,0,1,1,saat,19) == ERR)
   {
     error();
   }
@@ -18,7 +18,7 @@ void read_ds3231_data(void)
 
 void write_ds3231_data(unsigned char * data,unsigned char size,unsigned int start_addr)
 {
-  if(i2c(ds3231_addr,start_addr,1,0,data,size) == ERR)
+  if(i2c(DS3231_ADDR,start_addr,1,0,data,size) == ERR)
   {
     error();
   }
