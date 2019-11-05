@@ -26,13 +26,13 @@
 #define LED_LIGHT_SETTING_DUTY_MSB_ADDR                   0x00E             // MAX 0xFF 
 #define LED_LIGHT_SETTING_PERCENT_ADDR                    0x00F             // DEFAULT %50 IF EMPTY MAX 99 MIN 1
 
-#define HOURLY_ALERT_SETTING_ADDR                         0x010             // HER SAAT BASI CALMA AYARI
-#define TWO_HOURLY_ALERT_SETTING_ADDR                     0x011             // HER IKI SAAT BASI CALMA AYARI
-#define THREE_HOURLY_ALERT_SETTING_ADDR                   0x012             // HER UC SAAT BASI CALMA AYARI
-#define FOUR_HOURLY_ALERT_SETTING_ADDR                    0x013             // HER DORT SAAT BASI CALMA AYARI
-#define FIVE_HOURLY_ALERT_SETTING_ADDR                    0x014             // HER BES SAAT BASI CALMA AYARI
-#define SIX_HOURLY_ALERT_SETTING_ADDR                     0x015             // HER ALTI SAAT BASI CALMA AYARI
-#define TWEVE_HOURLY_ALERT_SETTING_ADDR                   0x016             // HER ONIKI SAAT BASI CALMA AYARI
+#define HOURLY_ALERT_SETTING_ADDR                         0x010             // 1 or 0 HER SAAT BASI CALMA AYARI
+#define TWO_HOURLY_ALERT_SETTING_ADDR                     0x011             // 1 or 0 HER IKI SAAT BASI CALMA AYARI
+#define THREE_HOURLY_ALERT_SETTING_ADDR                   0x012             // 1 or 0 HER UC SAAT BASI CALMA AYARI
+#define FOUR_HOURLY_ALERT_SETTING_ADDR                    0x013             // 1 or 0 HER DORT SAAT BASI CALMA AYARI
+#define FIVE_HOURLY_ALERT_SETTING_ADDR                    0x014             // 1 or 0 HER BES SAAT BASI CALMA AYARI
+#define SIX_HOURLY_ALERT_SETTING_ADDR                     0x015             // 1 or 0 HER ALTI SAAT BASI CALMA AYARI
+#define TWEVE_HOURLY_ALERT_SETTING_ADDR                   0x016             // 1 or 0 HER ONIKI SAAT BASI CALMA AYARI
 #define HOURLY_ALERT_START_SETTING_ADDR                   0x017             // SAAT BASI CALMA AYARI BASLANGIC SAATI
                                                                             // HANGI SAATTEN SONRA SAYMAYA BASLASIN
 
