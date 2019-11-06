@@ -24,17 +24,17 @@ void write_ds3231_data(unsigned char * data,unsigned char size,unsigned int star
   }
 }
 
-unsigned char time2reg(unsigned char time)
+static unsigned char time2reg(unsigned char time)
 {
     return (((time / 10) << 4) + (time % 10));
 }
 
-unsigned char reg2time(unsigned char reg)
+static unsigned char reg2time(unsigned char reg)
 {
     return (((reg >> 4) * 10) + (reg % 16));
 }
 
-void raw_to_ds_t(ds_t * ds,unsigned char array[19])
+static void raw_to_ds_t(ds_t * ds,unsigned char array[19])
 {
   // UPPERLINE IS 0 -->> WITHOUT UPPERLINE IS 1
   ds.second = reg2time(array[0]);
