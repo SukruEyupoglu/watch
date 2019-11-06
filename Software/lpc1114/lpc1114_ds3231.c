@@ -16,6 +16,20 @@ void read_ds3231_data(void)
   raw_to_ds_t(&ds3231,saat);
 }
 
+void write_ds3231_clock(void)
+{
+  
+}
+void write_ds3231_alarm_1(void)
+{
+  
+}
+void write_ds3231_alarm_2(void)
+{
+  
+}
+
+
 void write_ds3231_data(unsigned char * data,unsigned char size,unsigned int start_addr)
 {
   if(i2c(DS3231_ADDR,start_addr,1,0,data,size) == ERR)
