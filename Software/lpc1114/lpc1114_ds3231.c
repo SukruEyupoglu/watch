@@ -27,10 +27,20 @@ void write_ds3231_clock(void)
 // timing type secondly = 0x07, minutely = 0x08, hourly = 0x09 vb...  same as register adress
 unsigned char write_ds3231_alarm_1(unsigned char timing_type,unsigned char time)
 {
-    if(i2c(DS3231_ADDR,timing_type,1,0,time2reg(time),1) == ERR)
-    {
-      error();
-    }
+  unsigned char * x;
+  if(i2c(DS3231_ADDR,timing_type,1,0,&time2reg(time),1) == ERR)
+  {
+    error();
+  }
+  if(i2c(DS3231_ADDR,(timing_type + 1),1,1,&x,1) == ERR)
+  {
+    error();
+  }
+  * x |= ~(1 << 7);
+  if(i2c(DS3231_ADDR,(timing_type + 1),1,0,&x,1) == ERR)
+  {
+    error();
+  }
 }
 
 // EVERY MINUTE(MINUTELY),EVERY HOUR(HOURLY),EVERY DAY(DAILY),SPECIAL DATE
