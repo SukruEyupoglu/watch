@@ -46,9 +46,9 @@ const unsigned char month_day [12] = { 31,29,31,30,31,30,31,31,30,31,30,31 }; //
 
 void write_ds3231_data(unsigned char * data,unsigned char size,unsigned int start_addr);
 void read_ds3231_data(void);
-unsigned char time2reg(unsigned char time);
-unsigned char reg2time(unsigned char reg);
-void raw_to_ds_t(ds_t * ds,unsigned char array[19]);
+static unsigned char time2reg(unsigned char time);
+static unsigned char reg2time(unsigned char reg);
+static void raw_to_ds_t(ds_t * ds,unsigned char array[19]);
 
 
 
