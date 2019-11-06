@@ -18,7 +18,16 @@
 #define LIG_UP 208
 #define TM_DWN 209
 #define TM_UP 210
-
+#define SETTING_LRM 199
+#define SETTING_CLK 198
+#define SETTING_E2PROM_0xC00_0xFFF 196
+#define SETTING_E2PROM_0x800_0xC00 192
+#define SETTING_E2PROM_0x400_0x800 188
+#define SETTING_E2PROM_0x300_0x400 184
+#define SETTING_E2PROM_0x200_0x300 183
+#define SETTING_E2PROM_0x100_0x200 182
+#define SETTING_E2PROM_0x050_0x100 181
+#define SETTING_E2PROM_0x000_0x050 180
 
 void gpio_init(void);
 unsigned char check_button(void);
