@@ -30,33 +30,54 @@ unsigned char write_ds3231_clock(
                                  unsigned char year
                                 )
 {
-  if(i2c(DS3231_ADDR,0x00,1,0,&time2reg(second),1) == ERR)
+  if(second < 60)
   {
-    return ERROR;
+    if(i2c(DS3231_ADDR,0x00,1,0,&time2reg(second),1) == ERR)
+    {
+      return ERROR;
+    }
   }
-  if(i2c(DS3231_ADDR,0x01,1,0,&time2reg(minute),1) == ERR)
-  {
-    return ERROR;
+  if(minute < 60)
+  {  
+    if(i2c(DS3231_ADDR,0x01,1,0,&time2reg(minute),1) == ERR)
+    {
+      return ERROR;
+    }
   }
-  if(i2c(DS3231_ADDR,0x02,1,0,&time2reg(hour),1) == ERR)
-  {
-    return ERROR;
+  if(hour < 24)
+  {  
+    if(i2c(DS3231_ADDR,0x02,1,0,&time2reg(hour),1) == ERR)
+    {
+      return ERROR;
+    }
   }
-  if(i2c(DS3231_ADDR,0x03,1,0,&time2reg(day),1) == ERR)
-  {
-    return ERROR;
+  if( (day < 8) & (day > 0) )
+  {  
+    if(i2c(DS3231_ADDR,0x03,1,0,&time2reg(day),1) == ERR)
+    {
+      return ERROR;
+    }
   }
-  if(i2c(DS3231_ADDR,0x04,1,0,&time2reg(date),1) == ERR)
-  {
-    return ERROR;
+  if( (date < 32) & (date > 0) )
+  {  
+    if(i2c(DS3231_ADDR,0x04,1,0,&time2reg(date),1) == ERR)
+    {
+      return ERROR;
+    }
   }
-  if(i2c(DS3231_ADDR,0x05,1,0,&time2reg(month),1) == ERR)
-  {
-    return ERROR;
+  if( (month < 13) & (month > 0) )
+  {  
+    if(i2c(DS3231_ADDR,0x05,1,0,&time2reg(month),1) == ERR)
+    {
+      return ERROR;
+    }
   }
-  if(i2c(DS3231_ADDR,0x06,1,0,&time2reg(year),1) == ERR)
-  {
-    return ERROR;
+  if(year < 100)
+  {  
+    if(i2c(DS3231_ADDR,0x06,1,0,&time2reg(year),1) == ERR)
+    {
+      return ERROR;
+    }
   }
   return OK;
 }
