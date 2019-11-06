@@ -15,16 +15,26 @@ void read_ds3231_data(void)
   // CONVERT RAW REGISTER DATA TO REASONABLE DATA
   raw_to_ds_t(&ds3231,saat);
 }
-
+void read_ds3231_clock(void)
+{
+  
+}
 void write_ds3231_clock(void)
 {
   
 }
-void write_ds3231_alarm_1(void)
+// EVERY SECOND(SECONDLY),EVERY MINUTE(MINUTELY),EVERY HOUR(HOURLY),EVERY DAY(DAILY),SPECIAL DATE
+// timing type secondly = 0x07, minutely = 0x08, hourly = 0x09 vb...  same as register adress
+unsigned char write_ds3231_alarm_1(unsigned char timing_type,unsigned char time)
 {
-  
+    if(i2c(DS3231_ADDR,timing_type,1,0,time2reg(time),1) == ERR)
+    {
+      error();
+    }
 }
-void write_ds3231_alarm_2(void)
+
+// EVERY MINUTE(MINUTELY),EVERY HOUR(HOURLY),EVERY DAY(DAILY),SPECIAL DATE
+unsigned char write_ds3231_alarm_2(unsigned char timing_type,unsigned char time)
 {
   
 }
