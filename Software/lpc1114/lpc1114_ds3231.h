@@ -1,4 +1,6 @@
 #define DS3231_ADDR             0x68
+#define ERROR 1
+#define OK 0
 typedef struct ds_t
   {
   unsigned char second;
