@@ -2,7 +2,7 @@
 #include "lpc1114_error.h"
 #include "lpc1114_ds3231.h"
 
-void read_ds3231_data(void)
+unsigned char read_ds3231_data(void)
 {
   // volatile ds3231; // at main file
   // DS3231 HAS 19 REGISTER
@@ -10,52 +10,85 @@ void read_ds3231_data(void)
   //READ ALL REGISTER AND SAVE TO RAW ARRAY  
   if(i2c(DS3231_ADDR,0,1,1,saat,19) == ERR)
   {
-    error();
+    return ERROR;
   }
   // CONVERT RAW REGISTER DATA TO REASONABLE DATA
   raw_to_ds_t(&ds3231,saat);
+  return OK;
 }
 void read_ds3231_clock(void)
 {
   
 }
-void write_ds3231_clock(void)
+unsigned char write_ds3231_clock(
+                                 unsigned char second,
+                                 unsigned char minute,
+                                 unsigned char hour,
+                                 unsigned char day,
+                                 unsigned char date,
+                                 unsigned char month,
+                                 unsigned char year
+                                )
 {
-  
+  if(i2c(DS3231_ADDR,0x00,1,0,&time2reg(second),1) == ERR)
+  {
+    return ERROR;
+  }
+  if(i2c(DS3231_ADDR,0x01,1,0,&time2reg(minute),1) == ERR)
+  {
+    return ERROR;
+  }
+  if(i2c(DS3231_ADDR,0x02,1,0,&time2reg(hour),1) == ERR)
+  {
+    return ERROR;
+  }
+  if(i2c(DS3231_ADDR,0x03,1,0,&time2reg(day),1) == ERR)
+  {
+    return ERROR;
+  }
+  if(i2c(DS3231_ADDR,0x04,1,0,&time2reg(date),1) == ERR)
+  {
+    return ERROR;
+  }
+  if(i2c(DS3231_ADDR,0x05,1,0,&time2reg(month),1) == ERR)
+  {
+    return ERROR;
+  }
+  if(i2c(DS3231_ADDR,0x06,1,0,&time2reg(year),1) == ERR)
+  {
+    return ERROR;
+  }
+  return OK;
 }
+
 // EVERY SECOND(SECONDLY),EVERY MINUTE(MINUTELY),EVERY HOUR(HOURLY),EVERY DAY(DAILY),SPECIAL DATE
-// timing type secondly = 0x07, minutely = 0x08, hourly = 0x09 vb...  same as register adress
-unsigned char write_ds3231_alarm_1(unsigned char timing_type,unsigned char time)
+// timing type secondly = 0x07, minutely = 0x08, hourly = 0x09 same as register adress
+unsigned char write_ds3231_alarm_1(unsigned char timing_type_1,unsigned char time)
 {
-  unsigned char * x;
   if(i2c(DS3231_ADDR,timing_type,1,0,&time2reg(time),1) == ERR)
   {
-    error();
+    return ERROR;
   }
-  if(i2c(DS3231_ADDR,(timing_type + 1),1,1,&x,1) == ERR)
+  if(i2c(DS3231_ADDR,(timing_type + 1),1,0,(1 << 7),1) == ERR)
   {
-    error();
+    return ERROR;
   }
-  * x |= ~(1 << 7);
-  if(i2c(DS3231_ADDR,(timing_type + 1),1,0,&x,1) == ERR)
-  {
-    error();
-  }
+  return OK;
 }
 
 // EVERY MINUTE(MINUTELY),EVERY HOUR(HOURLY),EVERY DAY(DAILY),SPECIAL DATE
-unsigned char write_ds3231_alarm_2(unsigned char timing_type,unsigned char time)
+// timing type minutely = 0x0B, hourly = 0x0C same as register adress
+unsigned char write_ds3231_alarm_2(unsigned char timing_type_2,unsigned char time)
 {
-  
-}
-
-
-void write_ds3231_data(unsigned char * data,unsigned char size,unsigned int start_addr)
-{
-  if(i2c(DS3231_ADDR,start_addr,1,0,data,size) == ERR)
+  if(i2c(DS3231_ADDR,timing_type,1,0,&time2reg(time),1) == ERR)
   {
-    error();
+    return ERROR;
   }
+  if(i2c(DS3231_ADDR,(timing_type + 1),1,0,(1 << 7),1) == ERR)
+  {
+    return ERROR;
+  }
+  return OK;
 }
 
 static unsigned char time2reg(unsigned char time)
