@@ -105,6 +105,7 @@ unsigned char write_ds3231_year(unsigned char year)
   return OK;
 }
 
+/*
 unsigned char write_ds3231_clock(
                                  unsigned char second,
                                  unsigned char minute,
@@ -166,18 +167,22 @@ unsigned char write_ds3231_clock(
   }
   return OK;
 }
-
+*/
 // EVERY SECOND(SECONDLY),EVERY MINUTE(MINUTELY),EVERY HOUR(HOURLY),EVERY DAY(DAILY),SPECIAL DATE
 // timing type secondly = 0x07, minutely = 0x08, hourly = 0x09 same as register adress
 unsigned char write_ds3231_alarm_1(unsigned char timing_type_1,unsigned char time)
 {
-  if(i2c(DS3231_ADDR,timing_type,1,0,&time2reg(time),1) == ERR)
+  unsigned char f;
+  if(i2c(DS3231_ADDR,timing_type_1,1,0,&time2reg(time),1) == ERR)
   {
     return ERROR;
   }
-  if(i2c(DS3231_ADDR,(timing_type + 1),1,0,(1 << 7),1) == ERR)
+  for(f = (timing_type_1 + 1) ; (f < 0x0B) ; f++)
   {
-    return ERROR;
+    if(i2c(DS3231_ADDR,f,1,0,(1 << 7),1) == ERR)
+    {
+      return ERROR;
+    }
   }
   return OK;
 }
@@ -186,13 +191,17 @@ unsigned char write_ds3231_alarm_1(unsigned char timing_type_1,unsigned char tim
 // timing type minutely = 0x0B, hourly = 0x0C same as register adress
 unsigned char write_ds3231_alarm_2(unsigned char timing_type_2,unsigned char time)
 {
-  if(i2c(DS3231_ADDR,timing_type,1,0,&time2reg(time),1) == ERR)
+  unsigned char f;
+  if(i2c(DS3231_ADDR,timing_type_2,1,0,&time2reg(time),1) == ERR)
   {
     return ERROR;
   }
-  if(i2c(DS3231_ADDR,(timing_type + 1),1,0,(1 << 7),1) == ERR)
+  for(f = (timing_type_2 + 1) ; (f < 0x0E) ; f++)
   {
-    return ERROR;
+    if(i2c(DS3231_ADDR,f,1,0,(1 << 7),1) == ERR)
+    {
+      return ERROR;
+    }
   }
   return OK;
 }
