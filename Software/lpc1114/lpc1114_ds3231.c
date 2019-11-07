@@ -1,8 +1,11 @@
 #include "lpc1114_i2c.h"
 #include "lpc1114_ds3231.h"
 
-unsigned char read_ds3231_conrol(unsigned int * temp)
+// temp * 0.25 = degree --> ( decimal degree = 0.25 x temp ) OK?
+// ( (temp * 25) / 100) + = REAL DECIMAL DEGREE
+unsigned char read_ds3231_temp(unsigned int * temp)
 {
+    unsigned int f;
     unsigned char msb,lsb;
     if(i2c(DS3231_ADDR,DS3231_MSB_TEMP_REG,DS3231_ADDR_SIZE,READ,msb,READING_NUMBER) == ERR)
     {
@@ -12,10 +15,21 @@ unsigned char read_ds3231_conrol(unsigned int * temp)
     {
       return ERROR;
     }
-    
-    
-    
-    
+    for(f = 0 ; f < 8 ; f++)
+    {
+        if(msb & (1 << f)
+        {
+            * temp |= (1 << f);
+        }
+    }
+    * temp <<= 2;
+    for(f = 0 ; f < 2 ; f++)
+    {
+        if(lsb & (1 << f)
+        {
+            * temp |= (1 << f);
+        }
+    }   
     return OK;
 }
 
