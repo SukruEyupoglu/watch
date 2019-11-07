@@ -1,6 +1,19 @@
+
+
 #define DS3231_ADDR             0x68
+
 #define ERROR 1
 #define OK 0
+
+#define TIMING_TYPE_1_PROPER_SECOND       0x07
+#define TIMING_TYPE_1_PROPER_MINUTE       0x08
+#define TIMING_TYPE_1_PROPER_HOUR         0x09
+#define TIMING_TYPE_1_PROPER_DAY          0x0A
+
+#define TIMING_TYPE_2_PROPER_MINUTE       0x0B
+#define TIMING_TYPE_2_PROPER_HOUR         0x0C
+#define TIMING_TYPE_2_PROPER_DAY          0x0D
+
 typedef struct ds_t
   {
   unsigned char second;
@@ -46,8 +59,19 @@ const unsigned char month_day [12] = { 31,29,31,30,31,30,31,31,30,31,30,31 }; //
 #define DS3231_msb_temperature            0x11
 #define DS3231_lsb_temperature            0x12
 
-void write_ds3231_data(unsigned char * data,unsigned char size,unsigned int start_addr);
+unsigned char write_ds3231_alarm_1(unsigned char timing_type_1,unsigned char time);
+unsigned char write_ds3231_alarm_2(unsigned char timing_type_2,unsigned char time);
+
+unsigned char write_ds3231_second(unsigned char second);
+unsigned char write_ds3231_minute(unsigned char minute);
+unsigned char write_ds3231_hour(unsigned char hour);
+unsigned char write_ds3231_day(unsigned char day);
+unsigned char write_ds3231_date(unsigned char date);
+unsigned char write_ds3231_month(unsigned char month);
+unsigned char write_ds3231_year(unsigned char year);
+  
 void read_ds3231_data(void);
+
 static unsigned char time2reg(unsigned char time);
 static unsigned char reg2time(unsigned char reg);
 static void raw_to_ds_t(ds_t * ds,unsigned char array[19]);
