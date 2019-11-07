@@ -3,15 +3,22 @@
 
 unsigned char start_temp_conversion(void)
 {
-    unsigned char x;
+    unsigned char x,y;
+    if( read_ds3231_status(&y) == ERR)
+    {
+        return ERROR;
+    }
     if( read_ds3231_conrol(&x) == ERR)
     {
         return ERROR;
     }
-    x |= (1 << 5);
-    if(i2c(DS3231_ADDR,DS3231_CONTROL_REG,DS3231_ADDR_SIZE,WRITE,&x,WRITING_NUMBER) == ERR)
+    if( !( (y & (1 << BSY) ) | (x & (1 << CONV) ) ) )
     {
-        return ERROR;
+        x |= (1 << CONV);
+        if(i2c(DS3231_ADDR,DS3231_CONTROL_REG,DS3231_ADDR_SIZE,WRITE,&x,WRITING_NUMBER) == ERR)
+        {
+            return ERROR;
+        }
     }
     return OK;        
 }
