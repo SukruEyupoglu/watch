@@ -5,7 +5,7 @@ unsigned char write_ds3231_second(unsigned char second)
 {
     if(second < 60)
     {
-      if(i2c(DS3231_ADDR,0x00,1,0,&time2reg(second),1) == ERR)
+      if(i2c(DS3231_ADDR,DS3231_SECOND_REG,DS3231_ADDR_SIZE,WRITE,&time2reg(second),WRITING_NUMBER) == ERR)
       {
         return ERROR;
       }
@@ -17,7 +17,7 @@ unsigned char write_ds3231_minute(unsigned char minute)
 {
     if(minute < 60)
     {
-      if(i2c(DS3231_ADDR,0x01,1,0,&time2reg(minute),1) == ERR)
+      if(i2c(DS3231_ADDR,DS3231_MINUTE_REG,DS3231_ADDR_SIZE,WRITE,&time2reg(minute),WRITING_NUMBER) == ERR)
       {
         return ERROR;
       }
@@ -29,7 +29,7 @@ unsigned char write_ds3231_hour(unsigned char hour)
 {
     if(hour < 24)
     {
-      if(i2c(DS3231_ADDR,0x02,1,0,&time2reg(hour),1) == ERR)
+      if(i2c(DS3231_ADDR,DS3231_HOUR_REG,DS3231_ADDR_SIZE,WRITE,&time2reg(hour),WRITING_NUMBER) == ERR)
       {
         return ERROR;
       }
@@ -41,7 +41,7 @@ unsigned char write_ds3231_day(unsigned char day)
 {
     if( (day < 8) & (day > 0) )
     {
-      if(i2c(DS3231_ADDR,0x03,1,0,&day,1) == ERR)
+      if(i2c(DS3231_ADDR,DS3231_DAY_REG,DS3231_ADDR_SIZE,WRITE,&day,WRITING_NUMBER) == ERR)
       {
         return ERROR;
       }
@@ -53,7 +53,7 @@ unsigned char write_ds3231_date(unsigned char date)
 {
     if( (date < 32) & (date > 0) )
     {
-      if(i2c(DS3231_ADDR,0x04,1,0,&time2reg(date),1) == ERR)
+      if(i2c(DS3231_ADDR,DS3231_DATE_REG,DS3231_ADDR_SIZE,WRITE,&time2reg(date),WRITING_NUMBER) == ERR)
       {
         return ERROR;
       }
@@ -65,7 +65,7 @@ unsigned char write_ds3231_month(unsigned char month)
 {
     if( (month < 13) & (month > 0) )
     {
-      if(i2c(DS3231_ADDR,0x05,1,0,&time2reg(month),1) == ERR)
+      if(i2c(DS3231_ADDR,DS3231_MONTH_REG,DS3231_ADDR_SIZE,WRITE,&time2reg(month),WRITING_NUMBER) == ERR)
       {
         return ERROR;
       }
@@ -77,7 +77,7 @@ unsigned char write_ds3231_year(unsigned char year)
 {
     if(year < 100)
     {
-      if(i2c(DS3231_ADDR,0x06,1,0,&time2reg(year),1) == ERR)
+      if(i2c(DS3231_ADDR,DS3231_YEAR_REG,DS3231_ADDR_SIZE,WRITE,&time2reg(year),WRITING_NUMBER) == ERR)
       {
         return ERROR;
       }
@@ -89,13 +89,13 @@ unsigned char write_ds3231_alarm_1_according_to_second(unsigned char second)
 {
     if(second < 60)
     {
-      if(i2c(DS3231_ADDR,0x07,1,0,&time2reg(second),1) == ERR)
+      if(i2c(DS3231_ADDR,DS3231_A1_SECOND_REG,DS3231_ADDR_SIZE,WRITE,&time2reg(second),WRITING_NUMBER) == ERR)
       {
         return ERROR;
       }
-      for(f = (0x07) ; (f < 0x0B) ; f++)
+      for(f = DS3231_A1_SECOND_REG ; (f < 0x0B) ; f++)
       {
-        if(i2c(DS3231_ADDR,f,1,0,(1 << 7),1) == ERR)
+        if(i2c(DS3231_ADDR,f,DS3231_ADDR_SIZE,WRITE,(1 << 7),WRITING_NUMBER) == ERR)
         {
           return ERROR;
         }
@@ -108,13 +108,13 @@ unsigned char write_ds3231_alarm_1_according_to_minute(unsigned char minute)
 {
     if(minute < 60)
     {
-      if(i2c(DS3231_ADDR,0x08,1,0,&time2reg(minute),1) == ERR)
+      if(i2c(DS3231_ADDR,DS3231_A1_MINUTE_REG,DS3231_ADDR_SIZE,WRITE,&time2reg(minute),WRITING_NUMBER) == ERR)
       {
         return ERROR;
       }
-      for(f = (0x08) ; (f < 0x0B) ; f++)
+      for(f = DS3231_A1_MINUTE_REG ; (f < 0x0B) ; f++)
       {
-        if(i2c(DS3231_ADDR,f,1,0,(1 << 7),1) == ERR)
+        if(i2c(DS3231_ADDR,f,DS3231_ADDR_SIZE,WRITE,(1 << 7),WRITING_NUMBER) == ERR)
         {
           return ERROR;
         }
@@ -127,13 +127,13 @@ unsigned char write_ds3231_alarm_1_according_to_hour(unsigned char hour)
 {
     if(hour < 60)
     {
-      if(i2c(DS3231_ADDR,0x09,1,0,&time2reg(hour),1) == ERR)
+      if(i2c(DS3231_ADDR,DS3231_A1_HOUR_REG,DS3231_ADDR_SIZE,WRITE,&time2reg(hour),WRITING_NUMBER) == ERR)
       {
         return ERROR;
       }
-      for(f = (0x09) ; (f < 0x0B) ; f++)
+      for(f = DS3231_A1_HOUR_REG ; (f < 0x0B) ; f++)
       {
-        if(i2c(DS3231_ADDR,f,1,0,(1 << 7),1) == ERR)
+        if(i2c(DS3231_ADDR,f,DS3231_ADDR_SIZE,WRITE,(1 << 7),WRITING_NUMBER) == ERR)
         {
           return ERROR;
         }
@@ -146,13 +146,13 @@ unsigned char write_ds3231_alarm_1_according_to_day(unsigned char day)
 {
     if( (day < 8) & (day > 0) )
     {
-      if(i2c(DS3231_ADDR,0x0A,1,0,&day,1) == ERR)
+      if(i2c(DS3231_ADDR,DS3231_A1_DAY_REG,DS3231_ADDR_SIZE,WRITE,&day,WRITING_NUMBER) == ERR)
       {
         return ERROR;
       }
-      for(f = (0x0A) ; (f < 0x0B) ; f++)
+      for(f = DS3231_A1_DAY_REG ; (f < 0x0B) ; f++)
       {
-        if(i2c(DS3231_ADDR,f,1,0,(1 << 7),1) == ERR)
+        if(i2c(DS3231_ADDR,f,DS3231_ADDR_SIZE,WRITE,(1 << 7),WRITING_NUMBER) == ERR)
         {
           return ERROR;
         }
@@ -167,13 +167,13 @@ unsigned char write_ds3231_alarm_1_according_to_date(unsigned char date)
     if( (date < 32) & (date > 0) )
     {
       x = ( time2reg(date) | (1 << 6) );
-      if(i2c(DS3231_ADDR,0x0A,1,0,&x,1) == ERR)
+      if(i2c(DS3231_ADDR,DS3231_A1_DATE_REG,DS3231_ADDR_SIZE,WRITE,&x,WRITING_NUMBER) == ERR)
       {
         return ERROR;
       }
-      for(f = (0x0A) ; (f < 0x0B) ; f++)
+      for(f = DS3231_A1_DATE_REG ; (f < 0x0B) ; f++)
       {
-        if(i2c(DS3231_ADDR,f,1,0,(1 << 7),1) == ERR)
+        if(i2c(DS3231_ADDR,f,DS3231_ADDR_SIZE,WRITE,(1 << 7),WRITING_NUMBER) == ERR)
         {
           return ERROR;
         }
@@ -185,13 +185,13 @@ unsigned char write_ds3231_alarm_2_according_to_minute(unsigned char minute)
 {
     if(minute < 60)
     {
-      if(i2c(DS3231_ADDR,0x0B,1,0,&time2reg(minute),1) == ERR)
+      if(i2c(DS3231_ADDR,DS3231_A2_MINUTE_REG,DS3231_ADDR_SIZE,WRITE,&time2reg(minute),WRITING_NUMBER) == ERR)
       {
         return ERROR;
       }
-      for(f = (0x0B) ; (f < 0x0E) ; f++)
+      for(f = DS3231_A2_MINUTE_REG ; (f < 0x0E) ; f++)
       {
-        if(i2c(DS3231_ADDR,f,1,0,(1 << 7),1) == ERR)
+        if(i2c(DS3231_ADDR,f,DS3231_ADDR_SIZE,WRITE,(1 << 7),WRITING_NUMBER) == ERR)
         {
           return ERROR;
         }
@@ -204,13 +204,13 @@ unsigned char write_ds3231_alarm_2_according_to_hour(unsigned char hour)
 {
     if(hour < 60)
     {
-      if(i2c(DS3231_ADDR,0x0C,1,0,&time2reg(hour),1) == ERR)
+      if(i2c(DS3231_ADDR,DS3231_A2_HOUR_REG,DS3231_ADDR_SIZE,WRITE,&time2reg(hour),WRITING_NUMBER) == ERR)
       {
         return ERROR;
       }
-      for(f = (0x0C) ; (f < 0x0E) ; f++)
+      for(f = DS3231_A2_HOUR_REG ; f < 0x0E ; f++)
       {
-        if(i2c(DS3231_ADDR,f,1,0,(1 << 7),1) == ERR)
+        if(i2c(DS3231_ADDR,f,DS3231_ADDR_SIZE,WRITE,(1 << 7),WRITING_NUMBER) == ERR)
         {
           return ERROR;
         }
@@ -223,13 +223,13 @@ unsigned char write_ds3231_alarm_2_according_to_day(unsigned char day)
 {
     if( (day < 8) & (day > 0) )
     {
-      if(i2c(DS3231_ADDR,0x0D,1,0,&day,1) == ERR)
+      if(i2c(DS3231_ADDR,DS3231_A2_DAY_REG,DS3231_ADDR_SIZE,WRITE,&day,WRITING_NUMBER) == ERR)
       {
         return ERROR;
       }
-      for(f = (0x0D) ; (f < 0x0E) ; f++)
+      for(f = DS3231_A2_DAY_REG ; f < 0x0E ; f++)
       {
-        if(i2c(DS3231_ADDR,f,1,0,(1 << 7),1) == ERR)
+        if(i2c(DS3231_ADDR,f,DS3231_ADDR_SIZE,WRITE,(1 << 7),WRITING_NUMBER) == ERR)
         {
           return ERROR;
         }
@@ -244,13 +244,13 @@ unsigned char write_ds3231_alarm_2_according_to_date(unsigned char date)
     if( (date < 32) & (date > 0) )
     {
       x = ( time2reg(date) | (1 << 6) );
-      if(i2c(DS3231_ADDR,0x0D,1,0,&x,1) == ERR)
+      if(i2c(DS3231_ADDR,DS3231_A2_DATE_REG,DS3231_ADDR_SIZE,WRITE,&x,WRITING_NUMBER) == ERR)
       {
         return ERROR;
       }
-      for(f = (0x0D) ; (f < 0x0E) ; f++)
+      for(f = DS3231_A2_DATE_REG ; f < 0x0E ; f++)
       {
-        if(i2c(DS3231_ADDR,f,1,0,(1 << 7),1) == ERR)
+        if(i2c(DS3231_ADDR,f,DS3231_ADDR_SIZE,WRITE,(1 << 7),WRITING_NUMBER) == ERR)
         {
           return ERROR;
         }
