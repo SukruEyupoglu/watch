@@ -1,35 +1,34 @@
 #include "lpc1114_i2c.h"
 #include "lpc1114_ds3231.h"
 
-// temp * 0.25 = degree --> ( decimal degree = 0.25 x temp ) OK?
-// ( (temp * 25) / 100) + = REAL DECIMAL DEGREE
-unsigned char read_ds3231_temp(unsigned int * temp)
+unsigned char start_temp_conversion(void)
 {
-    unsigned int f;
-    unsigned char msb,lsb;
-    if(i2c(DS3231_ADDR,DS3231_MSB_TEMP_REG,DS3231_ADDR_SIZE,READ,msb,READING_NUMBER) == ERR)
+    unsigned char x;
+    if( read_ds3231_conrol(&x) == ERR)
+    {
+        return ERROR;
+    }
+    x |= (1 << 5);
+    if(i2c(DS3231_ADDR,DS3231_CONTROL_REG,DS3231_ADDR_SIZE,WRITE,&x,WRITING_NUMBER) == ERR)
+    {
+        return ERROR;
+    }
+    return OK;        
+}
+
+// NOKTADAN ONCESI MSB NOKTADAN SONRASI 25 ILE CARPILARAK LSB DIR
+// MSB = DEGREE LSB*25 = PRECENT --> MSB = 20 , PERCENT = 50 --> 20.50 DEGREE
+unsigned char read_ds3231_temp(unsigned char * temp_msb, unsigned char * temp_lsb)
+{
+    if(i2c(DS3231_ADDR,DS3231_MSB_TEMP_REG,DS3231_ADDR_SIZE,READ,temp_msb,READING_NUMBER) == ERR)
     {
       return ERROR;
     }
-    if(i2c(DS3231_ADDR,DS3231_LSB_TEMP_REG,DS3231_ADDR_SIZE,READ,lsb,READING_NUMBER) == ERR)
+    if(i2c(DS3231_ADDR,DS3231_LSB_TEMP_REG,DS3231_ADDR_SIZE,READ,temp_lsb,READING_NUMBER) == ERR)
     {
       return ERROR;
     }
-    for(f = 0 ; f < 8 ; f++)
-    {
-        if(msb & (1 << f)
-        {
-            * temp |= (1 << f);
-        }
-    }
-    * temp <<= 2;
-    for(f = 0 ; f < 2 ; f++)
-    {
-        if(lsb & (1 << f)
-        {
-            * temp |= (1 << f);
-        }
-    }   
+    * temp_lsb >>= 6;
     return OK;
 }
 
