@@ -20,6 +20,20 @@ void read_ds3231_clock(void)
 {
   
 }
+
+unsigned char write_ds3231_second(unsigned char second)
+{
+    if(second < 60)
+    {
+      if(i2c(DS3231_ADDR,0x00,1,0,&time2reg(second),1) == ERR)
+      {
+        return ERROR;
+      }
+    }
+  return OK;
+}
+
+
 unsigned char write_ds3231_clock(
                                  unsigned char second,
                                  unsigned char minute,
