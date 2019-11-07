@@ -2,17 +2,16 @@
 
 #define DS3231_ADDR             0x68
 
+// FLASH HAVE 3_BYTE BOUNDARY ADDRESS SIZE
+// E2PROM HAVE 2_BYTE BOUNDARY ADDRESS SIZE
+// DS3231 HAVE BYTE BOUNDARY ADDRESS SIZE
+#define DS3231_ADDR_SIZE 1
+
 #define ERROR 1
 #define OK 0
 
-#define TIMING_TYPE_1_PROPER_SECOND       0x07
-#define TIMING_TYPE_1_PROPER_MINUTE       0x08
-#define TIMING_TYPE_1_PROPER_HOUR         0x09
-#define TIMING_TYPE_1_PROPER_DAY          0x0A
-
-#define TIMING_TYPE_2_PROPER_MINUTE       0x0B
-#define TIMING_TYPE_2_PROPER_HOUR         0x0C
-#define TIMING_TYPE_2_PROPER_DAY          0x0D
+#define DS3231_READ 1
+#define DS3231_WRITE 0
 
 typedef struct ds_t
   {
@@ -39,25 +38,27 @@ typedef struct ds_t
 
 const unsigned char month_day [12] = { 31,29,31,30,31,30,31,31,30,31,30,31 }; // 1 year 366 day
 
-#define DS3231_second                     0x00
-#define DS3231_minute                     0x01
-#define DS3231_hour__am_pm                0x02
-#define DS3231_week_day                   0x03
-#define DS3231_month_date_day             0x04
-#define DS3231_month__century             0x05
-#define DS3231_year                       0x06
-#define DS3231_alarm1_second              0x07
-#define DS3231_alarm1_minute              0x08
-#define DS3231_alarm1_hour__am_pm         0x09
-#define DS3231_alarm1_month_week_day      0x0A
-#define DS3231_alarm2_minute              0x0B
-#define DS3231_alarm2_hour__am_pm         0x0C
-#define DS3231_alarm2_month_week_day      0x0D
-#define DS3231_control                    0x0E
-#define DS3231_status                     0x0F
-#define DS3231_aging_offset               0x10
-#define DS3231_msb_temperature            0x11
-#define DS3231_lsb_temperature            0x12
+#define DS3231_SECOND_REG                   0x00
+#define DS3231_MINUTE_REG                   0x01
+#define DS3231_HOUR_REG                     0x02
+#define DS3231_DAY_REG                      0x03
+#define DS3231_DATE_REG                     0x04
+#define DS3231_MONTH_REG                    0x05
+#define DS3231_YEAR_REG                     0x06
+#define DS3231_A1_SECOND_REG                0x07
+#define DS3231_A1_MINUTE_REG                0x08
+#define DS3231_A1_HOUR_REG                  0x09
+#define DS3231_A1_DAY_REG                   0x0A
+#define DS3231_A1_DATE_REG                  0x0A
+#define DS3231_A2_MINUTE_REG                0x0B
+#define DS3231_A2_HOUR_REG                  0x0C
+#define DS3231_A2_DAY_REG                   0x0D
+#define DS3231_A2_DATE_REG                  0x0D
+#define DS3231_CONTROL_REG                  0x0E
+#define DS3231_STATUS_REG                   0x0F
+#define DS3231_AGING_OFFSET_REG             0x10
+#define DS3231_MSB_TEMP_REG                 0x11
+#define DS3231_LSB_TEMP_REG                 0x12
 
 unsigned char write_ds3231_alarm_1(unsigned char timing_type_1,unsigned char time);
 unsigned char write_ds3231_alarm_2(unsigned char timing_type_2,unsigned char time);
