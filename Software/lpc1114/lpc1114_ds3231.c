@@ -1,6 +1,60 @@
 #include "lpc1114_i2c.h"
 #include "lpc1114_ds3231.h"
 
+unsigned char read_ds3231_conrol(unsigned int * temp)
+{
+    unsigned char msb,lsb;
+    if(i2c(DS3231_ADDR,DS3231_MSB_TEMP_REG,DS3231_ADDR_SIZE,READ,msb,READING_NUMBER) == ERR)
+    {
+      return ERROR;
+    }
+    if(i2c(DS3231_ADDR,DS3231_LSB_TEMP_REG,DS3231_ADDR_SIZE,READ,lsb,READING_NUMBER) == ERR)
+    {
+      return ERROR;
+    }
+    
+    
+    
+    
+    return OK;
+}
+
+unsigned char write_ds3231_control(unsigned char control)
+{
+    if(i2c(DS3231_ADDR,DS3231_CONTROL_REG,DS3231_ADDR_SIZE,WRITE,control,WRITING_NUMBER) == ERR)
+    {
+        return ERROR;
+    }
+    return OK;    
+}
+
+unsigned char read_ds3231_conrol(unsigned char * control)
+{
+    if(i2c(DS3231_ADDR,DS3231_CONTROL_REG,DS3231_ADDR_SIZE,READ,control,READING_NUMBER) == ERR)
+    {
+      return ERROR;
+    }
+    return OK;
+}
+
+unsigned char write_ds3231_status(unsigned char status)
+{
+    if(i2c(DS3231_ADDR,DS3231_STATUS_REG,DS3231_ADDR_SIZE,WRITE,status,WRITING_NUMBER) == ERR)
+    {
+        return ERROR;
+    }
+    return OK;    
+}
+
+unsigned char read_ds3231_status(unsigned char * status)
+{
+    if(i2c(DS3231_ADDR,DS3231_STATUS_REG,DS3231_ADDR_SIZE,READ,status,READING_NUMBER) == ERR)
+    {
+      return ERROR;
+    }
+    return OK;
+}
+
 unsigned char write_ds3231_second(unsigned char second)
 {
     if(second < 60)
