@@ -61,7 +61,7 @@ unsigned char write_ds3231_day(unsigned char day)
 {
     if( (day < 8) & (day > 0) )
     {
-      if(i2c(DS3231_ADDR,0x03,1,0,&time2reg(day),1) == ERR)
+      if(i2c(DS3231_ADDR,0x03,1,0,&day,1) == ERR)
       {
         return ERROR;
       }
@@ -105,6 +105,179 @@ unsigned char write_ds3231_year(unsigned char year)
   return OK;
 }
 
+unsigned char write_ds3231_alarm_1_according_to_second(unsigned char second)
+{
+    if(second < 60)
+    {
+      if(i2c(DS3231_ADDR,0x07,1,0,&time2reg(second),1) == ERR)
+      {
+        return ERROR;
+      }
+      for(f = (0x07) ; (f < 0x0B) ; f++)
+      {
+        if(i2c(DS3231_ADDR,f,1,0,(1 << 7),1) == ERR)
+        {
+          return ERROR;
+        }
+      }  
+    }
+    return OK;
+}
+
+unsigned char write_ds3231_alarm_1_according_to_minute(unsigned char minute)
+{
+    if(minute < 60)
+    {
+      if(i2c(DS3231_ADDR,0x08,1,0,&time2reg(minute),1) == ERR)
+      {
+        return ERROR;
+      }
+      for(f = (0x08) ; (f < 0x0B) ; f++)
+      {
+        if(i2c(DS3231_ADDR,f,1,0,(1 << 7),1) == ERR)
+        {
+          return ERROR;
+        }
+      }  
+    }
+    return OK;
+}
+
+unsigned char write_ds3231_alarm_1_according_to_hour(unsigned char hour)
+{
+    if(hour < 60)
+    {
+      if(i2c(DS3231_ADDR,0x09,1,0,&time2reg(hour),1) == ERR)
+      {
+        return ERROR;
+      }
+      for(f = (0x09) ; (f < 0x0B) ; f++)
+      {
+        if(i2c(DS3231_ADDR,f,1,0,(1 << 7),1) == ERR)
+        {
+          return ERROR;
+        }
+      }  
+    }
+    return OK;
+}
+
+unsigned char write_ds3231_alarm_1_according_to_day(unsigned char day)
+{
+    if( (day < 8) & (day > 0) )
+    {
+      if(i2c(DS3231_ADDR,0x0A,1,0,&day,1) == ERR)
+      {
+        return ERROR;
+      }
+      for(f = (0x0A) ; (f < 0x0B) ; f++)
+      {
+        if(i2c(DS3231_ADDR,f,1,0,(1 << 7),1) == ERR)
+        {
+          return ERROR;
+        }
+      }  
+    }
+    return OK;
+}
+
+unsigned char write_ds3231_alarm_1_according_to_date(unsigned char date)
+{
+    unsigned char x;
+    if( (date < 32) & (date > 0) )
+    {
+      x = ( time2reg(date) | (1 << 6) );
+      if(i2c(DS3231_ADDR,0x0A,1,0,&x,1) == ERR)
+      {
+        return ERROR;
+      }
+      for(f = (0x0A) ; (f < 0x0B) ; f++)
+      {
+        if(i2c(DS3231_ADDR,f,1,0,(1 << 7),1) == ERR)
+        {
+          return ERROR;
+        }
+      }  
+    }
+    return OK;
+}
+unsigned char write_ds3231_alarm_2_according_to_minute(unsigned char minute)
+{
+    if(minute < 60)
+    {
+      if(i2c(DS3231_ADDR,0x0B,1,0,&time2reg(minute),1) == ERR)
+      {
+        return ERROR;
+      }
+      for(f = (0x0B) ; (f < 0x0E) ; f++)
+      {
+        if(i2c(DS3231_ADDR,f,1,0,(1 << 7),1) == ERR)
+        {
+          return ERROR;
+        }
+      }  
+    }
+    return OK;
+}
+
+unsigned char write_ds3231_alarm_2_according_to_hour(unsigned char hour)
+{
+    if(hour < 60)
+    {
+      if(i2c(DS3231_ADDR,0x0C,1,0,&time2reg(hour),1) == ERR)
+      {
+        return ERROR;
+      }
+      for(f = (0x0C) ; (f < 0x0E) ; f++)
+      {
+        if(i2c(DS3231_ADDR,f,1,0,(1 << 7),1) == ERR)
+        {
+          return ERROR;
+        }
+      }  
+    }
+    return OK;
+}
+
+unsigned char write_ds3231_alarm_2_according_to_day(unsigned char day)
+{
+    if( (day < 8) & (day > 0) )
+    {
+      if(i2c(DS3231_ADDR,0x0D,1,0,&day,1) == ERR)
+      {
+        return ERROR;
+      }
+      for(f = (0x0D) ; (f < 0x0E) ; f++)
+      {
+        if(i2c(DS3231_ADDR,f,1,0,(1 << 7),1) == ERR)
+        {
+          return ERROR;
+        }
+      }  
+    }
+    return OK;
+}
+
+unsigned char write_ds3231_alarm_2_according_to_date(unsigned char date)
+{
+    unsigned char x;
+    if( (date < 32) & (date > 0) )
+    {
+      x = ( time2reg(date) | (1 << 6) );
+      if(i2c(DS3231_ADDR,0x0D,1,0,&x,1) == ERR)
+      {
+        return ERROR;
+      }
+      for(f = (0x0D) ; (f < 0x0E) ; f++)
+      {
+        if(i2c(DS3231_ADDR,f,1,0,(1 << 7),1) == ERR)
+        {
+          return ERROR;
+        }
+      }  
+    }
+    return OK;
+}
 /*
 unsigned char write_ds3231_clock(
                                  unsigned char second,
