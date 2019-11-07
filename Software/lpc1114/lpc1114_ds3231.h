@@ -7,11 +7,14 @@
 // DS3231 HAVE BYTE BOUNDARY ADDRESS SIZE
 #define DS3231_ADDR_SIZE 1
 
+#define WRITING_NUMBER 1
+#define READING_NUMBER 1
+
 #define ERROR 1
 #define OK 0
 
-#define DS3231_READ 1
-#define DS3231_WRITE 0
+#define READ 1
+#define WRITE 0
 
 typedef struct ds_t
   {
