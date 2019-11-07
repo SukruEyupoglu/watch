@@ -414,7 +414,7 @@ unsigned char read_ds3231_alarm_1_day(unsigned char * day)
     }
     if( * day & (1 << 6) )
     {
-        * day = reg2time(* day) & 0x7F;
+        * day = reg2time(* day) & 0x07;
     }
     else
     {
@@ -435,7 +435,7 @@ unsigned char read_ds3231_alarm_1_date(unsigned char * date)
     }
     else
     {
-        * date = reg2time(* date) & 0x7F;
+        * date = reg2time(* date) & 0x3F;
     }
     return OK;
 }
@@ -478,7 +478,7 @@ unsigned char read_ds3231_alarm_2_day(unsigned char * day)
     }
     if( * day & (1 << 6) )
     {
-        * day = reg2time(* day) & 0x7F;
+        * day = reg2time(* day) & 0x07;
     }
     else
     {
@@ -499,7 +499,7 @@ unsigned char read_ds3231_alarm_2_date(unsigned char * date)
     }
     else
     {
-        * date = reg2time(* date) & 0x7F;
+        * date = reg2time(* date) & 0x3F;
     }
     return OK;
 }
