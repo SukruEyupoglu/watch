@@ -12,9 +12,9 @@ unsigned char start_temp_conversion(void)
     {
         return ERROR;
     }
-    if( !( (y & (1 << BSY) ) | (x & (1 << CONV) ) ) )
+    if( !( (y & (1 << STAT_BSY) ) | (x & (1 << CTRL_CONV) ) ) )
     {
-        x |= (1 << CONV);
+        x |= (1 << CTRL_CONV);
         if(i2c(DS3231_ADDR,DS3231_CONTROL_REG,DS3231_ADDR_SIZE,WRITE,&x,WRITING_NUMBER) == ERR)
         {
             return ERROR;
