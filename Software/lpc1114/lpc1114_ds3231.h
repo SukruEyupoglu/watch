@@ -16,6 +16,25 @@
 #define READ 1
 #define WRITE 0
 
+#define CTRL_EOSC         (1 << 7)        // COMMINICATION OSCILATOR ENABLE DISABLE NO EFFECT TO TIMING
+                                          // WHEN VCC POWER UP THIS OSCILATOR ALWAYS ENABLE
+                                          // WHEN THERE IS VBAT ONLY , THIS OSCILATOR STOPPED AUTOMATICALLY
+#define CTRL_BBSQW        (1 << 6)        // SQUARE-WAVE CLOK OUT ENABLE - DISABLE , AFTER RESET DISABLE
+#define CTRL_CONV         (1 << 5)        // START TEMP CONVERSION
+#define CTRL_RS2          (1 << 4)        // SQUARE-WAVE FREQUENCY SELECT BIT
+#define CTRL_RS1          (1 << 3)        // SQUARE-WAVE FREQUENCY SELECT BIT
+#define CTRL_INTCN        (1 << 2)        // INTERRUPT OUTPUT OR SQUARE-WAVE SELECT REGISTER
+                                          // AFTER RESET INTERRUPT OUTPUT AUTOMATICALLY SELECTED
+#define CTRL_A2IE         (1 << 1)        // ALARM_2 INTERRUPT ENABLE
+#define CTRL_A1IE         (1 << 0)        // ALARM_1 INTERRUPT ENABLE
+
+#define STAT_OSF          (1 << 7)        // OSCILATION STOP FLAG STATUS
+                                          // THIS BIT REMAIN 1 UNTIL WRITE 0
+#define STAT_EN32kHz      (1 << 3)        // 32kHz STATUS BIT
+#define STAT_BSY          (1 << 2)        // DEVICE BUSY BIT
+#define STAT_A2F          (1 << 1)        // ALARM_2 STATUS FLAG , WRITE 0 TO CLEAR THIS BIT
+#define STAT_A1F          (1 << 0)        // ALARM_1 STATUS FLAG , WRITE 0 TO CLEAR THIS BIT
+
 typedef struct ds_t
   {
   unsigned char second;
@@ -63,9 +82,6 @@ const unsigned char month_day [12] = { 31,29,31,30,31,30,31,31,30,31,30,31 }; //
 #define DS3231_MSB_TEMP_REG                 0x11
 #define DS3231_LSB_TEMP_REG                 0x12
 
-unsigned char write_ds3231_alarm_1(unsigned char timing_type_1,unsigned char time);
-unsigned char write_ds3231_alarm_2(unsigned char timing_type_2,unsigned char time);
-
 unsigned char write_ds3231_second(unsigned char second);
 unsigned char write_ds3231_minute(unsigned char minute);
 unsigned char write_ds3231_hour(unsigned char hour);
@@ -73,8 +89,45 @@ unsigned char write_ds3231_day(unsigned char day);
 unsigned char write_ds3231_date(unsigned char date);
 unsigned char write_ds3231_month(unsigned char month);
 unsigned char write_ds3231_year(unsigned char year);
-  
-void read_ds3231_data(void);
+
+unsigned char start_temp_conversion(void);
+unsigned char read_ds3231_temp(unsigned char * temp_msb, unsigned char * temp_lsb);
+
+unsigned char write_ds3231_control(unsigned char control);
+unsigned char read_ds3231_conrol(unsigned char * control);
+
+unsigned char write_ds3231_status(unsigned char status);
+unsigned char read_ds3231_status(unsigned char * status);
+
+unsigned char write_ds3231_alarm_1_according_to_second(unsigned char second);
+unsigned char write_ds3231_alarm_1_according_to_minute(unsigned char minute);
+unsigned char write_ds3231_alarm_1_according_to_hour(unsigned char hour);
+unsigned char write_ds3231_alarm_1_according_to_day(unsigned char day);
+unsigned char write_ds3231_alarm_1_according_to_date(unsigned char date);
+
+unsigned char write_ds3231_alarm_2_according_to_minute(unsigned char minute);
+unsigned char write_ds3231_alarm_2_according_to_hour(unsigned char hour);
+unsigned char write_ds3231_alarm_2_according_to_day(unsigned char day);
+unsigned char write_ds3231_alarm_2_according_to_date(unsigned char date);
+
+unsigned char read_ds3231_second(unsigned char * second);
+unsigned char read_ds3231_minute(unsigned char * minute);
+unsigned char read_ds3231_hour(unsigned char * hour);
+unsigned char read_ds3231_day(unsigned char * day);
+unsigned char read_ds3231_date(unsigned char * date);
+unsigned char read_ds3231_month(unsigned char * month);
+unsigned char read_ds3231_year(unsigned char * year);
+
+unsigned char read_ds3231_alarm_1_second(unsigned char * second);
+unsigned char read_ds3231_alarm_1_minute(unsigned char * minute);
+unsigned char read_ds3231_alarm_1_hour(unsigned char * hour);
+unsigned char read_ds3231_alarm_1_day(unsigned char * day);
+unsigned char read_ds3231_alarm_1_date(unsigned char * date);
+unsigned char read_ds3231_alarm_2_second(unsigned char * second);
+unsigned char read_ds3231_alarm_2_minute(unsigned char * minute);
+unsigned char read_ds3231_alarm_2_hour(unsigned char * hour);
+unsigned char read_ds3231_alarm_2_day(unsigned char * day);
+unsigned char read_ds3231_alarm_2_date(unsigned char * date);
 
 static unsigned char time2reg(unsigned char time);
 static unsigned char reg2time(unsigned char reg);
