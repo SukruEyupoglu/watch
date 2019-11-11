@@ -12,12 +12,72 @@ void write_digit(unsigned char left,unsigned char right)
   unsigned char f;
   switch(left)
   {
-    case 0:
+    case '.':
     {
       led[8] = 0x00;
       led[9] = 0x00;
     }
     break;
+    case 0:
+    {
+      led[8] = 0xFF;
+      led[9] = 0x0F;
+    }
+    break;
+    case 1:
+    {
+      led[8] = 0x3C;
+      led[9] = 0x00;
+    }
+    break;
+    case 2:
+    {
+      led[8] = 0xCF;
+      led[9] = 0x33;
+    }
+    break;
+    case 3:
+    {
+      led[8] = 0xFF;
+      led[9] = 0x30;
+    }
+    break;
+    case 4:
+    {
+      led[8] = 0x3C;
+      led[9] = 0x3C;
+    }
+    break;
+    case 5:
+    {
+      led[8] = 0xF3;
+      led[9] = 0x3C;
+    }
+    break;
+    case 6:
+    {
+      led[8] = 0xF3;
+      led[9] = 0x3F;
+    }
+    break;
+    case 7:
+    {
+      led[8] = 0x3F;
+      led[9] = 0x00;
+    }
+    break;
+    case 8:
+    {
+      led[8] = 0xFF;
+      led[9] = 0x3F;
+    }
+    break;
+    case 9:
+    {
+      led[8] = 0xFF;
+      led[9] = 0x3C;
+    }
+    break;      
     case 'A':
     {
       led[8] = 0x3F;
@@ -165,12 +225,73 @@ void write_digit(unsigned char left,unsigned char right)
   }
   switch(right)
   {
-    case 0:
+    case '.':
     {
       led[10] = 0x00;
       led[11] = 0x00;
     }
     break;
+    case 0:
+    {
+      led[10] = 0xFF;
+      led[11] = 0x0F;
+    }
+    break;
+    case 1:
+    {
+      led[10] = 0x3C;
+      led[11] = 0x00;
+    }
+    break;
+    case 2:
+    {
+      led[10] = 0xCF;
+      led[11] = 0x33;
+    }
+    break;
+    case 3:
+    {
+      led[10] = 0xFF;
+      led[11] = 0x30;
+    }
+    break;
+    case 4:
+    {
+      led[10] = 0x3C;
+      led[11] = 0x3C;
+    }
+    break;
+    case 5:
+    {
+      led[10] = 0xF3;
+      led[11] = 0x3C;
+    }
+    break;
+    case 6:
+    {
+      led[10] = 0xF3;
+      led[11] = 0x3F;
+    }
+    break;
+    case 7:
+    {
+      led[10] = 0x3F;
+      led[11] = 0x00;
+    }
+    break;
+    case 8:
+    {
+      led[10] = 0xFF;
+      led[11] = 0x3F;
+    }
+    break;
+    case 9:
+    {
+      led[10] = 0xFF;
+      led[11] = 0x3C;
+    }
+    break;      
+
     case 'A':
     {
       led[10] = 0x3F;
@@ -316,9 +437,11 @@ void write_digit(unsigned char left,unsigned char right)
     }
     break;    
   }
+  /*
   for(f = 0 ; f < 12 ; f++)
   {
     spi( led[f] );
   }
   latch();
+  */
 }
