@@ -159,6 +159,27 @@ unsigned char write_ds3231_year(unsigned char year)
   return OK;
 }
 
+unsigned char close_ds3231_alarm_1(void);
+{
+    // WRITE ZERO TO ALL ALARM REGISTERS
+    if(i2c(DS3231_ADDR,DS3231_A1_START_REG,DS3231_ADDR_SIZE,WRITE,ZERO,DS3231_A1_REG_COUNT) == ERR)
+    {
+      return ERROR;
+    }
+    return OK;
+}
+
+unsigned char close_ds3231_alarm_2(void);
+{
+    // WRITE ZERO TO ALL ALARM REGISTERS
+    if(i2c(DS3231_ADDR,DS3231_A2_START_REG,DS3231_ADDR_SIZE,WRITE,ZERO,DS3231_A2_REG_COUNT) == ERR)
+    {
+      return ERROR;
+    }
+    return OK;
+}
+
+
 unsigned char write_ds3231_alarm_1_according_to_second(unsigned char second)
 {
     if(second < 60)
@@ -199,7 +220,7 @@ unsigned char write_ds3231_alarm_1_according_to_minute(unsigned char minute)
 
 unsigned char write_ds3231_alarm_1_according_to_hour(unsigned char hour)
 {
-    if(hour < 60)
+    if(hour < 24)
     {
       if(i2c(DS3231_ADDR,DS3231_A1_HOUR_REG,DS3231_ADDR_SIZE,WRITE,&time2reg(hour),WRITING_NUMBER) == ERR)
       {
