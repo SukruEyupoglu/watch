@@ -10,6 +10,14 @@
 #define WRITING_NUMBER 1
 #define READING_NUMBER 1
 
+#define DS3231_SECOND_OUT_OF_RANGE        60
+#define DS3231_MINUTE_OUT_OF_RANGE        60
+#define DS3231_HOUR_OUT_OF_RANGE          24
+#define DS3231_DAY_OUT_OF_UP_RANGE        8
+#define DS3231_DAY_OUT_OF_DOWN_RANGE      0
+#define DS3231_DATE_OUT_OF_UP_RANGE       32
+#define DS3231_DATE_OUT_OF_DOWN_RANGE     0
+
 #define ERROR 1
 #define OK 0
 
@@ -67,15 +75,24 @@ const unsigned char month_day [12] = { 31,29,31,30,31,30,31,31,30,31,30,31 }; //
 #define DS3231_DATE_REG                     0x04
 #define DS3231_MONTH_REG                    0x05
 #define DS3231_YEAR_REG                     0x06
+
+#define DS3231_A1_REG_COUNT                 4
+#define DS3231_A1_START_REG                 0x07
 #define DS3231_A1_SECOND_REG                0x07
 #define DS3231_A1_MINUTE_REG                0x08
 #define DS3231_A1_HOUR_REG                  0x09
 #define DS3231_A1_DAY_REG                   0x0A
 #define DS3231_A1_DATE_REG                  0x0A
+#define DS3231_A1_END_REG                   0x0A
+
+#define DS3231_A2_REG_COUNT                 3
+#define DS3231_A2_START_REG                 0x0B
 #define DS3231_A2_MINUTE_REG                0x0B
 #define DS3231_A2_HOUR_REG                  0x0C
 #define DS3231_A2_DAY_REG                   0x0D
 #define DS3231_A2_DATE_REG                  0x0D
+#define DS3231_A2_END_REG                   0x0D
+
 #define DS3231_CONTROL_REG                  0x0E
 #define DS3231_STATUS_REG                   0x0F
 #define DS3231_AGING_OFFSET_REG             0x10
@@ -98,6 +115,9 @@ unsigned char read_ds3231_conrol(unsigned char * control);
 
 unsigned char write_ds3231_status(unsigned char status);
 unsigned char read_ds3231_status(unsigned char * status);
+
+unsigned char close_ds3231_alarm_1(void);
+unsigned char close_ds3231_alarm_2(void);
 
 unsigned char write_ds3231_alarm_1_according_to_second(unsigned char second);
 unsigned char write_ds3231_alarm_1_according_to_minute(unsigned char minute);
@@ -123,6 +143,7 @@ unsigned char read_ds3231_alarm_1_minute(unsigned char * minute);
 unsigned char read_ds3231_alarm_1_hour(unsigned char * hour);
 unsigned char read_ds3231_alarm_1_day(unsigned char * day);
 unsigned char read_ds3231_alarm_1_date(unsigned char * date);
+
 unsigned char read_ds3231_alarm_2_second(unsigned char * second);
 unsigned char read_ds3231_alarm_2_minute(unsigned char * minute);
 unsigned char read_ds3231_alarm_2_hour(unsigned char * hour);
