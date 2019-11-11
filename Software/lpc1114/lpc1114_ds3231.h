@@ -21,6 +21,9 @@
 #define ERROR 1
 #define OK 0
 
+#define ZERO 0
+#define ONE 1
+
 #define READ 1
 #define WRITE 0
 
