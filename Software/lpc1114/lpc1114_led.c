@@ -1,3 +1,14 @@
+#include "lpc1114_spi.h"
+#include "lpc1114_led.h"
+
+void set_led_write_reg(unsigned char minute,unsigned char hour)
+{
+  // ZERO dan minuteye kadar olan ledleri yakar.
+  limit_yaz(ZERO,minute);
+  // sol digite 10(ON) ve katları, sag digite 10(ON) a kadar olan sayılar
+  led_write_digit((hour / 10),(hour % 10));
+}
+
 void led_write(void)
 {
   unsigned char f;
