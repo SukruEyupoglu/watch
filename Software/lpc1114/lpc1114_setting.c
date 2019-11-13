@@ -3,10 +3,13 @@
 #include "lpc1114_ds3231.h"
 #include "lpc1114_led.h"
 
+// THIS SETTING FUCTION ONLY SET HOUR AND MINUTE
+// CLOCK = 0 , AL1 = 1 , AL2 = 2
 unsigned char ds3231_clock_setting(unsigned char select_clock_alarm1_alarm2)
 {
   unsigned char selected = HOUR_SELECT;
   unsigned char minute,hour;
+  // LOOK WHICH SETTING SELECTED(CLOCK,ALARM1,ALARM2) AND GET HOUR AND MINUTE FROM DS3231
   switch(select_clock_alarm1_alarm2)
   {
     case CLOCK:
@@ -50,11 +53,12 @@ unsigned char ds3231_clock_setting(unsigned char select_clock_alarm1_alarm2)
   }
   while(1)
   {
-    set_led_write_reg(minute,hour); // not written yet
-    led_write();
+    set_led_write_reg(minute,hour); // SET LED REGISTERS
+    led_write(); //WRITE LEDS
+    // LISTEN BUTTONS FOR SET SELECTED SETTINGS
     switch(check_button())
     {
-      case BOO:
+      case BOO: // CHANGE SETTING HOUR AND MINUTE
         {
           if(selected == MINUTE_SELECT)
           {
@@ -66,7 +70,7 @@ unsigned char ds3231_clock_setting(unsigned char select_clock_alarm1_alarm2)
           }          
         }
         break;        
-      case STP_LRM:
+      case STP_LRM: // INCREASE SELECTED
         {
           if(selected == MINUTE_SELECT)
           {
@@ -78,7 +82,7 @@ unsigned char ds3231_clock_setting(unsigned char select_clock_alarm1_alarm2)
           }          
         }
         break;
-      case SLP:
+      case SLP: // REDUCE SELECTED
         {
           if(selected == MINUTE_SELECT)
           {
@@ -90,7 +94,7 @@ unsigned char ds3231_clock_setting(unsigned char select_clock_alarm1_alarm2)
           }                    
         }
         break;
-      case WRT_SET:
+      case WRT_SET: // WRITE CHANGED SELECTED SETTINGS TO DS3231
         {
             switch(select_clock_alarm1_alarm2)
             {
@@ -142,13 +146,5 @@ unsigned char ds3231_clock_setting(unsigned char select_clock_alarm1_alarm2)
         break;
     }
   }
-}
-void ds3231_special_setting(void)
-{
-  
-}
-void e2prom_settings(void)
-{
-  
 }
 
