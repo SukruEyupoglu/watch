@@ -147,4 +147,51 @@ unsigned char ds3231_clock_setting(unsigned char select_clock_alarm1_alarm2)
     }
   }
 }
+unsigned char increase_minute(unsigned char minute)
+{
+  if(minute == 59)
+  {
+    return 0;
+  }
+  else
+  {
+    return (minute + 1);
+  }
+}
+unsigned char reduce_minute(unsigned char minute)
+{
+  if(minute == 0)
+  {
+    return 59;
+  }
+  else
+  {
+    return (minute - 1);
+  }  
+}
+unsigned char increase_hour(unsigned char hour)
+{
+  if(hour == 23)
+  {
+    return 0;
+  }
+  else
+  {
+    return (hour + 1);
+  }  
+}
+unsigned char reduce_hour(unsigned char hour)
+{
+  if(hour == 0)
+  {
+    return 23;
+  }
+  else
+  {
+    return (hour - 1);
+  }  
+}
+
+
+
 
