@@ -32,9 +32,9 @@ volatile unsigned char led[12] = {0,0,0,0,0,0,0,0,0,0,0,0};
 int main(void)
 {
   init();               // lpc1114_init.h     --> only set 12MHZ frequency
-  gpio_init();          // lpc1114_button.h   --> button settings and latch settings
+  gpio_init();          // lpc1114_button.h   --> button settings
   i2c_init();           // lpc1114_i2c.h      --> i2c settings
-  spi_init();           // lpc1114_spi.h      --> spi settings
+  spi_init();           // lpc1114_spi.h      --> spi settings and latch settings
   
   while(1)
   {
