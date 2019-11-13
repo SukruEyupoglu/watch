@@ -36,7 +36,13 @@ unsigned char spi(unsigned char TX_Data)
 	while ((LPC_SSP0->SR & (SSPSR_BSY | SSPSR_RNE)) != SSPSR_RNE);
 	return LPC_SSP0->DR;
 }
-
+void latch(void)
+{	
+	// WITHOUT DELAY APPROXYMATELY 2.5MHZ SIGNAL LENGTH
+	LPC_GPIO2->DATA					|=	(1 << 10);
+	// delay(1);
+	LPC_GPIO2->DATA					&=	~(1 << 10);
+}
 
 
 
