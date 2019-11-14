@@ -58,5 +58,21 @@ TCB
 SCB
 FCFSCB
 
+sequentally motor movement array
+unsigned char motor[8] = {FCF,TCF,SCF,SCFFCB,FCB,TCB,SCB,FCFSCB};
+
 
 */
+
+#define SB        0xAA
+
+#define FCF       0x3A
+#define SCF       0xA3
+#define TCF       0x33
+#define FCB       0xCA
+#define SCB       0xAC
+#define TCB       0xCC
+#define FCFSCB    0x3C
+#define SCFFCB    0x3C
+
+
