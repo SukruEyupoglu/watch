@@ -8,6 +8,21 @@ void release_motor(void)
   latch();
 }
 
+unsigned char motor_next(unsigned char stat,unsigned char double_or_single)
+{
+  
+}
+
+unsigned char motor_back(unsigned char stat,unsigned char double_or_single)
+{
+  
+}
+
+unsigned char motor_status(void)
+{
+  
+}
+
 void hold_motor(unsigned char endurance_amount)
 {
   
@@ -15,13 +30,29 @@ void hold_motor(unsigned char endurance_amount)
 
 // step_type --> step_queue reduce double point and reduce motor torque
 // 1 or 0
-unsigned char motor_move(unsigned char step_count,unsigned char step_type)
+unsigned char motor_move(unsigned char step_count,unsigned char step_type,unsigned char speed,unsigned char direction)
 {
-  if(look_at_limit_switch_errors())
+  unsigned char f,mt_sta;
+  mt_sta = motor_status();
+  for(f = 0 ; f < step_count ; f++)
   {
-    return ERROR;
+    if(look_at_limit_switch_errors())
+    {
+      return ERROR;
+    }
+    if(speed)
+    {
+      delay(speed);
+    }
+    if(direction)
+    {
+      mt_sta = motor_next(mt_sta,step_type);
+    }
+    else
+    {
+      mt_sta = motor_back(mt_sta,step_type);      
+    }
   }
-  
 }
 
 // RETURN VALUE IS MOTOR COIL STATUS AT STARTUP OR FINISH AND MOVE TO STARTUP OR FINISH
