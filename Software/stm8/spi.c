@@ -25,7 +25,3 @@ unsigned char spi(unsigned char data)
   return SPI_DR;
 }
 
-void change_spi_clk_channel(unsigned char channel)
-{
-  
-}
