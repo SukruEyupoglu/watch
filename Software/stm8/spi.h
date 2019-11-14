@@ -15,9 +15,19 @@
  * CS   -> user defined
  */
  
-void spi_init(void);
+// spi clock channel select
+#define CLK_CH_M0
+#define CLK_CH_M1
+#define CLK_CH_M2
+#define CLK_CH_M3
+#define CLK_CH_GPIO_OUT
+#define CLK_CH_GPIO_IN
+#define CLK_CH_FLASH
+#define CLK_CH_SRAM
 
+void spi_init(void);
 unsigned char spi(unsigned char data);
+void change_spi_clk_channel(unsigned char channel);
 
 #endif /* SPI_H */
 
