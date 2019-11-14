@@ -5,6 +5,8 @@ volatile unsigned char motor_2;
 volatile unsigned char motor_3;
 volatile unsigned char motor_4;
 volatile unsigned char gpio_0_to_7;
+volatile unsigned char gpio_8_to_15;
+volatile unsigned char gpio_16_to_23;
 
 // limit switch errors must be checked before every step
 // only interrupt can make "1" this register
