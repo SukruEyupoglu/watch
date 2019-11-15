@@ -14,9 +14,9 @@ void release_motor(void)
   latch();
 }
 
-unsigned char motor_next(unsigned char stat,unsigned char type)
+unsigned char motor_next(unsigned char stat)
 {
-  switch(type)
+  switch(step_type)
   {
     case FULL_STEP:
       {
@@ -87,9 +87,9 @@ unsigned char motor_next(unsigned char stat,unsigned char type)
   }
 }
 
-unsigned char motor_back(unsigned char stat,unsigned char type)
+unsigned char motor_back(unsigned char stat)
 {
-  switch(type)
+  switch(step_type)
   {
     case FULL_STEP:
       {
@@ -164,6 +164,18 @@ unsigned char motor_back(unsigned char stat,unsigned char type)
   }
 }
 
+void change_direction(void)
+{
+  if(direction == 0)
+  {
+    direction = 1;
+  }
+  else
+  {
+    direction = 0;
+  }
+}
+
 unsigned char look_at_motor_status(void)
 {
   return motor_status[active_motor];
@@ -185,24 +197,25 @@ void hold_motor(unsigned char endurance_amount)
 // --> 1 = increase 2 by 2 but only one coil QUARTER_STEP
 // --> 2 = increase 2 by 2 but with two coil HALF_STEP
 // direction 1 = next , 0 = back
-unsigned char motor_move(unsigned char step_count,unsigned char step_type,unsigned char speed,unsigned char direction)
+unsigned char motor_move(unsigned char step_count,unsigned char speed)
 {
   unsigned char f,mot_sta;
   mot_sta = look_at_motor_status();
+  // if there are starting errors call clerk
+  if(look_at_limit_switch_errors())
+  {
+    return FATAL_ERROR; // there are unexpecting limit switch status
+  }  
   for(f = 0 ; f < step_count ; f++)
   {
-    if(look_at_limit_switch_errors())
-    {
-      write_motor_status(mot_sta);
-      return ERROR;
-    }
     if(speed)
     {
       // with hold and release
-      // not consume too many current
+      // not consume too many current use pwm for waiting
       motor_delay(speed);
     }
-    if(direction)
+    
+    if(active_motor_direction)
     {
       mot_sta = motor_next(mt_sta,step_type);
     }
@@ -211,8 +224,29 @@ unsigned char motor_move(unsigned char step_count,unsigned char step_type,unsign
       mot_sta = motor_back(mt_sta,step_type);      
     }
     spi(step_queue[mot_sta]);
+    latch();
+    if(look_at_limit_switch_errors())
+    {
+      // rescue from error status immadietaly
+      if(active_motor_direction)
+      {
+        // reverse one step
+        mot_sta = motor_back(mt_sta,step_type); 
+        // NOT LIKE THIS mot_sta = motor_next(mt_sta,step_type);
+      }
+      else
+      {
+        // reverse one step
+        mot_sta = motor_next(mt_sta,step_type);
+        // NOT LIKE THIS mot_sta = motor_back(mt_sta,step_type);      
+      }
+      spi(step_queue[mot_sta]);
+      latch();
+      return ACTIVE_AREA_LIMIT_ERROR;
+    }      
   }
   write_motor_status(mot_sta);
+  return OK;
 }
 
 // RETURN VALUE IS MOTOR COIL STATUS AT STARTUP OR FINISH AND MOVE TO STARTUP OR FINISH
