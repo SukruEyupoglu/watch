@@ -188,7 +188,8 @@ void write_motor_status(last_motor_status)
 
 void hold_motor(unsigned char endurance_amount)
 {
-  
+  // one gpio must start pwm 
+  // gpio connected from spi shift registers
 }
 
 // step_type --> step_queue reduce double point and reduce motor torque
@@ -265,6 +266,7 @@ unsigned char move_to_find_limit_switch(unsigned char next_or_back)
         {
           release_motor();
           spi(step_queue[f - 1]);
+          latch();
           return f;
         }
       }
@@ -282,6 +284,7 @@ unsigned char move_to_find_limit_switch(unsigned char next_or_back)
         {
           release_motor();
           spi(step_queue[f]);
+          latch();
           return f;
         }
       }
