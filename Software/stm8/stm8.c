@@ -1,9 +1,9 @@
 #include "stm8s.h"
 #include "motor.h"
-volatile unsigned char motor_1;
-volatile unsigned char motor_2;
-volatile unsigned char motor_3;
-volatile unsigned char motor_4;
+volatile unsigned char motor_1_status;
+volatile unsigned char motor_2_status;
+volatile unsigned char motor_3_status;
+volatile unsigned char motor_4_status;
 volatile unsigned char gpio_0_to_7;
 volatile unsigned char gpio_8_to_15;
 volatile unsigned char gpio_16_to_23;
