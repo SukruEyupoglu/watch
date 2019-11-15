@@ -164,9 +164,9 @@ unsigned char motor_back(unsigned char stat,unsigned char type)
   }
 }
 
-unsigned char motor_status(void)
+unsigned char look_at_motor_status(void)
 {
-  
+  return motor_status[active_motor];
 }
 
 void hold_motor(unsigned char endurance_amount)
@@ -182,8 +182,8 @@ void hold_motor(unsigned char endurance_amount)
 // direction 1 = next , 0 = back
 unsigned char motor_move(unsigned char step_count,unsigned char step_type,unsigned char speed,unsigned char direction)
 {
-  unsigned char f,mt_sta;
-  mt_sta = motor_status();
+  unsigned char f,mot_sta;
+  mot_sta = look_at_motor_status();
   for(f = 0 ; f < step_count ; f++)
   {
     if(look_at_limit_switch_errors())
@@ -198,13 +198,13 @@ unsigned char motor_move(unsigned char step_count,unsigned char step_type,unsign
     }
     if(direction)
     {
-      mt_sta = motor_next(mt_sta,step_type);
+      mot_sta = motor_next(mt_sta,step_type);
     }
     else
     {
-      mt_sta = motor_back(mt_sta,step_type);      
+      mot_sta = motor_back(mt_sta,step_type);      
     }
-    spi(step_queue[mt_sta]);
+    spi(step_queue[mot_sta]);
   }
 }
 
