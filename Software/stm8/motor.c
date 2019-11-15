@@ -7,7 +7,9 @@ void change_active_motor(unsigned char motor_number)
   // volatile unsigned char active_motor at main file
   active_motor = motor_number;
 }
-
+// use this rescue mosfet short circuit
+// use this save current consumption
+// beware dont use if you not wanted losing location data
 void release_motor(void)
 {
   spi(SB);
