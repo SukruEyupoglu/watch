@@ -224,6 +224,8 @@ unsigned char motor_move(unsigned char step_count,unsigned char speed)
     {
       mot_sta = motor_back(mt_sta,step_type);      
     }
+    // mosfet short circuit rescue
+    // release_motor(); // place STANDBY before every step if u need
     spi(step_queue[mot_sta]);
     latch();
     if(look_at_limit_switch_errors())
@@ -246,6 +248,8 @@ unsigned char motor_move(unsigned char step_count,unsigned char speed)
       return ACTIVE_AREA_LIMIT_ERROR;
     }      
   }
+  // release_motor(); // STANDBY without current
+  // hold_motor();    // HOLD current consuption
   write_motor_status(mot_sta);
   return OK;
 }
