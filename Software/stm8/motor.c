@@ -1,6 +1,12 @@
 #include "spi.h"
 #include "motor.h"
+#include "function.h"
 
+void change_active_motor(unsigned char motor_number)
+{
+  // volatile unsigned char active_motor at main file
+  active_motor = motor_number;
+}
 
 void release_motor(void)
 {
