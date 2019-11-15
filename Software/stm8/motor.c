@@ -169,6 +169,11 @@ unsigned char look_at_motor_status(void)
   return motor_status[active_motor];
 }
 
+void write_motor_status(last_motor_status)
+{
+  motor_status[active_motor] = last_motor_status;
+}
+
 void hold_motor(unsigned char endurance_amount)
 {
   
@@ -188,6 +193,7 @@ unsigned char motor_move(unsigned char step_count,unsigned char step_type,unsign
   {
     if(look_at_limit_switch_errors())
     {
+      write_motor_status(mot_sta);
       return ERROR;
     }
     if(speed)
@@ -206,6 +212,7 @@ unsigned char motor_move(unsigned char step_count,unsigned char step_type,unsign
     }
     spi(step_queue[mot_sta]);
   }
+  write_motor_status(mot_sta);
 }
 
 // RETURN VALUE IS MOTOR COIL STATUS AT STARTUP OR FINISH AND MOVE TO STARTUP OR FINISH
