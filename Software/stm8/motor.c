@@ -29,7 +29,10 @@ void hold_motor(unsigned char endurance_amount)
 }
 
 // step_type --> step_queue reduce double point and reduce motor torque
-// 1 or 0
+// 0 or 1 or 2 
+// --> 0 = increase 1 by 1
+// --> 1 = increase 2 by 2 but only one coil
+// --> 2 = increase 2 by 2 but with two coil
 unsigned char motor_move(unsigned char step_count,unsigned char step_type,unsigned char speed,unsigned char direction)
 {
   unsigned char f,mt_sta;
@@ -42,7 +45,9 @@ unsigned char motor_move(unsigned char step_count,unsigned char step_type,unsign
     }
     if(speed)
     {
-      delay(speed);
+      // with hold and release
+      // not consume too many current
+      motor_delay(speed);
     }
     if(direction)
     {
