@@ -158,12 +158,6 @@ unsigned char motor_back(unsigned char stat,unsigned char type)
   }
 }
 
-
-unsigned char motor_back(unsigned char stat,unsigned char type)
-{
-  
-}
-
 unsigned char motor_status(void)
 {
   
@@ -204,6 +198,7 @@ unsigned char motor_move(unsigned char step_count,unsigned char step_type,unsign
     {
       mt_sta = motor_back(mt_sta,step_type);      
     }
+    spi(step_queue[mt_sta]);
   }
 }
 
