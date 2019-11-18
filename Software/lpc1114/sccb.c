@@ -1,3 +1,9 @@
+// this code wrong 
+// because not high low
+// input or low
+// when input,pullup resistor makes high this line
+// when low ,gpio output low used to low
+
 void sccb_init(void)
 {
 SCL_UP;
