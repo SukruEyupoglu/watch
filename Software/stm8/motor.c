@@ -1,14 +1,49 @@
 #include "spi.h"
 #include "motor.h"
 #include "function.h"
+#include "error.h"
+
+void rescue_from_limit_switch_errors_instant(void)
+{
+  unsigned char f;
+  for(f = 0 ; f < 8 ; f++)
+  {
+    // rescue from error status immadietaly
+    if(active_motor_direction)
+    {
+      // reverse one step (invert next , back)
+      mot_sta = motor_back(mot_sta,step_type); 
+      // NOT LIKE THIS mot_sta = motor_next(mt_sta,step_type);
+    }
+    else
+    {
+      // reverse one step (invert next , back)
+      mot_sta = motor_next(mot_sta,step_type);
+      // NOT LIKE THIS mot_sta = motor_back(mt_sta,step_type);      
+    }
+    // move one step back immadietaly
+    spi(step_queue[mot_sta]);
+    latch();
+    limit_interrupt = NO_LIMIT_ERROR;
+    PC3_interrupt_enable();
+    // PC_CR2 |= (1 << 3);           // INTERRUPT REENABLE PC3
+    delay(WAIT_FOR_INTERRUPT);
+    if(look_at_limit_switch_errors() == NO_LIMIT_ERROR)
+    {
+      return OK;
+    }
+  }
+  return FATAL_ERROR; // there are unexpecting limit switch status
+}
 
 unsigned char look_at_limit_switch_errors(void)
 {
   if(limit_interrupt)
   {
+    hold_motor();
     return LIMIT_ERROR;
   }
-  return NO_LIMIT_ERROR;
+  return NO_LIMIT_ERROR;  
 }
 
 void change_active_motor(unsigned char motor_number)
@@ -239,25 +274,12 @@ unsigned char motor_move(unsigned char step_count,unsigned char speed)
     // release_motor(); // place STANDBY before every step if u need
     spi(step_queue[mot_sta]);
     latch();
+    
     if(look_at_limit_switch_errors() == LIMIT_ERROR)
     {
-      // rescue from error status immadietaly
-      if(active_motor_direction)
-      {
-        // reverse one step
-        mot_sta = motor_back(mot_sta,step_type); 
-        // NOT LIKE THIS mot_sta = motor_next(mt_sta,step_type);
-      }
-      else
-      {
-        // reverse one step
-        mot_sta = motor_next(mot_sta,step_type);
-        // NOT LIKE THIS mot_sta = motor_back(mt_sta,step_type);      
-      }
-      spi(step_queue[mot_sta]);
-      latch();
       return ACTIVE_AREA_LIMIT_ERROR;
-    }      
+    }
+    
   }
   // release_motor(); // STANDBY without current
   // hold_motor();    // HOLD current consuption
