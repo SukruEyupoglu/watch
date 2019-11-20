@@ -6,9 +6,9 @@ unsigned char look_at_limit_switch_errors(void)
 {
   if(limit_interrupt)
   {
-    return 1;
+    return LIMIT_ERROR;
   }
-  return 0;
+  return NO_LIMIT_ERROR;
 }
 
 void change_active_motor(unsigned char motor_number)
@@ -214,7 +214,7 @@ unsigned char motor_move(unsigned char step_count,unsigned char speed)
   unsigned char f,mot_sta;
   mot_sta = look_at_motor_status();
   // if there are starting errors call clerk
-  if(look_at_limit_switch_errors())
+  if(look_at_limit_switch_errors() == LIMIT_ERROR)
   {
     return FATAL_ERROR; // there are unexpecting limit switch status
   }  
@@ -239,7 +239,7 @@ unsigned char motor_move(unsigned char step_count,unsigned char speed)
     // release_motor(); // place STANDBY before every step if u need
     spi(step_queue[mot_sta]);
     latch();
-    if(look_at_limit_switch_errors())
+    if(look_at_limit_switch_errors() == LIMIT_ERROR)
     {
       // rescue from error status immadietaly
       if(active_motor_direction)
@@ -277,7 +277,7 @@ unsigned char move_to_find_limit_switch(unsigned char next_or_back)
       {
         spi(step_queue[f]);
         latch();
-        if(look_at_limit_switch_errors())
+        if(look_at_limit_switch_errors() == LIMIT_ERROR)
         {
           release_motor();
           spi(step_queue[f - 1]);
@@ -295,7 +295,7 @@ unsigned char move_to_find_limit_switch(unsigned char next_or_back)
       {
         spi(step_queue[f - 1]);
         latch();
-        if(look_at_limit_switch_errors())
+        if(look_at_limit_switch_errors() == LIMIT_ERROR)
         {
           release_motor();
           spi(step_queue[f]);
