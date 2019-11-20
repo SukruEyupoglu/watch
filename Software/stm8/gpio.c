@@ -23,7 +23,10 @@ void gpio_isr(void) __interrupt(EXTI2_ISR)
   limit_interrupt = LIMIT_ERROR;
 }
 
-
+void PC3_enable_interrupt(void)
+{
+  PC_CR2 |= (1 << 3);           // INTERRUPT ENABLE PC3
+}
 
 
 
