@@ -2,6 +2,15 @@
 #include "motor.h"
 #include "function.h"
 
+unsigned char look_at_limit_switch_errors(void)
+{
+  if(limit_interrupt)
+  {
+    return 1;
+  }
+  return 0;
+}
+
 void change_active_motor(unsigned char motor_number)
 {
   // volatile unsigned char active_motor at main file
@@ -220,11 +229,11 @@ unsigned char motor_move(unsigned char step_count,unsigned char speed)
     
     if(active_motor_direction)
     {
-      mot_sta = motor_next(mt_sta,step_type);
+      mot_sta = motor_next(mot_sta,step_type);
     }
     else
     {
-      mot_sta = motor_back(mt_sta,step_type);      
+      mot_sta = motor_back(mot_sta,step_type);      
     }
     // mosfet short circuit rescue
     // release_motor(); // place STANDBY before every step if u need
@@ -236,13 +245,13 @@ unsigned char motor_move(unsigned char step_count,unsigned char speed)
       if(active_motor_direction)
       {
         // reverse one step
-        mot_sta = motor_back(mt_sta,step_type); 
+        mot_sta = motor_back(mot_sta,step_type); 
         // NOT LIKE THIS mot_sta = motor_next(mt_sta,step_type);
       }
       else
       {
         // reverse one step
-        mot_sta = motor_next(mt_sta,step_type);
+        mot_sta = motor_next(mot_sta,step_type);
         // NOT LIKE THIS mot_sta = motor_back(mt_sta,step_type);      
       }
       spi(step_queue[mot_sta]);
