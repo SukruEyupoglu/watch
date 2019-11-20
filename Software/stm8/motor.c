@@ -274,16 +274,15 @@ unsigned char motor_move(unsigned char step_count,unsigned char speed)
     // release_motor(); // place STANDBY before every step if u need
     spi(step_queue[mot_sta]);
     latch();
-    
+    write_motor_status(mot_sta);
     if(look_at_limit_switch_errors() == LIMIT_ERROR)
     {
+      release_motor();                // STANDBY without current
       return ACTIVE_AREA_LIMIT_ERROR;
     }
-    
   }
   // release_motor(); // STANDBY without current
   // hold_motor();    // HOLD current consuption
-  write_motor_status(mot_sta);
   return OK;
 }
 
