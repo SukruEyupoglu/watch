@@ -6,6 +6,7 @@
 void rescue_from_limit_switch_errors_instant(void)
 {
   unsigned char f;
+  // MAX 8 STEP BACKWARD FOR RESCUE
   for(f = 0 ; f < 8 ; f++)
   {
     // rescue from error status immadietaly
