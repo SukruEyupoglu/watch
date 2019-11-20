@@ -3,7 +3,7 @@
 #include "function.h"
 #include "error.h"
 
-void rescue_from_limit_switch_errors_instant(void)
+unsigned char rescue_from_limit_switch_errors_instant(void)
 {
   unsigned char f;
   // MAX 8 STEP BACKWARD FOR RESCUE
@@ -25,7 +25,7 @@ void rescue_from_limit_switch_errors_instant(void)
     // move one step back immadietaly
     spi(step_queue[mot_sta]);
     latch();
-    limit_interrupt = NO_LIMIT_ERROR;
+    limit_interrupt = ERASE_LIMIT_ERROR;
     PC3_interrupt_enable();
     // PC_CR2 |= (1 << 3);           // INTERRUPT REENABLE PC3
     delay(WAIT_FOR_INTERRUPT);
@@ -278,8 +278,14 @@ unsigned char motor_move(unsigned char step_count,unsigned char speed)
     write_motor_status(mot_sta);
     if(look_at_limit_switch_errors() == LIMIT_ERROR)
     {
-      release_motor();                // STANDBY without current
-      return ACTIVE_AREA_LIMIT_ERROR;
+      if(rescue_from_limit_switch_errors_instant() == FATAL_ERROR)
+      {
+        return FATAL_ERROR;
+      }
+      else
+      {
+        return ACTIVE_AREA_LIMIT_ERROR;
+      }
     }
   }
   // release_motor(); // STANDBY without current
