@@ -77,6 +77,9 @@ unsigned char motor[8] = {FCF,TCF,SCF,SCFFCB,FCB,TCB,SCB,FCFSCB};
 
 #define WAIT_FOR_INTERRUPT 100
 
+#define NEXT 1
+#define BACK 0
+
 unsigned char rescue_from_limit_switch_errors_instant(void);
 unsigned char look_at_limit_switch_errors(void);
 void change_active_motor(unsigned char motor_number);
