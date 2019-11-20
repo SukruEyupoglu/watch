@@ -77,3 +77,30 @@ unsigned char motor[8] = {FCF,TCF,SCF,SCFFCB,FCB,TCB,SCB,FCFSCB};
 
 #define WAIT_FOR_INTERRUPT 100
 
+unsigned char rescue_from_limit_switch_errors_instant(void);
+unsigned char look_at_limit_switch_errors(void);
+void change_active_motor(unsigned char motor_number);
+void release_motor(void);
+unsigned char motor_next(unsigned char stat);
+unsigned char motor_back(unsigned char stat);
+void change_direction(void);
+unsigned char look_at_motor_status(void);
+void write_motor_status(last_motor_status);
+void hold_motor(unsigned char endurance_amount);
+unsigned char motor_move(unsigned char step_count,unsigned char speed);
+unsigned char move_to_find_limit_switch(unsigned char next_or_back);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
