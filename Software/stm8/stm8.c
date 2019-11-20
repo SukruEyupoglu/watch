@@ -1,12 +1,17 @@
 #include "stm8s.h"
 #include "motor.h"
+#include "spi.h"
+#include "function.h"
+#include "error.h"
+#include "gpio.h"
+
 
 // motor_status looking for active_motor
 volatile unsigned char motor_status[4] = {SB,SB,SB,SB};
 volatile unsigned char active_motor; // selected active motor
 
 // motor shift register related data
-volatile const unsigned char step_queue[8] = {FCF,TCF,SCF,SCFFCB,FCB,TCB,SCB,FCFSCB};
+volatile unsigned char step_queue[8] = {FCF,TCF,SCF,SCFFCB,FCB,TCB,SCB,FCFSCB};
 
 // if there is a limit error look at direction for rescue motor from error
 // immadiately motor must step far away from error
@@ -29,7 +34,22 @@ volatile unsigned char limit_interrupt;
 
 int main(void)
 {
-
+  
+  
+PC3_interrupt_enable();
+gpio_interrupt_init();
+rescue_from_limit_switch_errors_instant();
+look_at_limit_switch_errors();
+change_active_motor(0x1);
+release_motor();
+motor_next(FCF);
+motor_back(FCF);
+change_direction();
+look_at_motor_status();
+write_motor_status(FCF);
+//hold_motor(100);
+motor_move(100,0);
+move_to_find_limit_switch(BACK);
 
 
   while(1)
