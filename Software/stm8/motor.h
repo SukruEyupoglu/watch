@@ -75,4 +75,5 @@ unsigned char motor[8] = {FCF,TCF,SCF,SCFFCB,FCB,TCB,SCB,FCFSCB};
 #define FCFSCB    0x3C
 #define SCFFCB    0x3C
 
+#define WAIT_FOR_INTERRUPT 100
 
