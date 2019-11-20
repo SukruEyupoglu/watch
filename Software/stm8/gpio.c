@@ -16,3 +16,14 @@ void gpio_interrupt_init(void)
   // 1,1 = FALLING EDGE AND RISING EDGE INTERRUPT
   EXTI_CR1 &= ~( (1 << 4) | (1 << 5) ); // FALLING EDGE AND LOW LEVEL INTERRUPT
 }
+
+void gpio_isr(void) __interrupt(EXTI2_ISR)
+{
+  PC_CR2 &= ~(1 << 3);           // INTERRUPT DISABLE PC3
+  limit_interrupt = LIMIT_ERROR;
+}
+
+
+
+
+
