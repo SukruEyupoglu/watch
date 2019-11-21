@@ -1,10 +1,10 @@
 #ifndef UART_H
 #define UART_H
 
-#include "stdint.h"
+// #include "stdint.h"
 
-#define F_CPU 16000000UL
-#define BAUDRATE 115200
+// #define F_CPU 16000000UL
+// #define BAUDRATE 115200
 
 // 8N1,FLOW CONTROL NONE
 
