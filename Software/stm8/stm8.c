@@ -5,6 +5,11 @@
 #include "error.h"
 #include "gpio.h"
 
+// STM8 PIN FUNCTION SELECT SYSTEM
+// WHEN CONTROL REGISTER SET
+// PIN FUNCTION AUTOMATICLY ENABLED
+// NO NEED TO SELECT PIN FUNTION
+// FOR CLOSING PIN FUCTION WRITE ZERO TO CONTROL REGISTER
 
 // motor_status looking for active_motor
 volatile unsigned char motor_status[4] = {SB,SB,SB,SB};
