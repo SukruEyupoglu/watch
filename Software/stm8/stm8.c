@@ -33,10 +33,17 @@ volatile unsigned char limit_interrupt;
 
 int main(void)
 {
+  // SET CLK TO FULL SPEED (16MHZ)
+  CLK_CKDIVR = 0;
   
-  
-  
-  
+  spi_init();
+  uart_init();
+  gpio_init();
+  buzzer_init();
+  adc_init();
+  i2c_init();
+  timer_init();
+  clk_out_init();
   
 PC3_interrupt_enable();
 gpio_interrupt_init();
