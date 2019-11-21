@@ -4,11 +4,13 @@
 void uart_init(void)
 {
   // ROUND TO NEAREST INTEGER
-  uint16_t div = (F_CPU + (BAUDRATE / 2 ) ) / BAUDRATE;
+  // uint16_t div = (F_CPU + (BAUDRATE / 2 ) ) / BAUDRATE;
+  // UART1_BRR2 = ( (div >> 8) & 0xF0) + (div & 0x0F);
+  // UART1_BRR1 = (div >> 4);
   
-  UART1_BRR2 = ( (div >> 8) & 0xF0) + (div & 0x0F);
-  UART1_BRR1 = (div >> 4);
-  
+  // no need calculating look at user manual for other bauds
+  UART1_BRR1 = 0x08;
+  UART1_BRR2 = 0x0B;
   // ENABLE TRANSMITTER AND RECEIVER
   UART1_CR2 = ( (1 << UART1_CR2_TEN) | (1 << UART1_CR2_REN) );
 }
