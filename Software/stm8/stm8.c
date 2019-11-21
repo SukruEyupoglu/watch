@@ -23,10 +23,9 @@ volatile unsigned char active_motor_direction; // direction 0 is back 1 is next
 // QUARTER_STEP = most speed and most weak steps                        4 step full circle
 volatile unsigned char step_type;
 
-// gpio output status 
-volatile unsigned char gpio_0_to_7;
-volatile unsigned char gpio_8_to_15;
-volatile unsigned char gpio_16_to_23;
+// serial or parallel shift register status 
+volatile unsigned char serial_to_parallel[2];       // 2 PCS 74595
+volatile unsigned char parallel_to_serial[3];       // 3 PCS 74165
 
 // limit switch errors must be checked before every step
 // only interrupt can make "1" this register
@@ -34,6 +33,9 @@ volatile unsigned char limit_interrupt;
 
 int main(void)
 {
+  
+  
+  
   
   
 PC3_interrupt_enable();
