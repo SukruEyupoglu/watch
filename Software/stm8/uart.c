@@ -9,6 +9,7 @@ void uart_init(void)
   // UART1_BRR1 = (div >> 4);
   
   // no need calculating look at user manual for other bauds
+  // UART_DIV = 0x008B // F_MASTER = 16MHZ
   UART1_BRR1 = 0x08;
   UART1_BRR2 = 0x0B;
   // ENABLE TRANSMITTER AND RECEIVER
