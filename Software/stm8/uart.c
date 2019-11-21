@@ -13,6 +13,14 @@ void uart_init(void)
   UART1_CR2 = ( (1 << UART1_CR2_TEN) | (1 << UART1_CR2_REN) );
 }
 
+void uart_write(unsigned char data)
+{
+  UART1_DR = data;
+  while( ! (UART1_SR & (1 << UART1_SR_TC) ) );
+}
 
-
-
+unsigned char uart_read(void)
+{
+  while( ! (UART1_SR & (1 << UART1_SR_RXNE) ) );
+  return UART1_DR;
+}
