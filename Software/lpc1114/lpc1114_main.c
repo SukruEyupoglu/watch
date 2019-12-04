@@ -68,7 +68,8 @@ int main(void)
         break;
       default:
         {
-          show_watch();         // show hour and minute from ds3231        
+          show_watch();         // show hour and minute from ds3231
+          // check_alarm();
         }
         break;
     }
