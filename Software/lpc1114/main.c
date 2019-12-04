@@ -1,9 +1,9 @@
 #include "LPC11xx.h"
 #define ERR 1
 #define ds3231_addr 0xD0
+#define eeprom_addr 0xA2
 #define alarm_gpio_output (LPC_GPIO2->DATA & (1 << 3))
-// FOR LED DATA HOLDER ARRAY EVERY FUNCTION REACABLE OPTION
-volatile unsigned char led[12] = {0,0,0,0,0,0,0,0,0,0,0,0};
+
 // FOR SYSTICK TIMER SETTING
 volatile unsigned char tick_interrupt_count = 0;
 volatile unsigned char tick_second = 10;
@@ -12,12 +12,18 @@ volatile unsigned short percent = 50 , duty = 0xFFFF;
 // FOR ALARM STATUS
 volatile unsigned char alarm_status = 0;
 
+// SAAT DATA FROM DS3231 EVERY FUNCTION REACABLE OPTION
+volatile ds_t ds3231;
+
+// FOR LED DATA HOLDER ARRAY EVERY FUNCTION REACABLE OPTION
+volatile unsigned char led[12] = {0,0,0,0,0,0,0,0,0,0,0,0};
+
 int main(void)
 {
-  // DS3231 HAS 19 REGISTER ADDRESS
-  unsigned char saat[19];
+  // EEPROM ALERT SETTING REGISTERS
+  unsigned char alrm[60];
   // FOR CONVERTING DS REGISTERS TO REASONABLE DATA
-  ds_t ds3231;
+  // ds_t ds3231;
   //  INIT ALL NECESSARY FUNCTIONS
   main_init();
   gpio_init();
@@ -27,15 +33,18 @@ int main(void)
   gpio_output_init();
   systick_init();
   
-  //READ ALL REGISTER AND SAVE TO RAW ARRAY  
-  if(i2c(ds3231_addr,0,1,saat,19) == ERR)
+  read_ds3231_data();
+  
+  read_eeprom_data();
+  
+    //READ ALL REGISTER AND SAVE TO RAW ARRAY  
+  if(i2c(eeprom_addr,1,2,1,alrm,60) == ERR)
   {
     error();
   }
-  // CONVERT RAW REGISTER DATA TO REASONABLE DATA
-  raw_to_ds_t(&ds3231,saat);
+
   //  CHECK ALL ALARMS
-  check_alarm(&ds3231);  
+  check_alarm(&ds3231,alrm);  
   
 //WRITE MINUTE AND HOUR
 led_write(ds3231.hour__am_pm,ds3231.minute,0);

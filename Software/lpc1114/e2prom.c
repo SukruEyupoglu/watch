@@ -1,7 +1,12 @@
 #define e2prom_addr 0xA2
-#define namaz_saat_start_addr 0x0000
-#define extra_data_start_addr 0x0727
-#define extra_data_last_addr 0x4095
+#define eeprom_last_addr 0xFFF
+// 0xFFF = 4095
+// 8. byte alert before namaz time if 1 look at 9. byte for how many minute
+// 9. byte minute for prepare for namaz default 0
+#define before_namaz_alert_addr 0x008
+#define minute_for_before_namaz_alert_addr 0x009
+// A. byte exta alert number how many alert saved read from here
+#define how_many_extra_alert_addr 0x00A
 
 void i2c_100khz_e2prom_init(void)
 {

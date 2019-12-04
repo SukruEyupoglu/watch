@@ -16,7 +16,7 @@ void latch(void)
 void led_hex_write(unsigned long long int circle,unsigned int digit)
 {
   unsigned char f,x;
-  led[12] = {0,0,0,0,0,0,0,0,0,0,0,0};
+  // led[12] = {0,0,0,0,0,0,0,0,0,0,0,0};
   for(f = 0 ; f < 8 ; f++)
   {
     circle >>= (f * 8);
@@ -146,3 +146,13 @@ void blink(unsigned char blink_type,unsigned int blink_shiny_time,unsigned int b
          led_hex_write(circle,digit);
          delay_timer(blink_shiny_time);
 }
+void yaz(void)
+{
+  unsigned char f;
+  for(f = 0 ; f < 12 ; f++)
+  {
+    spi( led[f] );
+  }
+  latch();         
+}        
+         

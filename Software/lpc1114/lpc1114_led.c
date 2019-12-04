@@ -1,13 +1,105 @@
-#define none 0
-#define blink_delay 3000000;
-void error(void)
+#include "lpc1114_spi.h"
+#include "lpc1114_led.h"
+
+void set_led_write_reg(unsigned char minute,unsigned char hour)
 {
-  write_digit('E','R');
-  delay_timer(blink_delay);
-  write_digit(NONE,NONE);
-  delay_timer(blink_delay);  
+  // ZERO dan minuteye kadar olan ledleri yakar.
+  limit_yaz(ZERO,minute);
+  // sol digite 10(ON) ve katları, sag digite 10(ON) a kadar olan sayılar
+  led_write_digit((hour / 10),(hour % 10));
 }
-void write_digit(unsigned char left,unsigned char right)
+
+void led_write(void)
+{
+  unsigned char f;
+  for(f = 0 ; f < 12 ; f++)
+  {
+    spi( led[f] );
+  }
+  latch();         
+}        
+
+// BELIRLI BIR ALANDAKI LEDLERI YAKAN FONKSIYON
+// x DEN BASLAYARAK y YE KADAR OLAN LEDLERI YAKAR
+// SAAT YADA DAKIKA YAZMAK ICIN UYGUNDUR
+void limit_yaz(unsigned char x,unsigned char y)
+{
+  unsigned char f;
+  // led_zero();
+  if(x < 60)
+  {
+    for(f = y ; f <= x ; f++)
+    {
+      led_yan(f);
+    }
+  }
+}
+// BELIRLI BIR ALANDAKI LEDLERI SONDUREN FONSIYON 
+// ORNEGIN x DEN BASLAYARAK y YE KADAR SIL
+void limit_sil(unsigned char x,unsigned char y)
+{
+  unsigned char f;
+  // led_one();
+  if(x < 60)
+  {
+    for(f = y ; f <= x ; f++)
+    {
+      led_son(f);
+    }
+  }
+}
+// 0 - 60 between
+// SADECE BIR LEDI YAKAN FONKSIYON
+void led_yan(unsigned char xx)
+{
+  unsigned char x = xx;
+  if(x < 61)
+  {
+    if( x == 0)
+    {
+      x = 60;
+    }
+    led[x / 8] |= (1 << ( (x - 1) % 8) );
+  }
+  // yaz();
+}
+// 0 - 60 between
+// SADECE BIR LEDI SONDUREN FONKSIYON
+void led_son(unsigned char xx)
+{
+  unsigned char x = xx;
+  if(x < 61)
+  {
+    if( x == 0)
+    {
+      x = 60;
+    }
+    led[x / 8] &= ~(1 << ( (x - 1) % 8) );
+  }
+  // yaz();
+}
+// BUTUN LEDLERI SONDUREN FONKSIYON
+void led_zero(void)
+{
+  unsigned char f = 60;
+  while(f)
+  {
+    led_son(f);
+    f--;
+  }
+}
+// BUTUN LEDLERI YAKAN FONKSIYON
+void led_one(void)
+{
+  unsigned char f = 60;
+  while(f)
+  {
+    led_yan(f);
+    f--;
+  }
+}
+
+void led_write_digit(unsigned char left,unsigned char right)
 {
   unsigned char f;
   switch(left)
