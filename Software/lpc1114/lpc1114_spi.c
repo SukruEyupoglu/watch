@@ -1,4 +1,5 @@
 #include "LPC11xx.h"
+#include "lpc1114_spi.h"
 void spi_init(void)
 {
 	//	ENABLE IOCON CLK
