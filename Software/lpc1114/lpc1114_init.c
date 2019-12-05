@@ -39,7 +39,7 @@ void sleep_or_powerdown(unsigned char sleep_type)
 {
 switch(sleep_type)
 {
-  case :0 //deep power down mode enable
+  case 0: //deep power down mode enable
   {                                 // ONLY WAKEUP PIN USED FOR AWAKENING FROM DEEP POWER DOWN
                                     // RESET NOT WORKING AT THIS STATUS WAKEUP PIN BEHAVES LIKE RESET OR START
   LPC_PMU->PCON |= (1 << 11);       // CLEAR DEEP POWER DOWN FLAG 
@@ -50,14 +50,15 @@ switch(sleep_type)
                                     // &= ~(1 << 1) FOR SLEEP OR DEEP SLEEP MODE
   LPC_SYSCON->PDSLEEPCFG = 0x18FF;  // DISABLE WDT AND BOD AT DEEPSLEEP
                                     // NO NEED POWER DOWN MODE
-  LPC_SYSCON->SCR |= (1 << 2);      // DEEP SLEEP SELECTING AND SLEEP MODE DESELECTING
+//  LPC_SYSCON->SCR |= (1 << 2);      // DEEP SLEEP SELECTING AND SLEEP MODE DESELECTING
                                     // NO NEED POWER DOWN MODE
   LPC_SYSCON->PDRUNCFG &= ~((1 << 0) | (1 << 1)); // NEED FOR DEEP POWER DOWN MODE
                                     // BEFORE SLEEP,DEEP SLEEP AND POWER DOWN MODES SET IRC TO MAIN OSC
                                     // WAKEUP PIN MUST BE PULLED HIGH DURING POWER DOWN MODE
    __WFI();                         // WAIT FOR INTERRUPT INSTRUCTION (CMSIS)
   }
-  case :1 //deep sleep mode enable
+  break;
+  case 1: //deep sleep mode enable
   {                                 //The processor state and registers, peripheral registers,
                                     // and internal SRAM values are maintained, and the logic levels of the pins remain static.
   LPC_PMU->PCON |= (1 << 8);        // CLEAR DEEP SLEEP FLAG 
@@ -66,23 +67,24 @@ switch(sleep_type)
                                     // &= ~(1 << 1) FOR SLEEP OR DEEP SLEEP MODE
   LPC_SYSCON->PDSLEEPCFG = 0x18FF;  // DISABLE WDT AND BOD AT DEEPSLEEP
   LPC_SYSCON->MAINCLKSEL = 0;       // SET IRC TO MAIN CLK,IF NEED TIMER WAKEUP WDT MUST BE MAINCLKSEL
-  LPC_SYSCON->SCR |= (1 << 2);      // DEEP SLEEP SELECTING
+//  LPC_SYSCON->SCR |= (1 << 2);      // DEEP SLEEP SELECTING
   LPC_SYSCON->PDRUNCFG &= ~((1 << 0) | (1 << 1)); // NEED FOR DEEP SLEEP MODE
                                     // BEFORE SLEEP,DEEP SLEEP AND POWER DOWN MODES SET IRC TO MAIN OSC
    __WFI();                         // WAIT FOR INTERRUPT INSTRUCTION (CMSIS)
   }
-  case :2 //sleep mode enable
+  break;
+  case 2: //sleep mode enable
   {
   LPC_PMU->PCON |= (1 << 8);       // CLEAR SLEEP FLAG 
                                     // ALSO IF YOU NEED BEFORE ENTERED SLEEP MODE CHECK THIS REGISTER
   LPC_PMU->PCON &= ~(1 << 1);       // SELECT SLEEP MODE
                                     // &= ~(1 << 1) FOR SLEEP OR DEEP SLEEP MODE
-  LPC_SYSCON->SCR &= ~(1 << 2);     // SLEEP MODE SELECTING
+//  LPC_SYSCON->SCR &= ~(1 << 2);     // SLEEP MODE SELECTING
   LPC_SYSCON->PDRUNCFG &= ~((1 << 0) | (1 << 1)); // NEED FOR SLEEP MODE
                                     // BEFORE SLEEP,DEEP SLEEP AND POWER DOWN MODES SET IRC TO MAIN OSC
    __WFI();                         // WAIT FOR INTERRUPT INSTRUCTION (CMSIS)
   }
-
+  break;
 }
 
 }
