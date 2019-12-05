@@ -1,6 +1,9 @@
 #include "lpc1114_spi.h"
 #include "lpc1114_led.h"
 
+// FOR LED DATA HOLDER ARRAY EVERY FUNCTION REACABLE OPTION
+volatile unsigned char led[12] = {0,0,0,0,0,0,0,0,0,0,0,0};
+
 void set_led_write_reg(unsigned char minute,unsigned char hour)
 {
   // ZERO dan minuteye kadar olan ledleri yakar.
