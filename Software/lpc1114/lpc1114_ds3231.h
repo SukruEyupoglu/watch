@@ -18,6 +18,7 @@
 #define DS3231_DATE_OUT_OF_UP_RANGE       32
 #define DS3231_DATE_OUT_OF_DOWN_RANGE     0
 
+#define ERR 1
 #define ERROR 1
 #define OK 0
 
@@ -46,6 +47,8 @@
 #define STAT_A2F          (1 << 1)        // ALARM_2 STATUS FLAG , WRITE 0 TO CLEAR THIS BIT
 #define STAT_A1F          (1 << 0)        // ALARM_1 STATUS FLAG , WRITE 0 TO CLEAR THIS BIT
 
+
+/*
 typedef struct ds_t
   {
   unsigned char second;
@@ -70,6 +73,9 @@ typedef struct ds_t
   }
 
 const unsigned char month_day [12] = { 31,29,31,30,31,30,31,31,30,31,30,31 }; // 1 year 366 day
+
+*/
+
 
 #define DS3231_SECOND_REG                   0x00
 #define DS3231_MINUTE_REG                   0x01
@@ -153,9 +159,9 @@ unsigned char read_ds3231_alarm_2_hour(unsigned char * hour);
 unsigned char read_ds3231_alarm_2_day(unsigned char * day);
 unsigned char read_ds3231_alarm_2_date(unsigned char * date);
 
-static unsigned char time2reg(unsigned char time);
-static unsigned char reg2time(unsigned char reg);
-static void raw_to_ds_t(ds_t * ds,unsigned char array[19]);
+// static unsigned char time2reg(unsigned char time);
+// static unsigned char reg2time(unsigned char reg);
+// static void raw_to_ds_t(ds_t * ds,unsigned char array[19]);
 
 
 
