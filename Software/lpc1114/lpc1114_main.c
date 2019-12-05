@@ -7,7 +7,7 @@
 #include "lpc1114_spi.h"
 #include "lpc1114_led.h"
 #include "lpc1114_ds3231.h"
-#include "lpc1114_error.h"
+// #include "lpc1114_error.h"
 #include "lpc1114_setting.h"
 
 void show_watch(void);
@@ -26,8 +26,6 @@ void show_watch(void)
   set_led_write_reg(minute,hour); // SET LED REGISTERS
   led_write(); //WRITE LEDS  
 }
-// FOR LED DATA HOLDER ARRAY EVERY FUNCTION REACABLE OPTION
-volatile unsigned char led[12] = {0,0,0,0,0,0,0,0,0,0,0,0};
 
 int main(void)
 {
