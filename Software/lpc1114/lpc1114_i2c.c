@@ -27,7 +27,7 @@ unsigned char i2c(
 	unsigned char * data,			//address pointer for send or receive
 	unsigned int size)			//size of send or receive data per byte
 {
-	unsigned char var,f,k;
+	unsigned char var = 0,f,k;
 	LPC_I2C->CONSET = I2CONSET_STA_BIT5; 
 	while(LPC_I2C->STAT != I2CSTAT_START_0x08);
 	LPC_I2C->DAT					=	addr;
@@ -124,4 +124,5 @@ unsigned char i2c(
 			}
 		}	
 	}
+	return 0;
 }
