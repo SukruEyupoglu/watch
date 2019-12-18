@@ -3,37 +3,36 @@
 // input or low
 // when input,pullup resistor makes high this line
 // when low ,gpio output low used to low
-// only for SDA no need for SCL
+// only for SDA no need for SCL BUT PULL UP RESISTORS
+// BECAUSE EACH CHANNEL(SCL,SDA) HAS PULL UP RESISTORS
 
 void sccb_init(void)
 {
-SCL_UP;
-SDA_UP;
+SCL_IN;
+SDA_IN;
 }
 
 void sccb_start(void)
 {
-SDA_DOWN;
-Delay_Us;
-SCL_DOWN;
-Delay_Us;
+SDA_OUT;
+SCL_IN_DELAY_2;
+SCL_OUT;
+SCL_OUT_DELAY;
 }
 
 void sccb_stop(void)
 {
-SDA_DOWN;
-SCL_UP;
-Delay_Us;
-SDA_UP;
+SDA_OUT;
+SCL_IN;
+SCL_IN_DELAY;
+SDA_IN;
 }
 void sccb_repeated_start(void)
 {
-SDA_UP;
-SCL_UP;
-Delay_Us;
-SDA_DOWN;	
-SCL_DOWN;
-Delay_Us;
+SCL_IN;
+SCL_IN_DELAY_2;
+sccb_start();
+
 }
 unsigned char sccb_write( unsigned char data)
 {
@@ -42,40 +41,35 @@ unsigned char sccb_write( unsigned char data)
 	{
 		if((data << i) & 0x80)
 		{
-			SDA_UP;
+			SDA_IN;
 		}
 		else
 		{
-			SDA_DOWN;
+			SDA_OUT;
 		}
-		Delay_Us;
-		SCL_UP;
-		Delay_Us;
+		SCL_IN;
+		SCL_IN_DELAY;
+		SCL_OUT;
+		SCL_OUT_DELAY;
 	}
-	SCL_DOWN;
-	SDA_DOWN;
-	SDA_DIR_INN;
-	Delay_Us;
-	SCL_UP;
-	if((SDA_INN) == 0)
+	SDA_IN;
+	SCL_IN;
+	if(SDA_IN_DATA == 0)
 	{
 		err = 1;
 	}
-	Delay_Us;
-	SCL_DOWN;
-	Delay_Us;
-	SDA_DIR_OUT;
+	SCL_IN_DELAY;
+	SCL_OUT;
+	SCL_OUT_DELAY;
 	return err;
 }
 unsigned char sccb_read(void)
 {
-	unsigned char i,data;
-	SDA_DOWN; // FOR REFUSE
-	SDA_DIR_INN;
+	unsigned char data = 0;
 	for(i = 0 ; i < 8 ; i++)
 	{
-		SCL_UP;
-		if(SDA_INN != 0)
+		SCL_IN;
+		if(SDA_IN_DATA != 0)
 			{
 			data = 0x01 | (data << 1);
 			}
@@ -83,16 +77,15 @@ unsigned char sccb_read(void)
 			{
 			data = 0xFE & (data << 1) ;
 			}
-		Delay_Us; // SCL HIGH TIME
-		SCL_DOWN;
-		Delay_Us; // SCL LOW TIME
+		SCL_IN_DELAY;
+		SCL_OUT;
+		SCL_OUT_DELAY;
 	}
-	SDA_DIR_OUT;
-	SDA_DOWN; // ACK_LOW = TRANFER OK
-	SCL_UP;	
-	Delay_Us; // SCL HIGH TIME
-	SCL_DOWN; // SCL DOWN
-	Delay_Us; // SCL LOW TIME
+	SDA_OUT; // ACK_LOW = TRANFER OK
+	SCL_IN;	
+	SCL_IN_DELAY; // SCL HIGH TIME
+	SCL_OUT; // SCL DOWN
+	SCL_OUT_DELAY; // SCL LOW TIME
 	return data;
 }
 void ov7670_write(unsigned char write_addr, unsigned char reg, unsigned char data)
