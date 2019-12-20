@@ -1,11 +1,3 @@
-// this code wrong 
-// because not high low
-// input or low
-// when input,pullup resistor makes high this line
-// when low ,gpio output low used to low
-// only for SDA no need for SCL BUT PULL UP RESISTORS
-// BECAUSE EACH CHANNEL(SCL,SDA) HAS PULL UP RESISTORS
-
 void sccb_init(void)
 {
 SCL_IN;
@@ -32,7 +24,6 @@ void sccb_repeated_start(void)
 SCL_IN;
 SCL_IN_DELAY_2;
 sccb_start();
-
 }
 unsigned char sccb_write( unsigned char data)
 {
