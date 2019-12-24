@@ -1,0 +1,20 @@
+(module HEADER-1x01 (layer F.Cu) (tedit 5CA5E4D2)
+  (descr "Low profile, screw machine socket strip, through hole, 100mil / 2.54mm pitch")
+  (tags "samtec socket strip tht single")
+  (fp_text reference REF** (at -2.54 0 90) (layer F.SilkS) hide
+    (effects (font (size 1 1) (thickness 0.15)))
+  )
+  (fp_text value Conn_01x01 (at 2.54 0.254 90) (layer F.SilkS) hide
+    (effects (font (size 1 1) (thickness 0.15)))
+  )
+  (fp_line (start -1.77 -1.77) (end -1.77 1.77) (layer F.CrtYd) (width 0.05))
+  (fp_line (start -1.77 1.77) (end 1.77 1.77) (layer F.CrtYd) (width 0.05))
+  (fp_line (start 1.77 1.77) (end 1.77 -1.77) (layer F.CrtYd) (width 0.05))
+  (fp_line (start 1.77 -1.77) (end -1.77 -1.77) (layer F.CrtYd) (width 0.05))
+  (pad 1 thru_hole rect (at 0 0) (size 1.5 1.5) (drill 0.95) (layers *.Cu *.Mask))
+  (model ${KISYS3DMOD}/Connectors_Samtec.3dshapes/SL-101-X-XX_1x01.wrl
+    (at (xyz 0 0 0))
+    (scale (xyz 1 1 1))
+    (rotate (xyz 0 0 0))
+  )
+)
