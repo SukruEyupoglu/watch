@@ -18,6 +18,9 @@ void i2c_init(void)
 	LPC_I2C->SCLL					=	0x3C;
 }
 
+// while ile bekledikten sonra SIC(status interrupt clear) yapılmalı 
+// kod pek düzgün degil ama calısır belki bastan yazmak lazim
+// en asagıda dogru mantık var.
 // reg addr size is byte number sample eeprom has 16bit addr size
 unsigned char i2c(
 	unsigned char addr,			//device addr char size
@@ -127,3 +130,97 @@ unsigned char i2c(
 	}
 	return 0;
 }
+
+/*
+            LPC_I2C->CONSET       = (1<<5);
+
+            while(!(LPC_I2C->CONSET & (1<<3)));   //Wait for interupt to be set
+
+            LPC_I2C->DAT               = 0x38;             //Device adress + W
+
+             LPC_I2C->CONCLR     = (1<<5); // Reset STA
+
+             LPC_I2C->CONCLR     = (1<<3); //Reset interupt
+
+ 
+
+             //Transmit 1:st registry adress to start read from
+
+             //while(LPC_I2C->STAT != 0x18);
+
+             while(!(LPC_I2C->CONSET & (1<<3)));
+
+             LPC_I2C->DAT              = 0x01;
+
+             LPC_I2C->CONCLR     = (1<<3);
+
+ 
+
+             //start bit + accelerometer adress + readbit
+
+             while(!(LPC_I2C->CONSET & (1<<3)));
+
+             LPC_I2C->CONCLR     = (1<<3);
+
+             LPC_I2C->CONSET     = (1<<5);               //Set Startbit
+
+ 
+
+             //Adress + readbit with repeated start
+
+             while(!(LPC_I2C->CONSET & (1<<3)));
+
+             LPC_I2C->CONCLR     = (1<<3);
+
+             LPC_I2C->DAT              = 0x39;           //Device adress + R
+
+ 
+
+             //wait for last i2c operation to execute
+
+             //while(!(LPC_I2C->CONSET & (1<<3)));
+
+             LPC_I2C->CONCLR     = (1<<5);          //Clear Startbit
+
+             LPC_I2C->CONCLR     = (1<<3);
+
+ 
+
+             // Read X MSB
+
+             while(!(LPC_I2C->CONSET & (1<<3)));
+
+             Rbuf[0] = LPC_I2C->DAT;           
+
+             LPC_I2C->CONSET = (1<<2);          // ACK first byte
+
+             LPC_I2C->CONCLR     = (1<<3);
+
+ 
+
+             // Read X LSB
+
+             while(!(LPC_I2C->CONSET & (1<<3)));
+
+             Rbuf[1] = LPC_I2C->DAT;
+
+             LPC_I2C->CONCLR = (1<<2);          //NACK Second byte
+
+             LPC_I2C->CONCLR     = (1<<3);
+
+ 
+
+             while(!(LPC_I2C->CONSET & (1<<3)));
+
+               LPC_I2C->CONCLR     = (1<<5);   //cleat STA
+
+               LPC_I2C->CONSET     = (1<<4);   
+
+               LPC_I2C->CONCLR     = (1<<3);
+	       
+	       
+	       */
+
+
+
+
