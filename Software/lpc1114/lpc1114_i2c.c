@@ -82,6 +82,7 @@ unsigned char i2c(
 	}
 	else
 	{
+		LPC_I2C->CONCLR = I2CONCLR_SIC_BIT3;
 		LPC_I2C->CONSET = I2CONSET_RSTA_BIT5;
 		while(LPC_I2C->STAT != I2CSTAT_START_0x10);
 		LPC_I2C->DAT					=	addr + 1;
