@@ -20,7 +20,7 @@ void i2c_init(void)
 	LPC_SYSCON->SYSAHBCLKCTRL		|=	(1 << 5);
 	LPC_SYSCON->PRESETCTRL			|=	0x2;
 	LPC_I2C->CONSET					|=	(1 << 6);
-	//	400 khz setting = 3C---100 khz setting = F0
+	//	400 khz setting = 3C      <--->      100 khz setting = F0
 	LPC_I2C->SCLH					=	0x3C;
 	LPC_I2C->SCLL					=	0x3C;
 }
@@ -29,33 +29,39 @@ void i2c_init(void)
 // kod pek düzgün degil ama calısır belki bastan yazmak lazim
 // en asagıda dogru mantık var.
 // reg addr size is byte number sample eeprom has 16bit addr size
-unsigned char i2c(
-	unsigned char addr,			//device addr char size
-	unsigned int reg,			//if device data storage size maybe 16-24-32 bit
-	unsigned char reg_addr_size,		//if device data storage 16 = 2 , 24 = 3 byte min = 1 per byte
-	unsigned char read_or_write,		//write = 0 , read = 1
-	unsigned char * data,			//address pointer for send or receive
-	unsigned int size)			//size of send or receive data per byte
+unsigned char i2c
+	(
+	unsigned char dev_addr,	//device addr for start comminication , last bit show which read or write. write = 0 read = 1
+	unsigned int reg_addr,	//device reg addr , if device a storage device maybe 16bit or 24bit
+	unsigned char byte_len,	//if device a storage device there is a byte length , how many byte used inside reg value ?
+				// 1 byte address size = 1 , 2 byte = 2 , 3 byte = 3 max = 4 byte
+	unsigned char * data,	//address pointer for send or receive
+	unsigned int data_size	//size of send or receive data per byte
+	)
 {
-	unsigned char var = 0,f,k;
+	unsigned char reg_addr_part = 0,f,k;
+	if( (byte_len < 1) | (byte_len > 4) )
+	{
+		return ERROR;
+	}
 	SET_STA_BIT; 
 	while(CHECK_SI_BIT);
-	LPC_I2C->DAT		=	addr;
+	LPC_I2C->DAT		=	dev_addr;
 	CLEAR_SI_BIT;
 	CLEAR_STA_BIT;
 	while(CHECK_SI_BIT);
 	if(LPC_I2C->STAT == I2CSTAT_ACK_0x18)
 	{
-		for(f = 0 ; f < reg_addr_size ; f++)
+		for(f = 0 ; f < byte_len ; f++)
 		{
 			for(k = 0 ; k < 8 ; k++)
 			{
-				if(reg & (1 << (k + (((reg_addr_size - 1) - f) * 8))))
+				if(reg_addr & (1 << (k + (((byte_len - 1) - f) * 8))))
 				{
-					var |= (1 << k);
+					reg_addr_part |= (1 << k);
 				}
 			}
-			LPC_I2C->DAT				=	var;
+			LPC_I2C->DAT	=	reg_addr_part;
 			CLEAR_SI_BIT;
 			while(CHECK_SI_BIT);
 		}
@@ -68,35 +74,12 @@ unsigned char i2c(
 	}
 	
 	// write = 0 read = 1
-	if(read_or_write == 0)
-	{
-		while(size)
-		{
-			if(LPC_I2C->STAT == I2CSTAT_ACK_0x28)
-			{
-				LPC_I2C->DAT				=	* data; 
-				CLEAR_SI_BIT;
-			}
-			else 
-			{
-				LPC_I2C->CONSET = I2CONSET_STO_BIT4; 
-				LPC_I2C->CONCLR = I2CONCLR_SIC_BIT3;  
-    				return 1;
-			}
-			while(CHECK_SI_BIT);
-			data++;
-			size--;
-		}
-		SET_STO_BIT;
-		CLEAR_SI_BIT;
-		return 0;
-	}
-	else
+	if(dev_addr & 0x01)
 	{
 		CLEAR_SI_BIT;
 		SET_STA_BIT;
 		while(CHECK_SI_BIT);
-		LPC_I2C->DAT					=	addr + 1;
+		LPC_I2C->DAT	=	dev_addr;
 		CLEAR_SI_BIT;
 		CLEAR_STA_BIT;
 		while(CHECK_SI_BIT);
@@ -135,7 +118,30 @@ unsigned char i2c(
 				LPC_I2C->CONCLR = I2CONCLR_SIC_BIT3;  
 				return 0;				
 			}
-		}	
+		}		
+	}
+	else
+	{
+		while(size)
+		{
+			if(LPC_I2C->STAT == I2CSTAT_ACK_0x28)
+			{
+				LPC_I2C->DAT				=	* data; 
+				CLEAR_SI_BIT;
+			}
+			else 
+			{
+				LPC_I2C->CONSET = I2CONSET_STO_BIT4; 
+				LPC_I2C->CONCLR = I2CONCLR_SIC_BIT3;  
+    				return 1;
+			}
+			while(CHECK_SI_BIT);
+			data++;
+			size--;
+		}
+		SET_STO_BIT;
+		CLEAR_SI_BIT;
+		return 0;
 	}
 	return 0;
 }
