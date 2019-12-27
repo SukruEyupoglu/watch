@@ -1,206 +1,13 @@
 #include "LPC11xx.h"
-// TIMER COUNTER COUNT 1MHZ AT SECOND
-// I2C 400KHZ AT SECOND
-// 1 BYTE = 8 BIT --> WITHOUT START STOP PULSE 400000/8 = 50000 --> 1000000/50000 = 20
-// 1 BYTE TRANFERED AT 20 COUT TO TIMER
-// DOUBLE TIME ENOUGH FOR WAIT 20*2 = 40
-#define I2C_TIMEOUT 40
-unsigned int I2C_ERROR = 0 ;
-void i2c_init_timer(void)
-{
-	//	ENABLE IOCON CLK
-	LPC_SYSCON->SYSAHBCLKCTRL		|=	(1 << 16);
+#include "lpc1114_i2c.h"
 
-	//	IOCONFIG I2C SETTINGS
-	LPC_IOCON->PIO0_4 			=	0x1;
-	LPC_IOCON->PIO0_5 			=	0x1;
-	//	I2C CLK
-	LPC_SYSCON->SYSAHBCLKCTRL		|=	(1 << 5);
-	LPC_SYSCON->PRESETCTRL			|=	0x2;
-	LPC_I2C->CONSET					|=	(1 << 6);
-	//	400 khz setting = 3C---100 khz setting = F0
-	LPC_I2C->SCLH				=	0x3C;
-	LPC_I2C->SCLL				=	0x3C;
-	// I2C WITHOUT INTERRUPT
-	// FOR ESCAPE INFINITE DELAY USE TIMER
-	// TIMER_0_16 SETTING
-	//	ENABLE TIMER_0_16 CLK
-	LPC_SYSCON->SYSAHBCLKCTRL		|=	(1 << 7);
-	// System_Core_Clock 12MHZ
-	LPC_TMR16B0->PR  = ((12000000/1000000) - 1);
-	// STOP ON MR0 MATCH
-	LPC_TMR16B0->MCR |= (1 << 2);
-	// STOP AT COUNT 1000 NO NEED TOO MUCH
-	LPC_TMR16B0->MR0 = 1000;	
-}
-void i2c_write_timer(unsigned char addr,unsigned char reg,unsigned char data)
-{
-	LPC_I2C->CONCLR				=	(1 << 5) | (1 << 4) | (1 << 3)| (1 << 2);
-	LPC_I2C->CONSET				|=	(1 << 5);
-	LPC_TMR16B0->TCR = (1 << 1) | (1 << 0);
-	LPC_TMR16B0->TCR = (1 << 0);
-	while(1)
-	{
-		if(LPC_I2C->STAT == 0x08)
-		{
-		break;
-		}
-		if(LPC_TMR16B0->TC >= I2C_TIMEOUT)
-		{
-			I2C_ERROR = 1;
-			LPC_TMR16B0->TCR = 0;
-			return;
-		}
-	}
-	LPC_I2C->DAT				=	addr; // for write last bit must be "0"
-	LPC_I2C->CONCLR				=	(1 << 5) | (1 << 3);
-	LPC_TMR16B0->TCR = (1 << 1) | (1 << 0);
-	LPC_TMR16B0->TCR = (1 << 0);
-	while(1)
-	{
-		if((LPC_I2C->STAT == 0x20) | (LPC_I2C->STAT == 0x18))
-		{
-		break;
-		}
-		if(LPC_TMR16B0->TC >= I2C_TIMEOUT)
-		{
-			I2C_ERROR = 2;
-			LPC_TMR16B0->TCR = 0;
-			return;
-		}
-	}
-	LPC_I2C->DAT				=	reg;
-	LPC_I2C->CONCLR				=	(1 << 3);
-	LPC_TMR16B0->TCR = (1 << 1) | (1 << 0);
-	LPC_TMR16B0->TCR = (1 << 0);
-	while(1)
-	{
-		if((LPC_I2C->STAT == 0x30) | (LPC_I2C->STAT == 0x28))
-		{
-		break;
-		}
-		if(LPC_TMR16B0->TC >= I2C_TIMEOUT)
-		{
-			I2C_ERROR = 3;
-			LPC_TMR16B0->TCR = 0;
-			return;
-		}
-	}	
-	LPC_I2C->DAT				=	data;
-	LPC_I2C->CONCLR				=	(1 << 3);
-	LPC_I2C->CONSET				|=	(1 << 4);
-}
-unsigned char i2c_read_timer(unsigned char write_addr,unsigned char read_addr,unsigned char reg)
-{
-	unsigned char data;
-	LPC_I2C->CONCLR				=	(1 << 5) | (1 << 3) | (1 << 2);
-	LPC_I2C->CONSET				|=	(1 << 5);
-	LPC_TMR16B0->TCR = (1 << 1) | (1 << 0);
-	LPC_TMR16B0->TCR = (1 << 0);
-	while(1)
-	{
-		if(LPC_I2C->STAT == 0x08)
-		{
-		break;
-		}
-		if(LPC_TMR16B0->TC >= I2C_TIMEOUT)
-		{
-			I2C_ERROR = 4;
-			LPC_TMR16B0->TCR = 0;
-			return;
-		}
-	}
-	LPC_I2C->DAT				=	write_addr;
-	LPC_I2C->CONCLR				=	(1 << 5) | (1 << 3);
-	LPC_TMR16B0->TCR = (1 << 1) | (1 << 0);
-	LPC_TMR16B0->TCR = (1 << 0);
-	while(1)
-	{
-		if((LPC_I2C->STAT == 0x20) | (LPC_I2C->STAT == 0x18))
-		{
-		break;
-		}
-		if(LPC_TMR16B0->TC >= I2C_TIMEOUT)
-		{
-			I2C_ERROR = 5;
-			LPC_TMR16B0->TCR = 0;
-			return;
-		}
-	}
-	LPC_I2C->DAT				=	reg;
-	LPC_I2C->CONCLR				=	(1 << 3);
-	LPC_TMR16B0->TCR = (1 << 1) | (1 << 0);
-	LPC_TMR16B0->TCR = (1 << 0);
-	while(1)
-	{
-		if((LPC_I2C->STAT == 0x30) | (LPC_I2C->STAT == 0x28))
-		{
-		break;
-		}
-		if(LPC_TMR16B0->TC >= I2C_TIMEOUT)
-		{
-			I2C_ERROR = 6;
-			LPC_TMR16B0->TCR = 0;
-			return;
-		}
-	}
-	LPC_I2C->CONSET				|=	(1 << 4);
-	LPC_I2C->CONCLR				|=	(1 << 6);
-	LPC_I2C->CONSET				|=	(1 << 6) | (1 << 5);
-	LPC_TMR16B0->TCR = (1 << 1) | (1 << 0);
-	LPC_TMR16B0->TCR = (1 << 0);
-	while(1)
-	{
-		if(LPC_I2C->STAT == 0x08)
-		{
-		break;
-		}
-		if(LPC_TMR16B0->TC >= I2C_TIMEOUT)
-		{
-			I2C_ERROR = 7;
-			LPC_TMR16B0->TCR = 0;
-			return;
-		}
-	}
-	LPC_I2C->DAT				=	read_addr;
-	LPC_I2C->CONCLR				=	(1 << 5) | (1 << 3);
-	LPC_TMR16B0->TCR = (1 << 1) | (1 << 0);
-	LPC_TMR16B0->TCR = (1 << 0);
-	while(1)
-	{
-		if((LPC_I2C->STAT == 0x40) | (LPC_I2C->STAT == 0x48))
-		{
-		break;
-		}
-		if(LPC_TMR16B0->TC >= I2C_TIMEOUT)
-		{
-			I2C_ERROR = 8;
-			LPC_TMR16B0->TCR = 0;
-			return;
-		}
-	}
-	LPC_I2C->CONCLR				=	(1 << 5) | (1 << 3);
-	LPC_TMR16B0->TCR = (1 << 1) | (1 << 0);
-	LPC_TMR16B0->TCR = (1 << 0);
-	while(1)
-	{
-		if(LPC_I2C->STAT == 0x58)
-		{
-		break;
-		}
-		if(LPC_TMR16B0->TC >= I2C_TIMEOUT)
-		{
-			I2C_ERROR = 9;
-			LPC_TMR16B0->TCR = 0;
-			return;
-		}
-	}	
-	LPC_I2C->CONSET				=	(1 << 2);
-	data = LPC_I2C->DAT;
-	LPC_I2C->CONCLR				=	(1 << 5) | (1 << 3) | (1 << 2);
-	LPC_I2C->CONSET				|=	(1 << 4);
-	return data;
-}
+#define CHECK_SI_BIT (!(LPC_I2C->CONSET & (1<<3)))
+#define CLEAR_SI_BIT (LPC_I2C->CONCLR = (1 << 3))
+#define CLEAR_STA_BIT (LPC_I2C->CONCLR = (1 << 5))
+#define SET_STA_BIT (LPC_I2C->CONSET = (1 << 5))
+#define SET_STO_BIT (LPC_I2C->CONSET = (1 << 4))
+
+
 void i2c_init(void)
 {
 	//	ENABLE IOCON CLK
@@ -217,46 +24,166 @@ void i2c_init(void)
 	LPC_I2C->SCLH					=	0x3C;
 	LPC_I2C->SCLL					=	0x3C;
 }
-void i2c_write(unsigned char addr,unsigned char reg,unsigned char data)
+
+// while ile bekledikten sonra SIC(status interrupt clear) yapılmalı 
+// kod pek düzgün degil ama calısır belki bastan yazmak lazim
+// en asagıda dogru mantık var.
+// reg addr size is byte number sample eeprom has 16bit addr size
+unsigned char i2c(
+	unsigned char addr,			//device addr char size
+	unsigned int reg,			//if device data storage size maybe 16-24-32 bit
+	unsigned char reg_addr_size,		//if device data storage 16 = 2 , 24 = 3 byte min = 1 per byte
+	unsigned char read_or_write,		//write = 0 , read = 1
+	unsigned char * data,			//address pointer for send or receive
+	unsigned int size)			//size of send or receive data per byte
 {
-	LPC_I2C->CONCLR				=	(1 << 5) | (1 << 3) | (1 << 2);
-	LPC_I2C->CONSET				|=	(1 << 5);
-	while(LPC_I2C->STAT != 0x08);
-	LPC_I2C->DAT				=	addr;
-	LPC_I2C->CONCLR				=	(1 << 5) | (1 << 3);
-	while(!((LPC_I2C->STAT == 0x20) | (LPC_I2C->STAT == 0x18)));
-	LPC_I2C->DAT				=	reg;
-	LPC_I2C->CONCLR				=	(1 << 3);
-	while(!((LPC_I2C->STAT == 0x30) | (LPC_I2C->STAT == 0x28)));
-	LPC_I2C->DAT				=	data;
-	LPC_I2C->CONCLR				=	(1 << 3);
-	LPC_I2C->CONSET				|=	(1 << 4);
-}
-unsigned char i2c_read(unsigned char write_addr,unsigned char read_addr,unsigned char reg)
-{
-	unsigned char data;
-	LPC_I2C->CONCLR				=	(1 << 5) | (1 << 3) | (1 << 2);
-	LPC_I2C->CONSET				|=	(1 << 5);
-	while(LPC_I2C->STAT != 0x08);
-	LPC_I2C->DAT				=	write_addr;
-	LPC_I2C->CONCLR				=	(1 << 5) | (1 << 3);
-	while(!((LPC_I2C->STAT == 0x20) | (LPC_I2C->STAT == 0x18)));
-	LPC_I2C->DAT				=	reg;
-	LPC_I2C->CONCLR				=	(1 << 3);
-	while(!((LPC_I2C->STAT == 0x30) | (LPC_I2C->STAT == 0x28)));
-	LPC_I2C->CONSET					|=	(1 << 4);
-	LPC_I2C->CONCLR					|=	(1 << 6);
-	LPC_I2C->CONSET					|=	(1 << 6) |	(1 << 5);
-	while(LPC_I2C->STAT != 0x08);
-	LPC_I2C->DAT				=	read_addr;
-	LPC_I2C->CONCLR				=	(1 << 5) | (1 << 3);
-	while(!((LPC_I2C->STAT == 0x40) | (LPC_I2C->STAT == 0x48)));
-	LPC_I2C->CONCLR				=	(1 << 5) | (1 << 3);
-	while(LPC_I2C->STAT != 0x58);
-	LPC_I2C->CONSET				=	(1 << 2);
-	data = LPC_I2C->DAT;
-	LPC_I2C->CONCLR				=	(1 << 5) | (1 << 3) | (1 << 2);
-	LPC_I2C->CONSET				|=	(1 << 4);
-	return data;
+	unsigned char var = 0,f,k;
+	SET_STA_BIT; 
+	while(CHECK_SI_BIT);
+	LPC_I2C->DAT		=	addr;
+	CLEAR_SI_BIT;
+	CLEAR_STA_BIT;
+	while(CHECK_SI_BIT);
+	if(LPC_I2C->STAT == I2CSTAT_ACK_0x18)
+	{
+		for(f = 0 ; f < reg_addr_size ; f++)
+		{
+			for(k = 0 ; k < 8 ; k++)
+			{
+				if(reg & (1 << (k + (((reg_addr_size - 1) - f) * 8))))
+				{
+					var |= (1 << k);
+				}
+			}
+			LPC_I2C->DAT				=	var;
+			CLEAR_SI_BIT;
+			while(CHECK_SI_BIT);
+		}
+	}
+	else 
+	{
+		SET_STO_BIT; 
+		CLEAR_SI_BIT;  
+    		return 1;
+	}
+	
+	// write = 0 read = 1
+	if(read_or_write == 0)
+	{
+		while(size)
+		{
+			if(LPC_I2C->STAT == I2CSTAT_ACK_0x28)
+			{
+				LPC_I2C->DAT				=	* data; 
+				CLEAR_SI_BIT;
+			}
+			else 
+			{
+				LPC_I2C->CONSET = I2CONSET_STO_BIT4; 
+				LPC_I2C->CONCLR = I2CONCLR_SIC_BIT3;  
+    				return 1;
+			}
+			while(CHECK_SI_BIT);
+			data++;
+			size--;
+		}
+		SET_STO_BIT;
+		CLEAR_SI_BIT;
+		return 0;
+	}
+	else
+	{
+		CLEAR_SI_BIT;
+		SET_STA_BIT;
+		while(CHECK_SI_BIT);
+		LPC_I2C->DAT					=	addr + 1;
+		CLEAR_SI_BIT;
+		CLEAR_STA_BIT;
+		while(CHECK_SI_BIT);
+		if(LPC_I2C->STAT == I2CSTAT_ACK_0x40)
+		{
+			LPC_I2C->CONSET = I2CONSET_AA_BIT2; // IF MULTIBYTE READ USE THIS
+		}
+		else 
+		{
+			LPC_I2C->CONSET = I2CONSET_STO_BIT4; 
+			LPC_I2C->CONCLR = I2CONCLR_SIC_BIT3;  
+    			return 1;
+		}
+		while(size)
+		{
+			while(LPC_I2C->STAT != I2CSTAT_ACK_0x50);
+			if(LPC_I2C->STAT == I2CSTAT_ACK_0x50)
+			{
+				*data = LPC_I2C->DAT;
+				LPC_I2C->CONCLR = I2CONCLR_SIC_BIT3;
+			}
+			else 
+			{
+				LPC_I2C->CONSET = I2CONSET_STO_BIT4; 
+				LPC_I2C->CONCLR = I2CONCLR_SIC_BIT3;  
+    				return 1;
+			}
+			data++;
+			size--;
+			if(size == 1)
+			{
+				LPC_I2C->CONCLR = I2CONCLR_MULTIBYTE_AAC_BIT2;
+				while(LPC_I2C->STAT != I2CSTAT_ACK_0x58);
+				*data = LPC_I2C->DAT;
+				LPC_I2C->CONSET = I2CONSET_STO_BIT4; 
+				LPC_I2C->CONCLR = I2CONCLR_SIC_BIT3;  
+				return 0;				
+			}
+		}	
+	}
+	return 0;
 }
 
+/*
+            LPC_I2C->CONSET       = (1<<5);
+            while(!(LPC_I2C->CONSET & (1<<3)));   //Wait for interupt to be set
+            LPC_I2C->DAT               = 0x38;             //Device adress + W
+             LPC_I2C->CONCLR     = (1<<5); // Reset STA
+             LPC_I2C->CONCLR     = (1<<3); //Reset interupt
+ 
+             //Transmit 1:st registry adress to start read from
+             //while(LPC_I2C->STAT != 0x18);
+             while(!(LPC_I2C->CONSET & (1<<3)));
+             LPC_I2C->DAT              = 0x01;
+             LPC_I2C->CONCLR     = (1<<3);
+ 
+             //start bit + accelerometer adress + readbit
+             while(!(LPC_I2C->CONSET & (1<<3)));
+             LPC_I2C->CONCLR     = (1<<3);
+             LPC_I2C->CONSET     = (1<<5);               //Set Startbit
+ 
+             //Adress + readbit with repeated start
+             while(!(LPC_I2C->CONSET & (1<<3)));
+             LPC_I2C->CONCLR     = (1<<3);
+             LPC_I2C->DAT              = 0x39;           //Device adress + R
+ 
+             //wait for last i2c operation to execute
+             //while(!(LPC_I2C->CONSET & (1<<3)));
+             LPC_I2C->CONCLR     = (1<<5);          //Clear Startbit
+             LPC_I2C->CONCLR     = (1<<3);
+ 
+             // Read X MSB
+             while(!(LPC_I2C->CONSET & (1<<3)));
+             Rbuf[0] = LPC_I2C->DAT;           
+             LPC_I2C->CONSET = (1<<2);          // ACK first byte
+             LPC_I2C->CONCLR     = (1<<3);
+ 
+             // Read X LSB
+             while(!(LPC_I2C->CONSET & (1<<3)));
+             Rbuf[1] = LPC_I2C->DAT;
+             LPC_I2C->CONCLR = (1<<2);          //NACK Second byte
+             LPC_I2C->CONCLR     = (1<<3);
+ 
+             while(!(LPC_I2C->CONSET & (1<<3)));
+               LPC_I2C->CONCLR     = (1<<5);   //cleat STA
+               LPC_I2C->CONSET     = (1<<4);   
+               LPC_I2C->CONCLR     = (1<<3);
+	       
+	       
+	       */
