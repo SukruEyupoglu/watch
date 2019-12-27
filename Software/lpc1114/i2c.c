@@ -36,17 +36,18 @@ unsigned char i2c
 	unsigned char byte_len,	//if device a storage device there is a byte length , how many byte used inside reg value ?
 				// 1 byte address size = 1 , 2 byte = 2 , 3 byte = 3 max = 4 byte
 	unsigned char * data,	//address pointer for send or receive
-	unsigned int data_size	//size of send or receive data per byte
+	unsigned int data_size	//size of send or receive data per byte , how many byte
 	)
 {
 	unsigned char reg_addr_part = 0,f,k;
-	if( (byte_len < 1) | (byte_len > 4) )
+	if( (byte_len < 1) | (byte_len > 4) | (data_size == 0) )
 	{
 		return ERROR;
 	}
+	unsigned int size = data_size;
 	SET_STA_BIT; 
 	while(CHECK_SI_BIT);
-	LPC_I2C->DAT		=	dev_addr;
+	LPC_I2C->DAT		=	dev_addr & 0xFE; // FIRST BYTE MUSTBE WRITE
 	CLEAR_SI_BIT;
 	CLEAR_STA_BIT;
 	while(CHECK_SI_BIT);
@@ -64,13 +65,19 @@ unsigned char i2c
 			LPC_I2C->DAT	=	reg_addr_part;
 			CLEAR_SI_BIT;
 			while(CHECK_SI_BIT);
+			if(LPC_I2C->STAT != I2CSTAT_ACK_0x28)
+			{
+					SET_STO_BIT; 
+					CLEAR_SI_BIT;  
+    					return ERROR;
+			}
 		}
 	}
 	else 
 	{
 		SET_STO_BIT; 
 		CLEAR_SI_BIT;  
-    		return 1;
+    		return ERROR;
 	}
 	
 	// write = 0 read = 1
@@ -116,24 +123,25 @@ unsigned char i2c
 				*data = LPC_I2C->DAT;
 				LPC_I2C->CONSET = I2CONSET_STO_BIT4; 
 				LPC_I2C->CONCLR = I2CONCLR_SIC_BIT3;  
-				return 0;				
+				return OK;				
 			}
 		}		
 	}
 	else
 	{
+	// WRITE SELECTING
 		while(size)
 		{
 			if(LPC_I2C->STAT == I2CSTAT_ACK_0x28)
 			{
-				LPC_I2C->DAT				=	* data; 
+				LPC_I2C->DAT	=	* data; 
 				CLEAR_SI_BIT;
 			}
 			else 
 			{
-				LPC_I2C->CONSET = I2CONSET_STO_BIT4; 
-				LPC_I2C->CONCLR = I2CONCLR_SIC_BIT3;  
-    				return 1;
+				SET_STO_BIT; 
+				CLEAR_SI_BIT;  
+    				return ERROR;
 			}
 			while(CHECK_SI_BIT);
 			data++;
@@ -141,9 +149,9 @@ unsigned char i2c
 		}
 		SET_STO_BIT;
 		CLEAR_SI_BIT;
-		return 0;
+		return OK;
 	}
-	return 0;
+	return OK;
 }
 
 /*
