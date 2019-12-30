@@ -49,9 +49,18 @@ unsigned char i2c
 	
 	SET_STA_BIT; 
 	while(CHECK_SI_BIT);
-	LPC_I2C->DAT		=	dev_addr & 0xFE; // FIRST BYTE MUSTBE WRITE
-	CLEAR_SI_BIT;
-	CLEAR_STA_BIT;
+	if(LPC_I2C->STAT == I2CSTAT_START_0x08)
+	{
+		LPC_I2C->DAT		=	dev_addr & 0xFE; // FIRST BYTE MUSTBE WRITE
+		CLEAR_SI_BIT;
+		CLEAR_STA_BIT;
+	}
+	else
+	{
+		SET_STO_BIT;
+		CLEAR_SI_BIT;
+		return ERROR_0x08;
+	}
 	while(CHECK_SI_BIT);
 	if(LPC_I2C->STAT == I2CSTAT_ACK_0x18)
 	{
@@ -71,7 +80,7 @@ unsigned char i2c
 			{
 					SET_STO_BIT; 
 					CLEAR_SI_BIT;  
-    					return ERROR;
+    					return ERROR_0x28;
 			}
 		}
 	}
@@ -79,7 +88,7 @@ unsigned char i2c
 	{
 		SET_STO_BIT; 
 		CLEAR_SI_BIT;  
-    		return ERROR;
+    		return ERROR_0x18;
 	}
 	
 	// write = 0 read = 1
@@ -89,9 +98,18 @@ unsigned char i2c
 		CLEAR_SI_BIT;
 		SET_STA_BIT;
 		while(CHECK_SI_BIT);
-		LPC_I2C->DAT	=	dev_addr;
-		CLEAR_SI_BIT;
-		CLEAR_STA_BIT;
+		if(LPC_I2C->STAT == I2CSTAT_START_0x10)
+		{
+			LPC_I2C->DAT	=	dev_addr;
+			CLEAR_SI_BIT;
+			CLEAR_STA_BIT;
+		}
+		else
+		{
+			SET_STO_BIT;
+			CLEAR_SI_BIT;
+			return ERROR_0x10;
+		}
 		while(CHECK_SI_BIT);
 		if(LPC_I2C->STAT == I2CSTAT_ACK_0x40)
 		{
@@ -102,7 +120,7 @@ unsigned char i2c
 		{
 			SET_STO_BIT; 
 			CLEAR_SI_BIT;  
-    			return ERROR;
+    			return ERROR_0x40;
 		}
 		while(size)
 		{
@@ -116,7 +134,7 @@ unsigned char i2c
 			{
 				SET_STO_BIT; 
 				CLEAR_SI_BIT;  
-    				return ERROR;
+    				return ERROR_0x50;
 			}
 			if(size > 1)
 			{
@@ -142,7 +160,7 @@ unsigned char i2c
 			{
 				SET_STO_BIT; 
 				CLEAR_SI_BIT;  
-    				return ERROR;
+    				return ERROR_0x28;
 			}
 			while(CHECK_SI_BIT);
 			if(size > 1)
@@ -151,9 +169,18 @@ unsigned char i2c
 			}
 			size--;
 		}
-		SET_STO_BIT;
-		CLEAR_SI_BIT;
-		return OK;
+		if(LPC_I2C->STAT == I2CSTAT_ACK_0x28)
+		{
+			SET_STO_BIT;
+			CLEAR_SI_BIT;
+			return OK;
+		}
+		else
+		{
+			SET_STO_BIT;
+			CLEAR_SI_BIT;
+			return ERROR_0x28;
+		}
 	}
 	return OK;
 }
