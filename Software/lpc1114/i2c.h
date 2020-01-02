@@ -1,3 +1,14 @@
+
+
+#define ERROR_0x08 1
+#define ERROR_0x10 1
+#define ERROR_0x18 1
+#define ERROR_0x28 1
+#define ERROR_0x40 1
+#define ERROR_0x50 1
+
+
+
 #define CHECK_SI_BIT (!(LPC_I2C->CONSET & (1<<3)))
 #define CLEAR_SI_BIT (LPC_I2C->CONCLR = (1 << 3))
 #define CLEAR_STA_BIT (LPC_I2C->CONCLR = (1 << 5))
