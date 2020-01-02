@@ -39,6 +39,7 @@ unsigned char i2c
 	{
 		return ERROR;
 	}
+				//delay(1000); // in succession this line must be 
 	CLEAR_SI_BIT;
 	SET_STA_BIT; 
 	while(CHECK_SI_BIT);
@@ -166,7 +167,6 @@ unsigned char i2c
 		{
 			SET_STO_BIT;
 			CLEAR_SI_BIT;
-			delay(1000); // in succession this line must be 
 			return OK;
 		}
 		else
