@@ -11,13 +11,23 @@ void set_led_write_reg(unsigned char minute,unsigned char hour)
   // sol digite 10(ON) ve katları, sag digite 10(ON) a kadar olan sayılar
   led_write_digit((hour / 10),(hour % 10));
 }
-
+/* wrong reverse shift register
 void led_write(void)
 {
   unsigned char f;
   for(f = 0 ; f < 12 ; f++)
   {
     spi( led[f] );
+  }
+  latch();         
+}        
+*/ // true at below
+void led_write(void)
+{
+  unsigned char f;
+  for(f = 0 ; f < 12 ; f++)
+  {
+    spi( led[(11 - f)] );
   }
   latch();         
 }        
