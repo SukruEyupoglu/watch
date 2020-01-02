@@ -1,13 +1,6 @@
 #include "LPC11xx.h"
 #include "lpc1114_i2c.h"
-
-#define CHECK_SI_BIT (!(LPC_I2C->CONSET & (1<<3)))
-#define CLEAR_SI_BIT (LPC_I2C->CONCLR = (1 << 3))
-#define CLEAR_STA_BIT (LPC_I2C->CONCLR = (1 << 5))
-#define SET_STA_BIT (LPC_I2C->CONSET = (1 << 5))
-#define SET_STO_BIT (LPC_I2C->CONSET = (1 << 4))
-#define ERROR 1
-#define OK 0
+#include "lpc1114_delay.h"
 
 void i2c_init(void)
 {
@@ -46,7 +39,7 @@ unsigned char i2c
 	{
 		return ERROR;
 	}
-	
+	CLEAR_SI_BIT;
 	SET_STA_BIT; 
 	while(CHECK_SI_BIT);
 	if(LPC_I2C->STAT == I2CSTAT_START_0x08)
@@ -173,6 +166,7 @@ unsigned char i2c
 		{
 			SET_STO_BIT;
 			CLEAR_SI_BIT;
+			delay(1000); // in succession this line must be 
 			return OK;
 		}
 		else
