@@ -48,9 +48,8 @@ unsigned char spi(unsigned char TX_Data)
 void latch(void)
 {	
 	// WITHOUT DELAY APPROXYMATELY 2.5MHZ SIGNAL LENGTH
-	LPC_GPIO2->DATA					&=	~(1 << 10);
-	// delay(1);
 	LPC_GPIO2->DATA					|=	(1 << 10);
+	LPC_GPIO2->DATA					&=	~(1 << 10);
 }
 
 
