@@ -1,9 +1,10 @@
 
 
-#define SYST_CSR (0xE000E010UL)
-#define SYST_RVR (0xE000E014UL)
-#define SYST_CVR (0xE000E018UL)
-#define SYST_CALIB (0xE000E01CUL)
+// interrupt ları interrupt içinde tekrar kurmak gerekir 
+// yeniden interrupt a girsin diye
+// fakat systick interrupt unun tekrar girmesine gerek yoktur.
+// biz çağırınca girmesi gerekir.
+// o yüzden interrupt un tekrar içinde aktif edilmez.
 
 #define SYSTEM_CLOCK_FREQUENCY 12 // 12MHZ
 
