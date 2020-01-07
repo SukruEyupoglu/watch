@@ -1,3 +1,13 @@
+#include "PLATFORMLESS.h"
+
+
+
+void delay(volatile unsigned int bekle)
+{
+	while(bekle)bekle--;
+}
+
+
 unsigned char check_hex_data(unsigned char data)
 {
 	if(
