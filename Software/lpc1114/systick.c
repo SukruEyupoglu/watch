@@ -19,7 +19,6 @@ void delay_sys(unsigned int u_sec)
 void SysTick_Handler(void)
 {
   SYSTICK_CSR &= ~( (1 << SYSTICK_TICKINT_BIT) | (1 << SYSTICK_ENABLE_BIT) );
-  // maybe clear interrupt
 }
 
 
