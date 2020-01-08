@@ -1,3 +1,5 @@
+#include "stm8s.h"
+#include "nrf8.h"
 void nrf_gpio_init(void)
 {
   	//	NRF IRQ SETTINGS
