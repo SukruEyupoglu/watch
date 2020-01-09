@@ -9,8 +9,8 @@
 // 8N1,FLOW CONTROL NONE
 
 void uart_init(void);
-void uart_write(unsigned char data);
-unsigned char uart_read(void);
+void uart_send(unsigned char data);
+unsigned char uart_get(void);
 
 #endif // UART_H
 
