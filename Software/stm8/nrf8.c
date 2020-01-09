@@ -1,5 +1,8 @@
 #include "stm8s.h"
 #include "nrf8.h"
+
+#define delay_10_us __asm__("nop");__asm__("nop");__asm__("nop");__asm__("nop");__asm__("nop");__asm__("nop");__asm__("nop")
+
 void nrf_gpio_init(void)
 {
   	//	NRF IRQ SETTINGS
