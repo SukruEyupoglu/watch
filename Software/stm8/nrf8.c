@@ -1,7 +1,22 @@
 #include "stm8s.h"
 #include "nrf8.h"
 
-#define delay_10_us __asm__("nop");__asm__("nop");__asm__("nop");__asm__("nop");__asm__("nop");__asm__("nop");__asm__("nop")
+
+////////////////////////////////////////////////////////////////
+// THIS TESTED WITH OSCILOSKOP
+  // SET CLK TO FULL SPEED (16MHZ)
+  //CLK_CKDIVR = 0;
+void delay(volatile unsigned char bekle);
+void delay(volatile unsigned char bekle)
+{
+	while(bekle)
+	{
+		bekle--;
+	}
+}
+#define delay_10us delay(20)
+///////////////////////////////////////////////////////////////////////
+
 
 void nrf_gpio_init(void)
 {
