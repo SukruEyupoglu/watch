@@ -14,6 +14,7 @@ void uart_init(void)
   UART1_BRR2  = 0x0B;
   // ENABLE TRANSMITTER AND RECEIVER
   UART1_CR2 = ( (1 << UART1_CR2_TEN) | (1 << UART1_CR2_REN) );
+  UART1_CR2 |= (1 << UART1_CR2_RIEN); // if you need rx interrupt enable this
 }
 
 void uart_send(unsigned char data)
@@ -27,3 +28,12 @@ unsigned char uart_get(void)
   while( ! (UART1_SR & (1 << UART1_SR_RXNE) ) );
   return UART1_DR;
 }
+void uart_isr() __interrupt(UART1_RXC_ISR) // uart rx interrupt function
+{
+  
+}
+  
+  
+  
+  
+  
