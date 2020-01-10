@@ -92,7 +92,7 @@ void led_yan(unsigned char xx)
     {
       x = 60;
     }
-    led[x / 8] |= (1 << ( (x - 1) % 8) );
+    led[ (x - 1) / 8] |= (1 << ( (x - 1) % 8) );
   }
   // yaz();
 }
@@ -107,7 +107,7 @@ void led_son(unsigned char xx)
     {
       x = 60;
     }
-    led[x / 8] &= ~(1 << ( (x - 1) % 8) );
+    led[ (x - 1) / 8] &= ~(1 << ( (x - 1) % 8) );
   }
   // yaz();
 }
