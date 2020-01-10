@@ -39,11 +39,21 @@ void limit_yaz(unsigned char x,unsigned char y)
 {
   unsigned char f;
   // led_zero();
-  if(x < 60)
+  if( (x < 60) & (y < 60) )
   {
-    for(f = y ; f <= x ; f++)
+    if(y < x)
     {
-      led_yan(f);
+      for(f = y ; f <= x ; f++)
+      {
+        led_yan(f);
+      }
+    }
+    else
+    {
+      for(f = x ; f <= y ; f++)
+      {
+        led_yan(f);
+      }      
     }
   }
 }
@@ -53,11 +63,21 @@ void limit_sil(unsigned char x,unsigned char y)
 {
   unsigned char f;
   // led_one();
-  if(x < 60)
+  if( (x < 60) & (y < 60) )
   {
-    for(f = y ; f <= x ; f++)
+    if(y < x)
     {
-      led_son(f);
+      for(f = y ; f <= x ; f++)
+      {
+        led_son(f);
+      }
+    }
+    else
+    {
+      for(f = x ; f <= y ; f++)
+      {
+        led_son(f);
+      }      
     }
   }
 }
