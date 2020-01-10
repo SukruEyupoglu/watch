@@ -2,7 +2,11 @@
 #include "uart.h"
 
 void uart_init(void)
-{
+{     
+          // stm8s003 has 1 byte uart buffer
+              // at main file do this for interrupt buffering
+              // volatile unsigned char uart_buffer[50];
+              // volatile unsigned char uart_buffer_data_count = 0;
   // ROUND TO NEAREST INTEGER
   // uint16_t div = (F_CPU + (BAUDRATE / 2 ) ) / BAUDRATE;
   // UART1_BRR2 = ( (div >> 8) & 0xF0) + (div & 0x0F);
@@ -30,7 +34,8 @@ unsigned char uart_get(void)
 }
 void uart_isr() __interrupt(UART1_RXC_ISR) // uart rx interrupt function
 {
-  
+  uart_buffer[uart_buffer_data_count] = UART1_DR;
+  uart_buffer_data_count++;
 }
   
   
