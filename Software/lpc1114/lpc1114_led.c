@@ -134,7 +134,6 @@ void led_one(void)
 
 void led_write_digit(unsigned char left,unsigned char right)
 {
-  unsigned char f;
   switch(left)
   {
     case '.':
