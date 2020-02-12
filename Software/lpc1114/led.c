@@ -1,5 +1,5 @@
-#include "lpc1114_spi.h"
-#include "lpc1114_led.h"
+#include "spi.h"
+#include "led.h"
 #include "LPC11xx.h"
 
 void led_init(void)
