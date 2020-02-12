@@ -1,12 +1,12 @@
 #include "LPC11xx.h"
-#include "lpc1114_init.h"
-#include "lpc1114_button.h"
-#include "lpc1114_i2c.h"
-#include "lpc1114_spi.h"
-#include "lpc1114_led.h"
-#include "lpc1114_ds3231.h"
+#include "init.h"
+#include "button.h"
+#include "i2c.h"
+#include "spi.h"
+#include "led.h"
+#include "ds3231.h"
 // #include "lpc1114_error.h"
-#include "lpc1114_setting.h"
+#include "setting.h"
 
 void show_watch(void);
 
