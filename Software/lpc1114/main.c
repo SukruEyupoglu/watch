@@ -1,122 +1,79 @@
 #include "LPC11xx.h"
-#define ERR 1
-#define ds3231_addr 0xD0
-#define eeprom_addr 0xA2
-#define alarm_gpio_output (LPC_GPIO2->DATA & (1 << 3))
+#include "lpc1114_init.h"
+#include "lpc1114_button.h"
+#include "lpc1114_i2c.h"
+#include "lpc1114_spi.h"
+#include "lpc1114_led.h"
+#include "lpc1114_ds3231.h"
+// #include "lpc1114_error.h"
+#include "lpc1114_setting.h"
 
-// FOR SYSTICK TIMER SETTING
-volatile unsigned char tick_interrupt_count = 0;
-volatile unsigned char tick_second = 10;
-// FOR PWM LIGHT SETTING
-volatile unsigned short percent = 50 , duty = 0xFFFF;
-// FOR ALARM STATUS
-volatile unsigned char alarm_status = 0;
+void show_watch(void);
 
-// SAAT DATA FROM DS3231 EVERY FUNCTION REACABLE OPTION
-volatile ds_t ds3231;
-
-// FOR LED DATA HOLDER ARRAY EVERY FUNCTION REACABLE OPTION
-volatile unsigned char led[12] = {0,0,0,0,0,0,0,0,0,0,0,0};
+void show_watch(void)
+{
+  unsigned char minute,hour;
+  if(read_ds3231_minute(&minute) == ERR)
+  {
+    //error();
+  }
+  if(read_ds3231_hour(&hour) == ERR)
+  {
+    //error();
+  }
+  set_led_write_reg(minute,hour); // SET LED REGISTERS
+  led_write(); //WRITE LEDS  
+}
 
 int main(void)
 {
-  // EEPROM ALERT SETTING REGISTERS
-  unsigned char alrm[60];
-  // FOR CONVERTING DS REGISTERS TO REASONABLE DATA
-  // ds_t ds3231;
-  //  INIT ALL NECESSARY FUNCTIONS
-  main_init();
-  gpio_init();
-  i2c_init();
-  spi_init();
-  tmr16b1_pwm_init();
-  gpio_output_init();
-  systick_init();
+  init();               // lpc1114_init.h     --> only set 12MHZ frequency
+  gpio_init();          // lpc1114_button.h   --> button settings
+  i2c_init();           // lpc1114_i2c.h      --> i2c settings
+  spi_init();           // lpc1114_spi.h      --> spi settings
+  led_init();           // latch and output enable settings
   
-  read_ds3231_data();
   
-  read_eeprom_data();
   
-    //READ ALL REGISTER AND SAVE TO RAW ARRAY  
-  if(i2c(eeprom_addr,1,2,1,alrm,60) == ERR)
+  while(1)
   {
-    error();
-  }
-
-  //  CHECK ALL ALARMS
-  check_alarm(&ds3231,alrm);  
-  
-//WRITE MINUTE AND HOUR
-led_write(ds3231.hour__am_pm,ds3231.minute,0);
-  
-//START SYSTICK AND 10 SECOND DEADLINE FOR POWERDOWN MODE
-systick_second_sleep(10);
-
-while(1){
-  //WAIT FOR SETTING BUTTON PRESSED
-  //EACH BUTTON PRESSED RESTART SYSTICK
-  switch(check_button())
-  {
-    case 201 :
-      {
-          stop_alarm();
-          setting_alarm_on();
-      }
-    break;
-    case 202 :
-      {
-          stop_alarm();
-          setting_clk_on();
-      }
-    break;
-    case 203 :
-      {
-          stop_alarm();
-      }
-    break;
-    case 204 :
-      {
-          stop_alarm();
-          sleep();
-      }
-    break;
-    case 205 :
-      {
-          stop_alarm();
-      }
-    break;
-    case 206 :
-      {
-          stop_alarm();
-      }
-    break;
-    case 207 :
-      {
-          stop_alarm();
-          brightness_down();
-      }
-    break;
-    case 208 :
-      {
-          stop_alarm();
-          brightness_up();
-      }
-    break;
-    case 209 :
-      {
-          stop_alarm();
-      }
-    break;
-    case 210 :
-      {
-          stop_alarm();
-      }
-    break;
-    default :
+    switch(check_button())
     {
+      case STP_LRM:
+        {
+          //stop_alarm();
+        }
+        break;
+      case SLP:
+        {
+          //sleep();
+        }
+        break;        
+      case SETTING_LRM:
+        {
+          if(ds3231_clock_setting(AL1) == ERR)
+          {
+            //error();
+          }
+        }
+        break;
+      case SETTING_CLK:
+        {
+          if(ds3231_clock_setting(CLOCK) == ERR)
+          {
+            //error();
+          }          
+        }
+        break;
+      default:
+        {
+          show_watch();         // show hour and minute from ds3231
+          // check_alarm();
+        }
+        break;
     }
-    break;
   }
+  
+  return 0;
 }
-return 0;
-}
+
