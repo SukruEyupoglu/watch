@@ -25,7 +25,7 @@ volatile unsigned char led[12] = {0,0,0,0,0,0,0,0,0,0,0,0};
 void set_led_write_reg(unsigned char minute,unsigned char hour)
 {
   // ZERO dan minuteye kadar olan ledleri yakar.
-  limit_yaz(ZERO,minute);
+  limit_yaz(ONE,minute);
   // sol digite 10(ON) ve katları, sag digite 10(ON) a kadar olan sayılar
   led_write_digit((hour / 10),(hour % 10));
 
