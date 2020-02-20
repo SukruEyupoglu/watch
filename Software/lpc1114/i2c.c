@@ -132,7 +132,7 @@ unsigned char i2c
 			}
 			if(size > 1)
 			{
-				data++;
+				data = data + 1;
 			}
 			size--;
 		}
@@ -159,7 +159,7 @@ unsigned char i2c
 			while(CHECK_SI_BIT);
 			if(size > 1)
 			{
-				data++;
+				data = data + 1;
 			}
 			size--;
 		}
