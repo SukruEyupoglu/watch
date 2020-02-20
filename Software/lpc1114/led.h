@@ -17,7 +17,7 @@ void led_one(void);
 void led_write_digit(unsigned char left,unsigned char right);
 
 
-
+#define ONE 1
 #define ZERO 0
 
 
