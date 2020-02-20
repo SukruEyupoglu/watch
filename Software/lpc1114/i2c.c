@@ -1,6 +1,6 @@
 #include "LPC11xx.h"
 #include "lpc1114_i2c.h"
-#include "lpc1114_delay.h"
+//#include "lpc1114_delay.h"
 
 void i2c_init(void)
 {
@@ -34,14 +34,13 @@ unsigned char i2c
 	)
 {
 	unsigned char reg_addr_part = 0,f,k;
-	unsigned int size = data_size;
 	if( (byte_len < 1) | (byte_len > 4) | (data_size == 0) )
 	{
 		return ERROR;
 	}
-				//delay(1000); // in succession this line must be 
+				//delay(1000); // in succession this line must be
 	CLEAR_SI_BIT;
-	SET_STA_BIT; 
+	SET_STA_BIT;
 	while(CHECK_SI_BIT);
 	if(LPC_I2C->STAT == I2CSTAT_START_0x08)
 	{
@@ -72,16 +71,16 @@ unsigned char i2c
 			while(CHECK_SI_BIT);
 			if(LPC_I2C->STAT != I2CSTAT_ACK_0x28)
 			{
-					SET_STO_BIT; 
-					CLEAR_SI_BIT;  
+					SET_STO_BIT;
+					CLEAR_SI_BIT;
     					return ERROR_0x28;
 			}
 		}
 	}
 	else 
 	{
-		SET_STO_BIT; 
-		CLEAR_SI_BIT;  
+		SET_STO_BIT;
+		CLEAR_SI_BIT;
     		return ERROR_0x18;
 	}
 	
@@ -110,31 +109,26 @@ unsigned char i2c
 			LPC_I2C->CONSET = I2CONSET_AA_BIT2;
 			CLEAR_SI_BIT;
 		}
-		else 
+		else
 		{
-			SET_STO_BIT; 
-			CLEAR_SI_BIT;  
+			SET_STO_BIT;
+			CLEAR_SI_BIT;
     			return ERROR_0x40;
 		}
-		while(size)
+		for(f = 0 ; f < data_size ; f++)
 		{
 			while(CHECK_SI_BIT);
 			if(LPC_I2C->STAT == I2CSTAT_ACK_0x50)
 			{
-				*data = LPC_I2C->DAT;
+				*(data + f) = LPC_I2C->DAT;
 				CLEAR_SI_BIT;
 			}
 			else 
 			{
-				SET_STO_BIT; 
-				CLEAR_SI_BIT;  
+				SET_STO_BIT;
+				CLEAR_SI_BIT;
     				return ERROR_0x50;
 			}
-			if(size > 1)
-			{
-				data = data + 1;
-			}
-			size--;
 		}
 		SET_STO_BIT;
 		CLEAR_SI_BIT;
@@ -143,25 +137,20 @@ unsigned char i2c
 	else
 	{
 	// WRITE SELECTING
-		while(size)
+		for(f = 0 ; f < data_size ; f++)
 		{
 			if(LPC_I2C->STAT == I2CSTAT_ACK_0x28)
 			{
-				LPC_I2C->DAT	=	* data; 
+				LPC_I2C->DAT	=	*(data + f);
 				CLEAR_SI_BIT;
 			}
 			else 
 			{
-				SET_STO_BIT; 
-				CLEAR_SI_BIT;  
+				SET_STO_BIT;
+				CLEAR_SI_BIT;
     				return ERROR_0x28;
 			}
 			while(CHECK_SI_BIT);
-			if(size > 1)
-			{
-				data = data + 1;
-			}
-			size--;
 		}
 		if(LPC_I2C->STAT == I2CSTAT_ACK_0x28)
 		{
