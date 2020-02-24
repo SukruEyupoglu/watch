@@ -1,175 +1,25 @@
-// saat seçilirse başlangıçtan saat değerine kadar olan ledler yanar
-#define dakika 0
-// dolgu seçilirse düzenli bir biçimde 32 bit için 0 - 31
-// x değeri yanacak ledleri 0 - 5
-// y değeri sönecek ledleri 6 - 11
-// z değeri başlangıç noktasını 12 - 17
-// v değeri bitiş noktasını 18 - 23
-// ifade eder
-#define dolgu 2
-// desen seçilirse rastgele iki adet 32 bit register bit olarak şekillendirilebilir.
-#define desen 1
-
-void daire_yaz(unsigned char dakika,unsigned int dolgu,unsigned int desen_0_31,unsigned int desen_32_59,unsigned char tip)
+void pre_setting(void)
 {
-  unsigned char f,j;
-  switch (tip)
+  
+}
+void setting(unsigned char set_number)
+{
+  unsigned char counter = 0;
+  while(1)
   {
-    case 0:
+    button_repress_delay(); // maybe inside check_button ?
+    switch(check_button())
     {
-      if(dakika < 60)
-      {
-        for(f = 0 ; f < (dakika / 8) ; f++)
+      case setting_select_button_up:
         {
-          led[f] = 0xFF;
+          
         }
-        for(f = 0 ; f < (dakika % 8) ; f++)
+        break;
+      case setting_select_button_down:
         {
-          led[dakika / 8] |= (1 << f);
+          
         }
-      }
-    }
-    break;
-    case 1:
-    {
-      for(f = 0 ; f < 4 ; f++)
-      {
-        for(j = 0 ; j < 8 ; j++)
-        {
-          if(desen_0_31 & (1 << ((f * 8) + j)))
-          {
-            led[f] |= (1 << j); 
-          }
-          if(desen_32_59 & (1 << ((f * 8) + j)))
-          {
-            led[f + 4] |= (1 << j); 
-          }
-        }
-      }
-    }
-    break;
-    case 2:
-    {
-      for(f = 0 ; f < 60 ; f++)
-      {
-        if( (f >= ( (dolgu >> 12) & 0x3B) ) &
-            (f <= ( (dolgu >> 18) & 0x3B) ) &
-            (   ( (59 - ( (dolgu >> 12) & 0x3B) ) % ( (dolgu >> 0) & 0x3B) + (dolgu >> 6) & 0x3B) ) ) -
-                (dolgu >> 6) & 0x3B) >
-                ( (f % ( (dolgu >> 0) & 0x3B) + (dolgu >> 6) & 0x3B) ) ) - (dolgu >> 6) & 0x3B) )
-            )
-          )
-        {
-          led[f / 8] |= (1 << (f % 8));
-        }
-      }
-    }
-    break;
-    case 3:
-    {
-      
-    }
-    break;
-    default:
-    {
-      
-    }
-    break;
-  }
-  yaz();
-}
-// BELKI BOZUK OLABILIR
-void desen_yaz(unsigned char x,unsigned char y)
-{
-  unsigned char f;
-  for(f = 0 ; f < 60 ; f++)
-  {
-    if( (f % x) == 0)
-    {
-      limit_yaz(f,(f - y) );
+        break;
     }
   }
 }
-// BELIRLI BIR ALANDAKI LEDLERI YAKAN FONKSIYON
-// x DEN BASLAYARAK y YE KADAR OLAN LEDLERI YAKAR
-// SAAT YADA DAKIKA YAZMAK ICIN UYGUNDUR
-void limit_yaz(unsigned char x,unsigned char y)
-{
-  unsigned char f;
-  // led_zero();
-  if(x < 60)
-  {
-    for(f = y ; f <= x ; f++)
-    {
-      led_yan(f);
-    }
-  }
-}
-// BELIRLI BIR ALANDAKI LEDLERI SONDUREN FONSIYON 
-// ORNEGIN x DEN BASLAYARAK y YE KADAR SIL
-void limit_sil(unsigned char x,unsigned char y)
-{
-  unsigned char f;
-  // led_one();
-  if(x < 60)
-  {
-    for(f = y ; f <= x ; f++)
-    {
-      led_son(f);
-    }
-  }
-}
-// 0 - 60 between
-// SADECE BIR LEDI YAKAN FONKSIYON
-void led_yan(unsigned char xx)
-{
-  unsigned char x = xx;
-  if(x < 61)
-  {
-    if( x == 0)
-    {
-      x = 60;
-    }
-    led[x / 8] |= (1 << ( (x - 1) % 8) );
-  }
-  // yaz();
-}
-// 0 - 60 between
-// SADECE BIR LEDI SONDUREN FONKSIYON
-void led_son(unsigned char xx)
-{
-  unsigned char x = xx;
-  if(x < 61)
-  {
-    if( x == 0)
-    {
-      x = 60;
-    }
-    led[x / 8] &= ~(1 << ( (x - 1) % 8) );
-  }
-  // yaz();
-}
-// BUTUN LEDLERI SONDUREN FONKSIYON
-void led_zero(void)
-{
-  unsigned char f = 60;
-  while(f)
-  {
-    led_son(f);
-    f--;
-  }
-}
-// BUTUN LEDLERI YAKAN FONKSIYON
-void led_one(void)
-{
-  unsigned char f = 60;
-  while(f)
-  {
-    led_yan(f);
-    f--;
-  }
-}
-
-
-
-
