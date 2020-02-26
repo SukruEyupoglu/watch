@@ -69,3 +69,40 @@ void setting(void)
     }
   }
 }
+unsigned char set_second(void)
+{
+  unsigned char x,er;
+  if(read_ds3231_second(&x) == ERR)
+  {
+    return ERROR;
+  }
+  blink_on();
+  while(1)
+  {
+    switch(check_button())
+      case BUTTON_UP:
+      {
+        
+      }
+      break;
+      case BUTTON_DOWN:
+      {
+        
+      }
+      break;
+      case BUTTON_CANCEL:
+      {
+        blink_off();
+        return EXIT;
+      }
+      break;
+      case BUTTON_OK_WRITE:
+      {
+        
+      }
+      break;
+  }
+
+}
+
+
