@@ -71,7 +71,7 @@ void setting(void)
 }
 unsigned char set_second(void)
 {
-  unsigned char x,er;
+  unsigned char x,status = SKIP;
   if(read_ds3231_second(&x) == ERR)
   {
     return ERROR;
@@ -82,7 +82,10 @@ unsigned char set_second(void)
     switch(check_button())
       case BUTTON_UP:
       {
-        
+        if(status = SKIP)
+        {
+          return minute;
+        }
       }
       break;
       case BUTTON_DOWN:
@@ -96,11 +99,16 @@ unsigned char set_second(void)
         return EXIT;
       }
       break;
-      case BUTTON_OK_WRITE:
+      case BUTTON_OK:
+      {
+        status = WAIT_FOR_SETTING;
+      }
+      break;
+      case BUTTON_WRITE:
       {
         
       }
-      break;
+      break;    
   }
 
 }
