@@ -76,21 +76,26 @@ unsigned char set_second(void)
   {
     return ERROR;
   }
-  blink_on();
   while(1)
   {
+    
     switch(check_button())
       case BUTTON_UP:
       {
         if(status = SKIP)
         {
-          return minute;
+          return SET_MINUTE;
         }
+        x = x + 1;
       }
       break;
       case BUTTON_DOWN:
       {
-        
+        if(status = SKIP)
+        {
+          return SET_SECOND;
+        }
+        x = x + 1;        
       }
       break;
       case BUTTON_CANCEL:
@@ -102,11 +107,13 @@ unsigned char set_second(void)
       case BUTTON_OK:
       {
         status = WAIT_FOR_SETTING;
+        blink_on();
       }
       break;
       case BUTTON_WRITE:
       {
         
+        blink_off();
       }
       break;    
   }
