@@ -77,7 +77,7 @@ unsigned char setting(void)
         break;
     }
   }
-  return ERROR;
+  return USELESS_DATA;
 }
 unsigned char set_second(void)
 {
@@ -195,4 +195,108 @@ unsigned char reduce_hour(unsigned char hour)
     return (hour - 1);
   }  
 }
+
+unsigned char increase_weekday(unsigned char weekday)
+{
+  if(weekday == 7)
+  {
+    return 1;
+  }
+  else
+  {
+    return (weekday + 1);
+  }  
+}
+unsigned char reduce_weekday(unsigned char weekday)
+{
+  if(weekday == 1)
+  {
+    return 7;
+  }
+  else
+  {
+    return (weekday - 1);
+  }  
+}
+
+unsigned char increase_monthday(unsigned char monthday,unsigned char month_max_day)
+{
+  if(monthday == month_max_day)
+  {
+    return 1;
+  }
+  else
+  {
+    return (monthday + 1);
+  }  
+}
+unsigned char reduce_monthday(unsigned char monthday,unsigned char month_max_day)
+{
+  if(monthday == 1)
+  {
+    return month_max_day;
+  }
+  else
+  {
+    return (monthday - 1);
+  }  
+}
+
+unsigned char increase_year(unsigned char month)
+{
+  if(month == 12)
+  {
+    return 1;
+  }
+  else
+  {
+    return (month + 1);
+  }  
+}
+unsigned char reduce_year(unsigned char month)
+{
+  if(month == 1)
+  {
+    return 12;
+  }
+  else
+  {
+    return (month - 1);
+  }  
+}
+
+unsigned char increase_year(unsigned char year)
+{
+  if(year == 99)
+  {
+    return 0;
+  }
+  else
+  {
+    return (year + 1);
+  }  
+}
+unsigned char reduce_year(unsigned char year)
+{
+  if(year == 0)
+  {
+    return 99;
+  }
+  else
+  {
+    return (year - 1);
+  }  
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
