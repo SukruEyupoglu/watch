@@ -141,6 +141,378 @@ unsigned char set_second(void)
   return ERROR;
 }
 
+unsigned char set_minute(void)
+{
+  unsigned char x,status = SKIP;
+  if(read_ds3231_minute(&x) == ERR)
+  {
+    return ERROR;
+  }
+  while(1)
+  {
+    set_led_write_reg(SET_MINUTE,x); // SET LED REGISTERS
+    led_write(); //WRITE LEDS      
+    switch(check_button())
+    {
+      case BUTTON_UP:
+        {
+          if(status = SKIP)
+          {
+            return SET_HOUR;
+          }
+          x = increase_minute(x);
+        }
+        break;
+      case BUTTON_DOWN:
+        {
+          if(status = SKIP)
+          {
+            return SET_SECOND;
+          }
+          x = reduce_minute(x);
+        }
+        break;
+      case BUTTON_CANCEL:
+        {
+          blink_off();
+          return SET_MINUTE;
+        }
+        break;
+      case BUTTON_OK:
+        {
+          status = WAIT_FOR_SETTING;
+          blink_on();
+        }
+        break;
+      case BUTTON_WRITE:
+        {
+          if(write_ds3231_minute(x) == ERR)
+          {
+            return ERROR;
+          }
+          blink_off();
+        }
+        break;
+      default:
+        {
+          
+        }
+        break;
+    }
+  }
+  return ERROR;
+}
+
+unsigned char set_hour(void)
+{
+  unsigned char x,status = SKIP;
+  if(read_ds3231_hour(&x) == ERR)
+  {
+    return ERROR;
+  }
+  while(1)
+  {
+    set_led_write_reg(SET_HOUR,x); // SET LED REGISTERS
+    led_write(); //WRITE LEDS      
+    switch(check_button())
+    {
+      case BUTTON_UP:
+        {
+          if(status = SKIP)
+          {
+            return SET_WEEKDAY;
+          }
+          x = increase_hour(x);
+        }
+        break;
+      case BUTTON_DOWN:
+        {
+          if(status = SKIP)
+          {
+            return SET_MINUTE;
+          }
+          x = reduce_hour(x);
+        }
+        break;
+      case BUTTON_CANCEL:
+        {
+          blink_off();
+          return SET_HOUR;
+        }
+        break;
+      case BUTTON_OK:
+        {
+          status = WAIT_FOR_SETTING;
+          blink_on();
+        }
+        break;
+      case BUTTON_WRITE:
+        {
+          if(write_ds3231_hour(x) == ERR)
+          {
+            return ERROR;
+          }
+          blink_off();
+        }
+        break;
+      default:
+        {
+          
+        }
+        break;
+    }
+  }
+  return ERROR;
+}
+
+unsigned char set_weekday(void)
+{
+  unsigned char x,status = SKIP;
+  if(read_ds3231_second(&x) == ERR)
+  {
+    return ERROR;
+  }
+  while(1)
+  {
+    set_led_write_reg(SET_SECOND,x); // SET LED REGISTERS
+    led_write(); //WRITE LEDS      
+    switch(check_button())
+    {
+      case BUTTON_UP:
+        {
+          if(status = SKIP)
+          {
+            return SET_MINUTE;
+          }
+          x = increase_second(x);
+        }
+        break;
+      case BUTTON_DOWN:
+        {
+          if(status = SKIP)
+          {
+            return SET_SECOND;
+          }
+          x = reduce_second(x);
+        }
+        break;
+      case BUTTON_CANCEL:
+        {
+          blink_off();
+          return SET_SECOND;
+        }
+        break;
+      case BUTTON_OK:
+        {
+          status = WAIT_FOR_SETTING;
+          blink_on();
+        }
+        break;
+      case BUTTON_WRITE:
+        {
+          if(write_ds3231_second(x) == ERR)
+          {
+            return ERROR;
+          }
+          blink_off();
+        }
+        break;
+      default:
+        {
+          
+        }
+        break;
+    }
+  }
+  return ERROR;
+}
+
+unsigned char set_monthday(void)
+{
+  unsigned char x,status = SKIP;
+  if(read_ds3231_second(&x) == ERR)
+  {
+    return ERROR;
+  }
+  while(1)
+  {
+    set_led_write_reg(SET_SECOND,x); // SET LED REGISTERS
+    led_write(); //WRITE LEDS      
+    switch(check_button())
+    {
+      case BUTTON_UP:
+        {
+          if(status = SKIP)
+          {
+            return SET_MINUTE;
+          }
+          x = increase_second(x);
+        }
+        break;
+      case BUTTON_DOWN:
+        {
+          if(status = SKIP)
+          {
+            return SET_SECOND;
+          }
+          x = reduce_second(x);
+        }
+        break;
+      case BUTTON_CANCEL:
+        {
+          blink_off();
+          return SET_SECOND;
+        }
+        break;
+      case BUTTON_OK:
+        {
+          status = WAIT_FOR_SETTING;
+          blink_on();
+        }
+        break;
+      case BUTTON_WRITE:
+        {
+          if(write_ds3231_second(x) == ERR)
+          {
+            return ERROR;
+          }
+          blink_off();
+        }
+        break;
+      default:
+        {
+          
+        }
+        break;
+    }
+  }
+  return ERROR;
+}
+
+unsigned char set_month(void)
+{
+  unsigned char x,status = SKIP;
+  if(read_ds3231_second(&x) == ERR)
+  {
+    return ERROR;
+  }
+  while(1)
+  {
+    set_led_write_reg(SET_SECOND,x); // SET LED REGISTERS
+    led_write(); //WRITE LEDS      
+    switch(check_button())
+    {
+      case BUTTON_UP:
+        {
+          if(status = SKIP)
+          {
+            return SET_MINUTE;
+          }
+          x = increase_second(x);
+        }
+        break;
+      case BUTTON_DOWN:
+        {
+          if(status = SKIP)
+          {
+            return SET_SECOND;
+          }
+          x = reduce_second(x);
+        }
+        break;
+      case BUTTON_CANCEL:
+        {
+          blink_off();
+          return SET_SECOND;
+        }
+        break;
+      case BUTTON_OK:
+        {
+          status = WAIT_FOR_SETTING;
+          blink_on();
+        }
+        break;
+      case BUTTON_WRITE:
+        {
+          if(write_ds3231_second(x) == ERR)
+          {
+            return ERROR;
+          }
+          blink_off();
+        }
+        break;
+      default:
+        {
+          
+        }
+        break;
+    }
+  }
+  return ERROR;
+}
+
+unsigned char set_year(void)
+{
+  unsigned char x,status = SKIP;
+  if(read_ds3231_second(&x) == ERR)
+  {
+    return ERROR;
+  }
+  while(1)
+  {
+    set_led_write_reg(SET_SECOND,x); // SET LED REGISTERS
+    led_write(); //WRITE LEDS      
+    switch(check_button())
+    {
+      case BUTTON_UP:
+        {
+          if(status = SKIP)
+          {
+            return SET_MINUTE;
+          }
+          x = increase_second(x);
+        }
+        break;
+      case BUTTON_DOWN:
+        {
+          if(status = SKIP)
+          {
+            return SET_SECOND;
+          }
+          x = reduce_second(x);
+        }
+        break;
+      case BUTTON_CANCEL:
+        {
+          blink_off();
+          return SET_SECOND;
+        }
+        break;
+      case BUTTON_OK:
+        {
+          status = WAIT_FOR_SETTING;
+          blink_on();
+        }
+        break;
+      case BUTTON_WRITE:
+        {
+          if(write_ds3231_second(x) == ERR)
+          {
+            return ERROR;
+          }
+          blink_off();
+        }
+        break;
+      default:
+        {
+          
+        }
+        break;
+    }
+  }
+  return ERROR;
+}
+
 
 unsigned char increase_second(unsigned char second)
 {
