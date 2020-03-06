@@ -268,13 +268,13 @@ unsigned char set_hour(void)
 unsigned char set_weekday(void)
 {
   unsigned char x,status = SKIP;
-  if(read_ds3231_second(&x) == ERR)
+  if(read_ds3231_day(&x) == ERR)
   {
     return ERROR;
   }
   while(1)
   {
-    set_led_write_reg(SET_SECOND,x); // SET LED REGISTERS
+    set_led_write_reg(SET_WEEKDAY,x); // SET LED REGISTERS
     led_write(); //WRITE LEDS      
     switch(check_button())
     {
@@ -282,24 +282,24 @@ unsigned char set_weekday(void)
         {
           if(status = SKIP)
           {
-            return SET_MINUTE;
+            return SET_MONTHDAY;
           }
-          x = increase_second(x);
+          x = increase_weekday(x);
         }
         break;
       case BUTTON_DOWN:
         {
           if(status = SKIP)
           {
-            return SET_SECOND;
+            return SET_HOUR;
           }
-          x = reduce_second(x);
+          x = reduce_weekday(x);
         }
         break;
       case BUTTON_CANCEL:
         {
           blink_off();
-          return SET_SECOND;
+          return SET_WEEKDAY;
         }
         break;
       case BUTTON_OK:
@@ -310,7 +310,7 @@ unsigned char set_weekday(void)
         break;
       case BUTTON_WRITE:
         {
-          if(write_ds3231_second(x) == ERR)
+          if(write_ds3231_day(x) == ERR)
           {
             return ERROR;
           }
@@ -329,14 +329,18 @@ unsigned char set_weekday(void)
 
 unsigned char set_monthday(void)
 {
-  unsigned char x,status = SKIP;
-  if(read_ds3231_second(&x) == ERR)
+  unsigned char x,y,status = SKIP;
+  if(read_ds3231_date(&x) == ERR)
+  {
+    return ERROR;
+  }
+  if(read_ds3231_month(&y) == ERR)
   {
     return ERROR;
   }
   while(1)
   {
-    set_led_write_reg(SET_SECOND,x); // SET LED REGISTERS
+    set_led_write_reg(SET_MONTHDAY,x); // SET LED REGISTERS
     led_write(); //WRITE LEDS      
     switch(check_button())
     {
@@ -344,24 +348,24 @@ unsigned char set_monthday(void)
         {
           if(status = SKIP)
           {
-            return SET_MINUTE;
+            return SET_YEAR;
           }
-          x = increase_second(x);
+          x = increase_monthday(x,y);
         }
         break;
       case BUTTON_DOWN:
         {
           if(status = SKIP)
           {
-            return SET_SECOND;
+            return SET_WEEKDAY;
           }
-          x = reduce_second(x);
+          x = reduce_monthday(x,y);
         }
         break;
       case BUTTON_CANCEL:
         {
           blink_off();
-          return SET_SECOND;
+          return SET_MONTHDAY;
         }
         break;
       case BUTTON_OK:
@@ -372,7 +376,7 @@ unsigned char set_monthday(void)
         break;
       case BUTTON_WRITE:
         {
-          if(write_ds3231_second(x) == ERR)
+          if(write_ds3231_date(x) == ERR)
           {
             return ERROR;
           }
@@ -392,13 +396,13 @@ unsigned char set_monthday(void)
 unsigned char set_month(void)
 {
   unsigned char x,status = SKIP;
-  if(read_ds3231_second(&x) == ERR)
+  if(read_ds3231_month(&x) == ERR)
   {
     return ERROR;
   }
   while(1)
   {
-    set_led_write_reg(SET_SECOND,x); // SET LED REGISTERS
+    set_led_write_reg(SET_MONTH,x); // SET LED REGISTERS
     led_write(); //WRITE LEDS      
     switch(check_button())
     {
@@ -406,24 +410,24 @@ unsigned char set_month(void)
         {
           if(status = SKIP)
           {
-            return SET_MINUTE;
+            return SET_YEAR;
           }
-          x = increase_second(x);
+          x = increase_month(x);
         }
         break;
       case BUTTON_DOWN:
         {
           if(status = SKIP)
           {
-            return SET_SECOND;
+            return SET_MONTHDAY;
           }
-          x = reduce_second(x);
+          x = reduce_month(x);
         }
         break;
       case BUTTON_CANCEL:
         {
           blink_off();
-          return SET_SECOND;
+          return SET_MONTH;
         }
         break;
       case BUTTON_OK:
@@ -434,7 +438,7 @@ unsigned char set_month(void)
         break;
       case BUTTON_WRITE:
         {
-          if(write_ds3231_second(x) == ERR)
+          if(write_ds3231_month(x) == ERR)
           {
             return ERROR;
           }
@@ -454,13 +458,13 @@ unsigned char set_month(void)
 unsigned char set_year(void)
 {
   unsigned char x,status = SKIP;
-  if(read_ds3231_second(&x) == ERR)
+  if(read_ds3231_year(&x) == ERR)
   {
     return ERROR;
   }
   while(1)
   {
-    set_led_write_reg(SET_SECOND,x); // SET LED REGISTERS
+    set_led_write_reg(SET_YEAR,x); // SET LED REGISTERS
     led_write(); //WRITE LEDS      
     switch(check_button())
     {
@@ -468,24 +472,24 @@ unsigned char set_year(void)
         {
           if(status = SKIP)
           {
-            return SET_MINUTE;
+            return SET_YEAR;
           }
-          x = increase_second(x);
+          x = increase_year(x);
         }
         break;
       case BUTTON_DOWN:
         {
           if(status = SKIP)
           {
-            return SET_SECOND;
+            return SET_MONTH;
           }
-          x = reduce_second(x);
+          x = reduce_year(x);
         }
         break;
       case BUTTON_CANCEL:
         {
           blink_off();
-          return SET_SECOND;
+          return SET_YEAR;
         }
         break;
       case BUTTON_OK:
@@ -496,7 +500,7 @@ unsigned char set_year(void)
         break;
       case BUTTON_WRITE:
         {
-          if(write_ds3231_second(x) == ERR)
+          if(write_ds3231_year(x) == ERR)
           {
             return ERROR;
           }
@@ -591,7 +595,7 @@ unsigned char reduce_weekday(unsigned char weekday)
   }  
 }
 
-unsigned char increase_monthday(unsigned char monthday,unsigned char month_max_day)
+unsigned char increase_monthday(unsigned char monthday,unsigned char month_number)
 {
   if(monthday == month_max_day)
   {
@@ -602,7 +606,7 @@ unsigned char increase_monthday(unsigned char monthday,unsigned char month_max_d
     return (monthday + 1);
   }  
 }
-unsigned char reduce_monthday(unsigned char monthday,unsigned char month_max_day)
+unsigned char reduce_monthday(unsigned char monthday,unsigned char month_number)
 {
   if(monthday == 1)
   {
