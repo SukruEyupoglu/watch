@@ -332,12 +332,16 @@ unsigned char set_weekday(void)
 
 unsigned char set_monthday(void)
 {
-  unsigned char x,y,status = SKIP;
+  unsigned char x,y,z,status = SKIP;
   if(read_ds3231_date(&x) == ERR)
   {
     return ERROR;
   }
   if(read_ds3231_month(&y) == ERR)
+  {
+    return ERROR;
+  }
+  if(read_ds3231_year(&z) == ERR)
   {
     return ERROR;
   }
@@ -353,7 +357,7 @@ unsigned char set_monthday(void)
           {
             return SET_YEAR;
           }
-          x = increase_monthday(x,y);
+          x = increase_monthday(x,y,z);
         }
         break;
       case BUTTON_DOWN:
@@ -362,7 +366,7 @@ unsigned char set_monthday(void)
           {
             return SET_WEEKDAY;
           }
-          x = reduce_monthday(x,y);
+          x = reduce_monthday(x,y,z);
         }
         break;
       case BUTTON_CANCEL:
@@ -598,16 +602,29 @@ unsigned char reduce_weekday(unsigned char weekday)
   }  
 }
 
-unsigned char increase_monthday(unsigned char monthday,unsigned char month_number)
+unsigned char increase_monthday(unsigned char monthday,unsigned char month_number,unsigned char year_number)
 {
-  if(monthday == monthdays[month_number - 1])
+  if(!(year_number / 4))
   {
-    return 1;
+    if(month_number == 2)
+    {
+      if(monthday == monthdays[month_number - 1])
+      {
+        return (monthday + 1);
+      }
+    }
   }
   else
   {
-    return (monthday + 1);
-  }  
+    if(monthday == monthdays[month_number - 1])
+    {
+      return 1;
+    }
+    else
+    {
+      return (monthday + 1);
+    }
+  }
 }
 unsigned char reduce_monthday(unsigned char monthday,unsigned char month_number)
 {
