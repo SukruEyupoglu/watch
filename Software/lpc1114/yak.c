@@ -1,3 +1,6 @@
+
+const unsigned char monthdays[12] = {31,28,31,30,31,30,31,31,30,31,30,31};
+
 unsigned char setting(void)
 {
   unsigned char picky = SET_SECOND;
@@ -597,7 +600,7 @@ unsigned char reduce_weekday(unsigned char weekday)
 
 unsigned char increase_monthday(unsigned char monthday,unsigned char month_number)
 {
-  if(monthday == month_max_day)
+  if(monthday == monthdays[month_number - 1])
   {
     return 1;
   }
@@ -610,7 +613,7 @@ unsigned char reduce_monthday(unsigned char monthday,unsigned char month_number)
 {
   if(monthday == 1)
   {
-    return month_max_day;
+    return monthdays[month_number - 1];
   }
   else
   {
