@@ -1,4 +1,11 @@
 
+#include "setting.h"
+#include "e2prom.h"
+#include "ds3231.h"
+#include "error.h"
+#include "led.h"
+
+
 const unsigned char monthdays[12] = {31,28,31,30,31,30,31,31,30,31,30,31};
 
 unsigned char setting(void)
@@ -68,9 +75,9 @@ unsigned char setting(void)
           picky = set_alr2_hour();
         }
         break;
-      case SET_E2PROM:
+      case SET_E2PROM: // >> e2prom.h
         {
-          picky = set_e2prom();
+          picky = set_e2prom(); // >> e2prom.h
         }
         break;
       case EXIT:
