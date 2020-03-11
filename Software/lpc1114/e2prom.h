@@ -34,18 +34,16 @@
 
 ###############################################################################
 
+#define ARE_THERE_EXTRA_ALARM?                            0x002              // 1 or 0 EXTRA ALARM VARMI
 
-#define DOES_REPEAT_THE_ALARM?                            0x004             // 1 or 0 KOLAY UYANAMAYANLAR ICIN ALARM UZATMA
-
-#define INTERVAL_REPEATED_ALERT_SETTING_ADDR              0x00B             // DAKIKA OLARAK KAC DAKIKADA BIR
-#define NUMBER_REPEATED_ALERT_SETTING_ADDR                0x00C             // 1 or 2 or 3 or 4 or 6 or 12 or 24 KAC DEFA
-
-###############################################################################
-
-                                                                            // MSB+LSB = DUTY = 16 BIT TIMER FOR PWM
-#define LED_LIGHT_SETTING_DUTY_LSB_ADDR                   0x00D             // MAX 0xFF 
-#define LED_LIGHT_SETTING_DUTY_MSB_ADDR                   0x00E             // MAX 0xFF 
-#define LED_LIGHT_SETTING_PERCENT_ADDR                    0x00F             // DEFAULT %50 IF EMPTY MAX 99 MIN 1
+#define EXTRA_ALARM_COUNT_ADDR                            0x018              // BIRTDAY AND LIKE THAT DATES COUNT MAX 255
+                                                                             // MAYBE AT SCHOOL OR REST TIME
+#define EXTRA_ALARM_START_ADDR                            0x050              // 1 BYTE MINUTE             MAX 59 MIN 0
+                                                                             // 1 BYTE WATCH OR CLOCK     MAX 23 MIN 0
+                                                                             // 1 BYTE DAY IN MOUNT       MAX 31 MIN 1
+                                                                             // 1 BYTE MOUNT IN YEAR      MAX 12 MIN 1
+#define EXTRA_ALARM_TOTAL_BYTE_PER_DATA                   4                  // 4 BYTE TOTAL PER 1 SPECIAL DATE
+                                                                             // 0x050 FIRST DATA
 
 ###############################################################################
 
@@ -62,19 +60,21 @@
 
 ###############################################################################                                                                            // HANGI SAATTEN SONRA SAYMAYA BASLASIN
 
-#define ARE_THERE_EXTRA_ALARM?                            0x002              // 1 or 0 EXTRA ALARM VARMI
 
-#define EXTRA_ALARM_COUNT_ADDR                            0x018              // BIRTDAY AND LIKE THAT DATES COUNT MAX 255
-                                                                             // MAYBE AT SCHOOL OR REST TIME
-#define EXTRA_ALARM_START_ADDR                            0x050              // 1 BYTE MINUTE             MAX 59 MIN 0
-                                                                             // 1 BYTE WATCH OR CLOCK     MAX 23 MIN 0
-                                                                             // 1 BYTE DAY IN MOUNT       MAX 31 MIN 1
-                                                                             // 1 BYTE MOUNT IN YEAR      MAX 12 MIN 1
-#define EXTRA_ALARM_TOTAL_BYTE_PER_DATA                   4                  // 4 BYTE TOTAL PER 1 SPECIAL DATE
-                                                                             // 0x050 FIRST DATA
+
+#define DOES_REPEAT_THE_ALARM?                            0x004             // 1 or 0 KOLAY UYANAMAYANLAR ICIN ALARM UZATMA
+
+#define INTERVAL_REPEATED_ALERT_SETTING_ADDR              0x00B             // DAKIKA OLARAK KAC DAKIKADA BIR
+#define NUMBER_REPEATED_ALERT_SETTING_ADDR                0x00C             // 1 or 2 or 3 or 4 or 6 or 12 or 24 KAC DEFA
 
 ###############################################################################
 
+                                                                            // MSB+LSB = DUTY = 16 BIT TIMER FOR PWM
+#define LED_LIGHT_SETTING_DUTY_LSB_ADDR                   0x00D             // MAX 0xFF 
+#define LED_LIGHT_SETTING_DUTY_MSB_ADDR                   0x00E             // MAX 0xFF 
+#define LED_LIGHT_SETTING_PERCENT_ADDR                    0x00F             // DEFAULT %50 IF EMPTY MAX 99 MIN 1
+
+###############################################################################
 
 unsigned char e2prom_write(unsigned int addr,unsigned char data,unsigned int size);
 unsigned char e2prom_read(unsigned int addr,unsigned char * data,unsigned int size);
