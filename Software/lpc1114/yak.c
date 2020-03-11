@@ -728,7 +728,21 @@ unsigned char reduce_year(unsigned char year)
 ###############################################################################
 ###############################################################################
 
-
+unsigned char setting_e2prom(void)
+{
+  unsigned int reg_addr = E2PROM_SETTING_FIRST_ADDR,size = 1;
+  unsigned char data,status = SKIP;
+  if(e2prom_read(reg_addr,&data,size) == ERR)
+  {
+    return ERROR;
+  }
+  while(1)
+  {
+    set_led_write_bit(E2PROM_SETTING_LAST_ADDR - reg_addr,data); // (CIRCLE,DIGIT)
+    led_write(); // WRITE LEDS
+  }
+  return USELESS_DATA;
+}
 
 
 
