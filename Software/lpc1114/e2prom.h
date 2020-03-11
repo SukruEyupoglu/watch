@@ -10,7 +10,8 @@
 
 ###############################################################################
 
-#define E2PROM_NAMAZ_ALERT_SETTING_ADDR                   0x101             // 1 or 0 NAMAZ SAATLERINDE CALSINMI
+#define DOES_ALERT_AT_NAMAZ_CLOCK?                        0x001             // 1 or 0 NAMAZ SAATLERINDE CALSINMI
+
 #define E2PROM_ALL_NAMAZ_ALERT_SETTING_ADDR               0x102             // 1 or 0 BUTUN NAMAZ SAATLERINDE CALSINMI
                                                                             // BAZI NAMAZ SAATLERINDE CALACKSA HANGISI 
                                                                             // ASAGIDAKILERDEN SEC
@@ -34,8 +35,10 @@
 ###############################################################################
 
 
-#define REPEATED_ALARM_SETTING_ADDR                       0x00B             // 1 or 0 KOLAY UYANAMAYANLAR ICIN ALARM UZATMA
-#define NUMBER_REPEATED_ALERT_SETTING_ADDR                0x00C             // 1 or 2 or 3 or 4 or 6 or 12 or 24
+#define DOES_REPEAT_THE_ALARM?                            0x004             // 1 or 0 KOLAY UYANAMAYANLAR ICIN ALARM UZATMA
+
+#define INTERVAL_REPEATED_ALERT_SETTING_ADDR              0x00B             // DAKIKA OLARAK KAC DAKIKADA BIR
+#define NUMBER_REPEATED_ALERT_SETTING_ADDR                0x00C             // 1 or 2 or 3 or 4 or 6 or 12 or 24 KAC DEFA
 
 ###############################################################################
 
@@ -45,6 +48,8 @@
 #define LED_LIGHT_SETTING_PERCENT_ADDR                    0x00F             // DEFAULT %50 IF EMPTY MAX 99 MIN 1
 
 ###############################################################################
+
+#define DOES_ALERT_AT_HOURLY?                             0x003             // 1 or 0 HER SAAT BASI CALMA AYARI
 
 #define HOURLY_ALERT_SETTING_ADDR                         0x010             // 1 or 0 HER SAAT BASI CALMA AYARI
 #define TWO_HOURLY_ALERT_SETTING_ADDR                     0x011             // 1 or 0 HER IKI SAAT BASI CALMA AYARI
@@ -57,6 +62,8 @@
 
 ###############################################################################                                                                            // HANGI SAATTEN SONRA SAYMAYA BASLASIN
 
+#define ARE_THERE_EXTRA_ALARM?                            0x002              // 1 or 0 EXTRA ALARM VARMI
+
 #define EXTRA_ALARM_COUNT_ADDR                            0x018              // BIRTDAY AND LIKE THAT DATES COUNT MAX 255
                                                                              // MAYBE AT SCHOOL OR REST TIME
 #define EXTRA_ALARM_START_ADDR                            0x050              // 1 BYTE MINUTE             MAX 59 MIN 0
@@ -68,9 +75,6 @@
 
 ###############################################################################
 
-#define SET_E2PROM 0xFF
-
-unsigned char set_e2prom(void);
 
 unsigned char e2prom_write(unsigned int addr,unsigned char data,unsigned int size);
 unsigned char e2prom_read(unsigned int addr,unsigned char * data,unsigned int size);
