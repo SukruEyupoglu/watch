@@ -55,7 +55,7 @@ unsigned char setting(void)
         break;
       case SET_ALR1_HOUR:
         {
-          picky = set_alr1_hour();          
+          picky = set_alr1_hour();
         }
         break;
       case SET_ALR2_MINUTE:
@@ -65,7 +65,12 @@ unsigned char setting(void)
         break;
       case SET_ALR2_HOUR:
         {
-          picky = set_alr2_hour();          
+          picky = set_alr2_hour();
+        }
+        break;
+      case SET_E2PROM:
+        {
+          picky = set_e2prom();
         }
         break;
       case EXIT:
