@@ -2,8 +2,6 @@
 #include "e2prom.h"
 #include "i2c.h"
 #include "error.h"
-#include "button.h"
-#include "setting.h"
 
 unsigned char e2prom_write(unsigned int addr,unsigned char data,unsigned int size)
 {
