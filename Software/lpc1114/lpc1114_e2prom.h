@@ -1,3 +1,8 @@
+
+
+
+#define E2PROM_TRUE                                       0x01              // DEVICE ADDR FOR I2C
+#define E2PROM_FALSE                                      0x00              // DEVICE ADDR FOR I2C
 #define E2PROM_ADDR                                       0xA2              // DEVICE ADDR FOR I2C
 #define E2PROM_24C32_END_ADDR                             0xFFF             // MAX ADDR
 #define VERSION_ADDR                                      0x000             // FIRSTLY READ THIS BYTE FOR VERSION
