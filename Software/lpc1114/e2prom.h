@@ -68,6 +68,10 @@
 
 ###############################################################################
 
+#define SET_E2PROM 0xFF
+
+unsigned char set_e2prom(void);
+
 unsigned char e2prom_write(unsigned int addr,unsigned char data,unsigned int size);
 unsigned char e2prom_read(unsigned int addr,unsigned char * data,unsigned int size);
 
