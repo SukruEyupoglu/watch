@@ -1,5 +1,5 @@
 #define E2PROM_ADDR                                       0xA2              // DEVICE ADDR FOR I2C
-#define E2PROM_END_ADDR                                   0xFFF             // MAX ADDR
+#define E2PROM_24C32_END_ADDR                             0xFFF             // MAX ADDR
 #define E2PROM_BYTE_COUNT_ADDR                            0x000             // FIRSTLY READ THIS BYTE
                                                                             // HOW MANY BYTE MUST BE READ AT START
                                                                             // BASLANGICTA E2PROM DAN NE KADAR DATA OKUNMALI
