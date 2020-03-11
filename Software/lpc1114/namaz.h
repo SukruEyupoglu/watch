@@ -109,6 +109,21 @@ j --> 00 0101 010100 1000 110000 1010 110000
 2976 byte total datasize
 12 * 31 * 2 * 4 = 2976
 
+// FIRST 2 LINE EXPLANATION
+namaz[1][1][1]=(6 << 26 ) | (33 << 20 ) | (8 << 16 ) | (22 << 10 ) | (13 << 6 ) | (19 << 0 );
+              |           |             |            |             |            |MINUTE FOR OGLE
+              |           |             |            |             |HOUR FOR OGLE
+              |           |             |            |MINUTE FOR GUNES
+              |           |             |HOUR FOR GUNES
+              |           |MINUTE FOR IMSAK
+              |HOUR FOR IMSAK
+namaz[1][1][2]=(3 << 26 ) | (40 << 20 ) | (5 << 16 ) | (54 << 10 ) | (7 << 6 ) | (31 << 0 );
+              |           |             |            |             |            |MINUTE FOR YATSI
+              |           |             |            |             |HOUR FOR YATSI
+              |           |             |            |MINUTE FOR AKSAM
+              |           |             |HOUR FOR AKSAM
+              |           |MINUTE FOR IKINDI
+              |HOUR FOR IKINDI
 */
 const unsigned int namaz[13][32][3];
 
