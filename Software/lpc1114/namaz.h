@@ -111,19 +111,27 @@ j --> 00 0101 010100 1000 110000 1010 110000
 
 // FIRST 2 LINE EXPLANATION
 namaz[1][1][1]=(6 << 26 ) | (33 << 20 ) | (8 << 16 ) | (22 << 10 ) | (13 << 6 ) | (19 << 0 );
-              |           |             |            |             |            |MINUTE FOR OGLE(ZUHR)
-              |           |             |            |             |HOUR FOR OGLE(ZUHR)
-              |           |             |            |MINUTE FOR GUNES(TULU)
-              |           |             |HOUR FOR GUNES(TULU)
-              |           |MINUTE FOR IMSAK(FAJR)
-              |HOUR FOR IMSAK(FAJR)
+     |  |  |  |           |             |            |             |            |MINUTE FOR OGLE(ZUHR)
+     |  |  |  |           |             |            |             |HOUR FOR OGLE(ZUHR)
+     |  |  |  |           |             |            |MINUTE FOR GUNES(TULU)
+     |  |  |  |           |             |HOUR FOR GUNES(TULU)
+     |  |  |  |           |MINUTE FOR IMSAK(FAJR)
+     |  |  |  |HOUR FOR IMSAK(FAJR)
+     |  |  |FIRST PART OF DATA
+     |  |DAY OF MONTH
+     |MONTH NUMBER
 namaz[1][1][2]=(3 << 26 ) | (40 << 20 ) | (5 << 16 ) | (54 << 10 ) | (7 << 6 ) | (31 << 0 );
-              |           |             |            |             |            |MINUTE FOR YATSI(ISHA)
-              |           |             |            |             |HOUR FOR YATSI(ISHA)
-              |           |             |            |MINUTE FOR AKSAM(MAGHRIB)
-              |           |             |HOUR FOR AKSAM(MAGHRIB)
-              |           |MINUTE FOR IKINDI(ASR)
-              |HOUR FOR IKINDI(ASR)
+     |  |  |  |           |             |            |             |            |MINUTE FOR YATSI(ISHA)
+     |  |  |  |           |             |            |             |HOUR FOR YATSI(ISHA)
+     |  |  |  |           |             |            |MINUTE FOR AKSAM(MAGHRIB)
+     |  |  |  |           |             |HOUR FOR AKSAM(MAGHRIB)
+     |  |  |  |           |MINUTE FOR IKINDI(ASR)
+     |  |  |  |HOUR FOR IKINDI(ASR)
+     |  |  |SECOND PART OF DATA
+     |  |DAY OF MONTH
+     |MONTH NUMBER
+     
+// 29 OF SECOND MONTH SAME AS 28
 */
 const unsigned int namaz[13][32][3];
 
