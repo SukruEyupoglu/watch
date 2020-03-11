@@ -22,6 +22,8 @@
 #define ALL_NAMAZ_ADDR                                    0x111             // ALL NAMAZ CLOCK HERE STARTING
                                                                             // 8 BYTE PER DAY
                                                                             // 366 X 8 = 2928 BYTE TOTAL
+                                                                            // 4095 MAX VALUE
+                                                                            // 4095 - 2928 = 1167 = 0X48F = MAX START ADDR
 
 ###############################################################################
 
