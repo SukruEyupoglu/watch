@@ -8,7 +8,7 @@
 
 const unsigned char monthdays[12] = {31,28,31,30,31,30,31,31,30,31,30,31};
 
-unsigned char setting(void)
+unsigned char setting_ds3231(void)
 {
   unsigned char picky = SET_SECOND;
   while(1)
@@ -65,6 +65,16 @@ unsigned char setting(void)
           picky = set_alr1_hour();
         }
         break;
+      case SET_ALR1_WEEKDAY:
+        {
+          picky = set_alr1_weekday();
+        }
+        break;
+      case SET_ALR1_MONTHDAY:
+        {
+          picky = set_alr1_monthday();
+        }
+        break;
       case SET_ALR2_MINUTE:
         {
           picky = set_alr2_minute();
@@ -75,9 +85,14 @@ unsigned char setting(void)
           picky = set_alr2_hour();
         }
         break;
-      case SET_E2PROM: // >> e2prom.h
+      case SET_ALR2_WEEKDAY:
         {
-          picky = set_e2prom(); // >> e2prom.h
+          picky = set_alr2_weekday();
+        }
+        break;
+      case SET_ALR2_MONTHDAY:
+        {
+          picky = set_alr2_monthday();
         }
         break;
       case EXIT:
@@ -702,6 +717,17 @@ unsigned char reduce_year(unsigned char year)
     return (year - 1);
   }  
 }
+
+###############################################################################
+###############################################################################
+###############################################################################
+###############################################################################
+###############################################################################
+###############################################################################
+###############################################################################
+###############################################################################
+###############################################################################
+
 
 
 
