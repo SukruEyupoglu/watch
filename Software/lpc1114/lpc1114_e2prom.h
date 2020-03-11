@@ -33,7 +33,7 @@
 
 ###############################################################################
 
-                                                                            // MSB+LSB = DUTY
+                                                                            // MSB+LSB = DUTY = 16 BIT TIMER FOR PWM
 #define LED_LIGHT_SETTING_DUTY_LSB_ADDR                   0x00D             // MAX 0xFF 
 #define LED_LIGHT_SETTING_DUTY_MSB_ADDR                   0x00E             // MAX 0xFF 
 #define LED_LIGHT_SETTING_PERCENT_ADDR                    0x00F             // DEFAULT %50 IF EMPTY MAX 99 MIN 1
