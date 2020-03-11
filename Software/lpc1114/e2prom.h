@@ -67,3 +67,8 @@
                                                                              // 0x050 FIRST DATA
 
 ###############################################################################
+
+unsigned char e2prom_write(unsigned int addr,unsigned char data,unsigned int size);
+unsigned char e2prom_read(unsigned int addr,unsigned char * data,unsigned int size);
+
+
