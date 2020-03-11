@@ -132,6 +132,7 @@ unsigned char set_second(void)
             return ERROR;
           }
           blink_off();
+          status = SKIP;
         }
         break;
       default:
@@ -194,6 +195,7 @@ unsigned char set_minute(void)
             return ERROR;
           }
           blink_off();
+          status = SKIP;
         }
         break;
       default:
@@ -256,6 +258,7 @@ unsigned char set_hour(void)
             return ERROR;
           }
           blink_off();
+          status = SKIP;
         }
         break;
       default:
@@ -318,6 +321,7 @@ unsigned char set_weekday(void)
             return ERROR;
           }
           blink_off();
+          status = SKIP;
         }
         break;
       default:
@@ -388,6 +392,7 @@ unsigned char set_monthday(void)
             return ERROR;
           }
           blink_off();
+          status = SKIP;
         }
         break;
       default:
@@ -450,6 +455,7 @@ unsigned char set_month(void)
             return ERROR;
           }
           blink_off();
+          status = SKIP;
         }
         break;
       default:
@@ -512,6 +518,7 @@ unsigned char set_year(void)
             return ERROR;
           }
           blink_off();
+          status = SKIP;
         }
         break;
       default:
