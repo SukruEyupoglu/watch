@@ -132,6 +132,8 @@ namaz[1][1][2]=(3 << 26 ) | (40 << 20 ) | (5 << 16 ) | (54 << 10 ) | (7 << 6 ) |
      |MONTH NUMBER
      
 // 29 OF SECOND MONTH SAME AS 28
+// CONSIDER THAT ISTANBUL LOCATION IS CENTER OF CLOCK
+
 */
 const unsigned int namaz[13][32][3];
 
