@@ -107,7 +107,7 @@ unsigned char setting_ds3231(void)
         break;
     }
   }
-  return USELESS_DATA;
+  return OK;
 }
 unsigned char set_second(void)
 {
@@ -730,7 +730,64 @@ unsigned char reduce_year(unsigned char year)
 
 unsigned char setting_e2prom(void)
 {
-  unsigned int reg_addr = E2PROM_SETTING_FIRST_ADDR,size = 1;
+  unsigned char picky = SHOW_VERSION;
+  while(1)
+  {
+    switch(picky)
+    {
+      case SHOW_VERSION:
+        {
+          picky = show_version();
+        }
+        break;
+      case SET_NAMAZ:
+        {
+          picky = set_namaz_alarm();          
+        }
+        break;
+      case SET_SPECIAL:
+        {
+          picky = set_special_alarm();
+        }
+        break;
+      case SET_HOURLY:
+        {
+          picky = set_hourly_alarm();          
+        }
+        break;
+      case SET_REPEAT:
+        {
+          picky = set_repeated_alarm();
+        }
+        break;
+      case SET_LIGHT:
+        {
+          picky = set_light();
+        }
+        break;
+      case EXIT:
+        {
+          return EXIT;          
+        }
+        break;
+      case ERROR:
+        {
+          return ERROR;          
+        }
+        break;
+      default:
+        {
+          
+        }
+        break;
+    }
+  }
+  return OK;
+}
+
+unsigned char show_version(void)
+{
+  unsigned int reg_addr = VERSION_ADDR,size = 1;
   unsigned char data,status = SKIP;
   if(e2prom_read(reg_addr,&data,size) == ERR)
   {
@@ -741,7 +798,7 @@ unsigned char setting_e2prom(void)
     set_led_write_bit(E2PROM_SETTING_LAST_ADDR - reg_addr,data); // (CIRCLE,DIGIT)
     led_write(); // WRITE LEDS
   }
-  return USELESS_DATA;
+  return OK;
 }
 
 
