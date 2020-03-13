@@ -1,4 +1,26 @@
 All gpio button pins if button pressed goes to gnd if pin is output maybe ic is FAIL set a resistor to this pins
 All gpio button pins have histeresis for fix this use capasitor
 Minimum WIDTH 0,5mm HEIGHT 0,5mm TICKNESS 0,125mm
+Preferred WIDTH 0,7mm HEIGHT 0,7mm TICKNESS 0,150mm
 LM393 Output must has a capasitor for signal extend to easily measure data
+
+watch alarm sistem must be updated
+led colors must be updated
+V1 setting system is bad
+Setting system must be easy for all
+Assembly a cheap character lcd to board for setting
+Assembly capacitive touch pad num keyboard to board
+
+
+
+
+
+
+
+
+
+
+
+
+
+
