@@ -13,7 +13,7 @@ unsigned char ds3231_every_minute_alarm_init(void)
 	{
 		return ERROR;
 	}
-	if( !(con & (1 << DS3231_CONTROL_INTCN) ) )
+	if( !(con & CTRL_INTCN) )
 	{
 		// SET ALARM 1 TIME TO EVERY MINUTE
 		if(write_ds3231_alarm_1_according_to_second(EVERY_MINUTE) == ERR)
@@ -21,7 +21,7 @@ unsigned char ds3231_every_minute_alarm_init(void)
 			return ERROR;
 		}
 		// SET ALARM 1 ENABLE AND ENABLE INTERRUPT OUTPUT
-		if(write_ds3231_control( (1 << DS3231_CONTROL_INTCN) | (1 << DS3231_CONRTOL_A1IE) ) == ERR)
+		if(write_ds3231_control( CTRL_INTCN | CTRL_A1IE ) == ERR)
 		{
 			return ERROR;
 		}
