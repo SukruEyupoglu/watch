@@ -13,7 +13,7 @@ unsigned char ds3231_every_minute_alarm_init(void)
 	{
 		return ERROR;
 	}
-	if( !(con & CTRL_INTCN) )
+	if( !( (con & CTRL_INTCN) | (con & CTRL_A1IE) ) )
 	{
 		// SET ALARM 1 TIME TO EVERY MINUTE
 		if(write_ds3231_alarm_1_according_to_second(EVERY_MINUTE) == ERR)
