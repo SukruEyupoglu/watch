@@ -26,6 +26,7 @@ unsigned char ds3231_every_minute_alarm_init(void)
 			return ERROR;
 		}
 	}
+	return OK;
 }
 
 
