@@ -4,6 +4,31 @@
 static unsigned char time2reg(unsigned char time);
 static unsigned char reg2time(unsigned char reg);
 
+// EVERY MINUTE WAKE-UP LPC1114
+unsigned char ds3231_every_minute_alarm_init(void)
+{
+	unsigned char con = 0;
+	// SET ALARM 1 ENABLE AND ENABLE INTERRUPT OUTPUT
+	if(read_ds3231_control(&con) == ERR)
+	{
+		return ERROR;
+	}
+	if( !(con & (1 << DS3231_CONTROL_INTCN) ) )
+	{
+		// SET ALARM 1 TIME TO EVERY MINUTE
+		if(write_ds3231_alarm_1_according_to_second(EVERY_MINUTE) == ERR)
+		{
+			return ERROR;
+		}
+		// SET ALARM 1 ENABLE AND ENABLE INTERRUPT OUTPUT
+		if(write_ds3231_control( (1 << DS3231_CONTROL_INTCN) | (1 << DS3231_CONRTOL_A1IE) ) == ERR)
+		{
+			return ERROR;
+		}
+	}
+}
+
+
 unsigned char start_temp_conversion(void)
 {
     unsigned char x,y;
