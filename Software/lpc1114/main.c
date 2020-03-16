@@ -33,7 +33,10 @@ int main(void)
   spi_init();           // lpc1114_spi.h      --> spi settings
   led_init();           // latch and output enable settings
   
-  
+  if(ds3231_every_minute_alarm_init() == ERR)
+  {
+    error();
+  }
   
   while(1)
   {
