@@ -10,6 +10,8 @@
 #define WRITING_NUMBER 1
 #define READING_NUMBER 1
 
+#define EVERY_MINUTE 0
+
 #define DS3231_SECOND_OUT_OF_RANGE        60
 #define DS3231_MINUTE_OUT_OF_RANGE        60
 #define DS3231_HOUR_OUT_OF_RANGE          24
