@@ -49,7 +49,7 @@ int main(void)
         break;
       case SLP:
         {
-          //sleep();
+          sleep_or_powerdown(POWER_DOWN);
         }
         break;        
       case SETTING_LRM:
@@ -72,6 +72,7 @@ int main(void)
         {
           show_watch();         // show hour and minute from ds3231
           // check_alarm();
+          sleep_or_powerdown(POWER_DOWN);
         }
         break;
     }
