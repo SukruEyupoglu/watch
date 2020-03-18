@@ -50,51 +50,6 @@ unsigned char setting_ds3231(void)
           picky = set_year();
         }
         break;
-      case SET_ALR1_SECOND:
-        {
-          picky = set_alr1_second();          
-        }
-        break;
-      case SET_ALR1_MINUTE:
-        {
-          picky = set_alr1_minute();
-        }
-        break;
-      case SET_ALR1_HOUR:
-        {
-          picky = set_alr1_hour();
-        }
-        break;
-      case SET_ALR1_WEEKDAY:
-        {
-          picky = set_alr1_weekday();
-        }
-        break;
-      case SET_ALR1_MONTHDAY:
-        {
-          picky = set_alr1_monthday();
-        }
-        break;
-      case SET_ALR2_MINUTE:
-        {
-          picky = set_alr2_minute();
-        }
-        break;
-      case SET_ALR2_HOUR:
-        {
-          picky = set_alr2_hour();
-        }
-        break;
-      case SET_ALR2_WEEKDAY:
-        {
-          picky = set_alr2_weekday();
-        }
-        break;
-      case SET_ALR2_MONTHDAY:
-        {
-          picky = set_alr2_monthday();
-        }
-        break;
       case EXIT:
         {
           return EXIT;          
