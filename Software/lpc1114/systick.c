@@ -40,6 +40,7 @@ void deadline_systick_sec(unsigned char wait_for_dead)
 {
   max_action_data = wait_for_dead;
   action_status = WAITING_FOR_ACTION;
+  action_data = 0;
   SysTick->LOAD = 12000000; // 12.000.000 MHZ = 0xB71B00 = 1 second
   // clear current value
   SysTick->VAL = 0;
