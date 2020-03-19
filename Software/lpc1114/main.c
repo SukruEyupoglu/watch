@@ -59,7 +59,7 @@ int main(void)
       case SETTING_LRM:
         {
           relax_systick_sec();
-          if(e2prom_setting() == ERR)
+          if(setting_e2prom() == ERR)
           {
             error();
           }          
@@ -68,7 +68,7 @@ int main(void)
       case SETTING_CLK:
         {
           relax_systick_sec();
-          if(ds3231_setting() == ERR)
+          if(setting_ds3231() == ERR)
           {
             error();
           }          
