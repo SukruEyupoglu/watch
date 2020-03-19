@@ -34,6 +34,7 @@
 0x040 = ay
 if gun and ay equal to zero then daily alarm so every day of year
 */
+
 unsigned char check_alarm(ds_t * ds3231,unsigned char * eeprom_data)
 {
 // namaz const related alert check
