@@ -29,10 +29,10 @@ void show_watch(void)
 
 int main(void)
 {
-  init(MHZ_12);         // lpc1114_init.h     --> only set 12MHZ frequency
-  button_init();          // lpc1114_button.h   --> button settings
-  i2c_init();           // lpc1114_i2c.h      --> i2c settings
-  spi_init();           // lpc1114_spi.h      --> spi settings
+  init(MHZ_12);         // init.h     --> only set 12MHZ frequency
+  button_init();        // button.h   --> button settings
+  i2c_init();           // i2c.h      --> i2c settings
+  spi_init();           // spi.h      --> spi settings
   led_init();           // latch and output enable settings
   
   if(ds3231_every_minute_alarm_init() == ERR)
@@ -58,11 +58,13 @@ int main(void)
         break;        
       case SETTING_LRM:
         {
-
+          relax_systick_sec();
+          
         }
         break;
       case SETTING_CLK:
         {
+          relax_systick_sec();
           if(ds3231_setting() == ERR)
           {
             error();
