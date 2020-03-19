@@ -5,7 +5,7 @@
 #include "spi.h"
 #include "led.h"
 #include "ds3231.h"
-// #include "lpc1114_error.h"
+#include "error.h"
 #include "setting.h"
 
 void show_watch(void);
@@ -28,7 +28,7 @@ void show_watch(void)
 int main(void)
 {
   init(MHZ_12);         // lpc1114_init.h     --> only set 12MHZ frequency
-  gpio_init();          // lpc1114_button.h   --> button settings
+  button_init();          // lpc1114_button.h   --> button settings
   i2c_init();           // lpc1114_i2c.h      --> i2c settings
   spi_init();           // lpc1114_spi.h      --> spi settings
   led_init();           // latch and output enable settings
