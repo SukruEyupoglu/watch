@@ -1,3 +1,8 @@
+
+#include "LPC11xx.h"
+#include "button.h"
+#include "delay.h"
+
 #define setting_alarm_button_pressed (LPC_GPIO1->DATA & (1 << 5))
 #define setting_clk_button_pressed (LPC_GPIO1->DATA & (1 << 11))
 #define stop_alarm_button_pressed (LPC_GPIO2->DATA & (1 << 4))
@@ -5,6 +10,7 @@
 #define boot_button_pressed (LPC_GPIO0->DATA & (1 << 1))
 #define write_setting_button_pressed (LPC_GPIO3->DATA & (1 << 4))
 
+#define DELAY_FOR_BUTTON 0x0FFFFFFF
 #define SET_LRM 201
 #define SET_CLK 202
 #define STP_LRM 203
@@ -39,6 +45,7 @@ void gpio_init(void)
 
 unsigned char check_button(void)
 {
+  delay(DELAY_FOR_BUTTON);
   if(setting_alarm_button_pressed != 0)
   {
     return SET_LRM;
@@ -63,6 +70,8 @@ unsigned char check_button(void)
   {
     return WRT_SET;
   }
+return 0;
+}
 /*
   switch (adc_2_light_up_down_read())
   {
@@ -86,6 +95,12 @@ unsigned char check_button(void)
       return TM_UP;
     }
   }
-  */
+  
 return 0;
 }
+
+*/
+
+
+
+
