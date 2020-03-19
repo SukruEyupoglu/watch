@@ -31,7 +31,12 @@ void delay_sys(unsigned int u_sec)
   __WFI();  // WAIT FOR INTERRUPT INSTRUCTION (CMSIS)
 }
 
-void deadline_sec(unsigned char wait_for_dead)
+void relax_systick_sec(void)
+{
+  SysTick->CTRL &= ~(1 << SYSTICK_ENABLE_BIT); 
+}
+
+void deadline_systick_sec(unsigned char wait_for_dead)
 {
   max_action_data = wait_for_dead;
   action_status = WAITING_FOR_ACTION;
