@@ -7,6 +7,8 @@
 #include "ds3231.h"
 #include "error.h"
 #include "setting.h"
+#include "systick.h"
+
 
 void show_watch(void);
 
