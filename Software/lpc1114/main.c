@@ -15,11 +15,11 @@ void show_watch(void)
   unsigned char minute,hour;
   if(read_ds3231_minute(&minute) == ERR)
   {
-    //error();
+    error();
   }
   if(read_ds3231_hour(&hour) == ERR)
   {
-    //error();
+    error();
   }
   set_led_write_reg(minute,hour); // SET LED REGISTERS
   led_write(); //WRITE LEDS  
@@ -37,6 +37,8 @@ int main(void)
   {
     error();
   }
+  
+  deadline_systick_sec(SEC_10);
   
   while(1)
   {
