@@ -13,7 +13,8 @@ void tmr16b1_pwm_init(void)
   LPC_TMR16B1->TCR = 0x02;                                    // RESET TIMER
   LPC_TMR16B1->TCR = 0x01;                                    // ENABLE TIMER
 }
-void brightness_up(void)
+
+void brightness_up(unsigned char lsb,unsigned char msb,unsigned char percent)
 {
   LPC_TMR16B1->TCR = 0;                                       // DISABLE TIMER  
   if(percent < 98)
@@ -24,8 +25,16 @@ void brightness_up(void)
   LPC_TMR16B1->TCR = 0x02;                                    // RESET TIMER
   LPC_TMR16B1->TCR = 0x01;                                    // ENABLE TIMER  
 }
-void brightness_down(void)
+void brightness_down(unsigned char lsb,unsigned char msb,unsigned char percent)
 {
+  unsigned int duty = 0;
+  
+  
+  duty  = msb;
+  duty <<= 8;
+  duty |= data[0];
+  
+  
   LPC_TMR16B1->TCR = 0;                                       // DISABLE TIMER  
   if(percent > 2)
   {
