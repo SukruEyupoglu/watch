@@ -752,6 +752,54 @@ unsigned char show_version(void)
   {
     set_led_write_bit(E2PROM_SETTING_LAST_ADDR - reg_addr,data); // (CIRCLE,DIGIT)
     led_write(); // WRITE LEDS
+    switch(check_button())
+    {
+      case BUTTON_UP:
+        {
+          if(status = SKIP)
+          {
+            return SET_ARE_THERE_ALARM;
+          }
+          x = increase_second(x);
+        }
+        break;
+      case BUTTON_DOWN:
+        {
+          if(status = SKIP)
+          {
+            return SET_SECOND;
+          }
+          x = reduce_second(x);
+        }
+        break;
+      case BUTTON_CANCEL:
+        {
+          blink_off();
+          return SET_SECOND;
+        }
+        break;
+      case BUTTON_OK:
+        {
+          status = WAIT_FOR_SETTING;
+          blink_on();
+        }
+        break;
+      case BUTTON_WRITE:
+        {
+          if(write_ds3231_second(x) == ERR)
+          {
+            return ERROR;
+          }
+          blink_off();
+          status = SKIP;
+        }
+        break;
+      default:
+        {
+          
+        }
+        break;
+    }
   }
   return OK;
 }
