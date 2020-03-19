@@ -10,7 +10,7 @@
 
 ###############################################################################
 
-#define ARE_THERE_ALARM?                                  0x001              // 1 or 0 EXTRA ALARM VARMI
+#define ARE_THERE_ALARM                                   0x001              // 1 or 0 EXTRA ALARM VARMI
 
 #define ALARM_COUNT_ADDR                                  0x00A              // BIRTDAY AND LIKE THAT DATES COUNT MAX 255
                                                                              // MAYBE AT SCHOOL OR REST TIME
@@ -23,7 +23,7 @@
 
 ###############################################################################
 
-#define DOES_ALERT_AT_NAMAZ_CLOCK?                        0x002             // 1 or 0 NAMAZ SAATLERINDE CALSINMI
+#define DOES_ALERT_AT_NAMAZ_CLOCK                         0x002             // 1 or 0 NAMAZ SAATLERINDE CALSINMI
 
 #define E2PROM_ALL_NAMAZ_ALERT_SETTING_ADDR               0x020             // 1 or 0 BUTUN NAMAZ SAATLERINDE CALSINMI
                                                                             // BAZI NAMAZ SAATLERINDE CALACKSA HANGISI 
@@ -47,7 +47,7 @@
 
 ###############################################################################
 
-#define DOES_ALERT_AT_HOURLY?                             0x003             // 1 or 0 HER SAAT BASI CALMA AYARI
+#define DOES_ALERT_AT_HOURLY                              0x003             // 1 or 0 HER SAAT BASI CALMA AYARI
 
 #define HOURLY_ALERT_SETTING_ADDR                         0x00B             // 1 or 0 HER SAAT BASI CALMA AYARI
 #define TWO_HOURLY_ALERT_SETTING_ADDR                     0x00C             // 1 or 0 HER IKI SAAT BASI CALMA AYARI
@@ -62,7 +62,7 @@
 
 
 
-#define DOES_REPEAT_THE_ALARM?                            0x004             // 1 or 0 KOLAY UYANAMAYANLAR ICIN ALARM UZATMA
+#define DOES_REPEAT_THE_ALARM                             0x004             // 1 or 0 KOLAY UYANAMAYANLAR ICIN ALARM UZATMA
 
 #define INTERVAL_REPEATED_ALERT_SETTING_ADDR              0x005             // DAKIKA OLARAK KAC DAKIKADA BIR
 #define NUMBER_REPEATED_ALERT_SETTING_ADDR                0x006             // 1 or 2 or 3 or 4 or 6 or 12 or 24 KAC DEFA
