@@ -40,7 +40,7 @@ int main(void)
   
   while(1)
   {
-    switch(check_button())
+    switch(check_button()) //there is a delay in check button
     {
       case STP_LRM:
         {
@@ -54,17 +54,14 @@ int main(void)
         break;        
       case SETTING_LRM:
         {
-          if(ds3231_clock_setting(AL1) == ERR)
-          {
-            //error();
-          }
+
         }
         break;
       case SETTING_CLK:
         {
-          if(ds3231_clock_setting(CLOCK) == ERR)
+          if(ds3231_setting() == ERR)
           {
-            //error();
+            error();
           }          
         }
         break;
@@ -72,7 +69,7 @@ int main(void)
         {
           show_watch();         // show hour and minute from ds3231
           // check_alarm();
-          sleep_or_powerdown(POWER_DOWN);
+          // deadline(SEC_10); // sleep_or_powerdown(POWER_DOWN);
         }
         break;
     }
