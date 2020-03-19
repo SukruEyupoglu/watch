@@ -8,7 +8,7 @@
 #include "error.h"
 #include "setting.h"
 #include "systick.h"
-
+#include "alarm.h"
 
 void show_watch(void);
 
@@ -33,7 +33,8 @@ int main(void)
   button_init();        // button.h   --> button settings
   i2c_init();           // i2c.h      --> i2c settings
   spi_init();           // spi.h      --> spi settings
-  led_init();           // latch and output enable settings
+  led_init();           // led.h      --> latch and output enable settings
+  led_power_init();     // alarm.h    --> look at e2prom and set pwm output for leds
   
   if(ds3231_every_minute_alarm_init() == ERR)
   {
