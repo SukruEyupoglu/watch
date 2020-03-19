@@ -48,7 +48,7 @@ int main(void)
     {
       case STP_LRM:
         {
-          //stop_alarm();
+          stop_alarm();
         }
         break;
       case SLP:
@@ -59,7 +59,10 @@ int main(void)
       case SETTING_LRM:
         {
           relax_systick_sec();
-          
+          if(e2prom_setting() == ERR)
+          {
+            error();
+          }          
         }
         break;
       case SETTING_CLK:
@@ -74,8 +77,7 @@ int main(void)
       default:
         {
           show_watch();         // show hour and minute from ds3231
-          // check_alarm();
-          // deadline(SEC_10); // sleep_or_powerdown(POWER_DOWN);
+          check_alarm();
         }
         break;
     }
