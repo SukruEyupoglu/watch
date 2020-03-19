@@ -15,6 +15,12 @@
 #define WAITING_FOR_ACTION 1
 #define ONLY_DELAY 2
 
+#define SEC_10 10
+#define SEC_20 20
+#define SEC_40 40
+#define SEC_100 100
+#define SEC_250 250
+
 void relax_systick_sec(void);
 void deadline_systick_sec(unsigned char wait_for_dead);
 void delay_sys(unsigned int u_sec);
