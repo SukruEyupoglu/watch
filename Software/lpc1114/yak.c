@@ -695,14 +695,14 @@ unsigned char setting_e2prom(void)
           picky = show_version();
         }
         break;
-      case SET_NAMAZ:
-        {
-          picky = set_namaz_alarm();          
-        }
-        break;
       case SET_SPECIAL:
         {
-          picky = set_special_alarm();
+          picky = set_special_alarm();          
+        }
+        break;
+      case SET_NAMAZ:
+        {
+          picky = set_namaz_alarm();
         }
         break;
       case SET_HOURLY:
@@ -750,7 +750,7 @@ unsigned char show_version(void)
   }
   while(1)
   {
-    set_led_write_bit(E2PROM_SETTING_LAST_ADDR - reg_addr,data); // (CIRCLE,DIGIT)
+    set_led_write_bit(VERSION_ADDR,data); // (CIRCLE,DIGIT)
     led_write(); // WRITE LEDS
     switch(check_button())
     {
@@ -758,40 +758,33 @@ unsigned char show_version(void)
         {
           if(status = SKIP)
           {
-            return SET_ARE_THERE_ALARM;
+            return SET_SPECIAL;
           }
-          x = increase_second(x);
         }
         break;
       case BUTTON_DOWN:
         {
           if(status = SKIP)
           {
-            return SET_SECOND;
+            return SHOW_VERSION;
           }
-          x = reduce_second(x);
         }
         break;
       case BUTTON_CANCEL:
         {
-          blink_off();
-          return SET_SECOND;
+          // blink_off();
+          return CANCEL;
         }
         break;
       case BUTTON_OK:
         {
-          status = WAIT_FOR_SETTING;
-          blink_on();
-        }
-        break;
-      case BUTTON_WRITE:
-        {
-          if(write_ds3231_second(x) == ERR)
+          if(status = SKIP)
           {
-            return ERROR;
+            return SHOW_VERSION;
           }
-          blink_off();
-          status = SKIP;
+          else
+          {
+          }
         }
         break;
       default:
@@ -803,7 +796,63 @@ unsigned char show_version(void)
   }
   return OK;
 }
-
+unsigned char set_special_alarm()
+{
+  unsigned int reg_addr = VERSION_ADDR,size = 1;
+  unsigned char data,status = SKIP;
+  if(e2prom_read(reg_addr,&data,size) == ERR)
+  {
+    return ERROR;
+  }
+  while(1)
+  {
+    set_led_write_bit(VERSION_ADDR,data); // (CIRCLE,DIGIT)
+    led_write(); // WRITE LEDS
+    switch(check_button())
+    {
+      case BUTTON_UP:
+        {
+          if(status = SKIP)
+          {
+            return SET_SPECIAL;
+          }
+        }
+        break;
+      case BUTTON_DOWN:
+        {
+          if(status = SKIP)
+          {
+            return SHOW_VERSION;
+          }
+        }
+        break;
+      case BUTTON_CANCEL:
+        {
+          // blink_off();
+          return CANCEL;
+        }
+        break;
+      case BUTTON_OK:
+        {
+          if(status = SKIP)
+          {
+            return SHOW_VERSION;
+          }
+          else
+          {
+            // read data from e2prom and same as old data not write same data
+          }
+        }
+        break;
+      default:
+        {
+          
+        }
+        break;
+    }
+  }
+  return OK;  
+}
 
 
 
