@@ -1,28 +1,181 @@
 #include "PLATFORMLESS.h"
-
+// part0 lsb // for 32 bit mcu
 void int_to_char(unsigned int data,unsigned char * part0,unsigned char * part1,unsigned char * part2,unsigned char * part3)
 {
-	
+	unsigned char f;
+	for(f = 0 ; f < 8 ; f++)
+	{
+		if(data & (1 << f) )
+		{
+			* part0 |= (1 << f);
+		}
+		else
+		{
+			* part0 &= ~(1 << f);
+		}
+		if(data & (1 << (f + 8) ) )
+		{
+			* part1 |= (1 << f);
+		}
+		else
+		{
+			* part1 &= ~(1 << f);
+		}
+		if(data & (1 << (f + 16) ) )
+		{
+			* part2 |= (1 << f);
+		}
+		else
+		{
+			* part2 &= ~(1 << f);
+		}
+		if(data & (1 << (f + 24) ) )
+		{
+			* part3 |= (1 << f);
+		}
+		else
+		{
+			* part3 &= ~(1 << f);
+		}
+	}
 }
+// part0 lsb  // for 32 bit mcu
 void char_to_int(unsigned int * data,unsigned char part0,unsigned char part1,unsigned char part2,unsigned char part3)
 {
-	
+	unsigned char f;
+	for(f = 0 ; f < 8 ; f++)
+	{
+		if(part0 & (1 << f) )
+		{
+			* data |= (1 << f);
+		}
+		else
+		{
+			* data &= ~(1 << f);
+		}
+		if(part1 & (1 << f) )
+		{
+			* data |= (1 << (f + 8) );
+		}
+		else
+		{
+			* data &= ~(1 << (f + 8) );
+		}
+		if(part2 & (1 << f) )
+		{
+			* data |= (1 << (f + 16) );
+		}
+		else
+		{
+			* data &= ~(1 << (f + 16) );
+		}
+		if(part3 & (1 << f) )
+		{
+			* data |= (1 << (f + 24) );
+		}
+		else
+		{
+			* data &= ~(1 << (f + 24) );
+		}
+	}	
 }
+// part0 lsb // for 32 bit mcu
 void short_to_char(unsigned short data,unsigned char * part0,unsigned char * part1)
 {
-	
+	unsigned char f;
+	for(f = 0 ; f < 8 ; f++)
+	{
+		if(data & (1 << f) )
+		{
+			* part0 |= (1 << f);
+		}
+		else
+		{
+			* part0 &= ~(1 << f);
+		}
+		if(data & (1 << (f + 8) ) )
+		{
+			* part1 |= (1 << f);
+		}
+		else
+		{
+			* part1 &= ~(1 << f);
+		}
+	}	
 }
+// part0 lsb  // for 32 bit mcu
 void char_to_short(unsigned short * data,unsigned char part0,unsigned char part1)
 {
-	
+	unsigned char f;
+	for(f = 0 ; f < 8 ; f++)
+	{
+		if(part0 & (1 << f) )
+		{
+			* data |= (1 << f);
+		}
+		else
+		{
+			* data &= ~(1 << f);
+		}
+		if(part1 & (1 << f) )
+		{
+			* data |= (1 << (f + 8) );
+		}
+		else
+		{
+			* data &= ~(1 << (f + 8) );
+		}
+	}	
 }
+// part0 lsb  // for 32 bit mcu
 void longlong_to_int(unsigned long long data,unsigned int * part0,unsigned int * part1)
 {
-	
+	unsigned char f;
+	unsigned long long one = 1;
+	for(f = 0 ; f < 32 ; f++)
+	{
+		if(data & (one << f) )
+		{
+			* part0 |= (one << f);
+		}
+		else
+		{
+			* part0 &= ~(one << f);
+		}
+		if(data & (1 << (f + 32) ) )
+		{
+			* part1 |= (one << f);
+		}
+		else
+		{
+			* part1 &= ~(one << f);
+		}
+	}	
 }
+// part0 lsb // for 32 bit mcu
 void int_to_longlong(unsigned long long * data,unsigned int part0,unsigned int part1)
 {
-	
+	unsigned char f;
+	unsigned long long one = 1;
+	for(f = 0 ; f < 32 ; f++)
+	{
+		if(part0 & (one << f) )
+		{
+			* data |= (one << f);
+		}
+		else
+		{
+			* data &= ~(one << f);
+		}
+		if(part1 & (1 << f) )
+		{
+			* data |= (one << (f + 32) );
+		}
+		else
+		{
+			* data &= ~(one << (f + 32) );
+		}
+	}	
 }
 
 
