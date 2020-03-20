@@ -69,11 +69,8 @@ void payload(void)
     }
     uart_rx_buffer_size = 0;
     ENABLE_INTERRUPT;
-    for(f = 0 ; f <= nrf_tx_buffer_size ; f++)
-    {
-      nrf_send(nrf_tx_buffer[f]);
-      nrf_request();
-    }
+    nrf_load(nrf_tx_buffer[f],nrf_tx_buffer_size);
+    //nrf_request();
   }
   else
   {
