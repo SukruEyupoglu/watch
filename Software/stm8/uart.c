@@ -1,12 +1,16 @@
+
+
 #include "stm8s.h"
 #include "uart.h"
 
 void uart_init(void)
-{     
-          // stm8s003 has 1 byte uart buffer
-              // at main file do this for interrupt buffering
-              // volatile unsigned char uart_buffer[50];
-              // volatile unsigned char uart_buffer_data_count = 0;
+{
+  // stm8s003 has 1 byte uart buffer
+  // at main file do this for interrupt buffering
+  // volatile unsigned char uart_buffer[32];
+  // volatile unsigned char uart_buffer_upper = 0;
+  // volatile unsigned char uart_buffer_lower = 0;
+  
   // ROUND TO NEAREST INTEGER
   // uint16_t div = (F_CPU + (BAUDRATE / 2 ) ) / BAUDRATE;
   // UART1_BRR2 = ( (div >> 8) & 0xF0) + (div & 0x0F);
@@ -34,11 +38,30 @@ unsigned char uart_get(void)
 }
 void uart_isr() __interrupt(UART1_RXC_ISR) // uart rx interrupt function
 {
-  uart_buffer[uart_buffer_data_count] = UART1_DR;
-  uart_buffer_data_count++;
+  uart_buffer[uart_buffer_upper] = UART1_DR;
+  if(uart_buffer_upper < 31)
+  {
+    uart_buffer_upper++;
+  }
+  else
+  {
+    uart_buffer_upper = 0;
+  }
 }
   
+void payload(void)
+{
+  if( (uart_buffer_upper >= uart_buffer_lower) )
+  {
+    spi(uart_buffer[uart_buffer_lower])
+    uart_buffer[uart_buffer_lower] = 0;
+    uart_buffer_lower++;
+  }
+  else
+  {
   
+  }
+}
   
   
   
