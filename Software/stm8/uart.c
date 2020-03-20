@@ -3,13 +3,15 @@
 #include "stm8s.h"
 #include "uart.h"
 
+#define DISABLE_INTERRUPT UART1_CR2 &= ~(1 << UART1_CR2_RIEN)
+#define ENABLE_INTERRUPT UART1_CR2 |= (1 << UART1_CR2_RIEN)
+
 void uart_init(void)
 {
   // stm8s003 has 1 byte uart buffer
   // at main file do this for interrupt buffering
   // volatile unsigned char uart_buffer[32];
-  // volatile unsigned char uart_buffer_upper = 0;
-  // volatile unsigned char uart_buffer_lower = 0;
+  // volatile unsigned char uart_buffer_size = 0;
   
   // ROUND TO NEAREST INTEGER
   // uint16_t div = (F_CPU + (BAUDRATE / 2 ) ) / BAUDRATE;
@@ -38,28 +40,44 @@ unsigned char uart_get(void)
 }
 void uart_isr() __interrupt(UART1_RXC_ISR) // uart rx interrupt function
 {
-  uart_buffer[uart_buffer_upper] = UART1_DR;
-  if(uart_buffer_upper < 31)
+  uart_rx_buffer[uart_rx_buffer_size] = UART1_DR;
+  if(uart_rx_buffer_size < 32) // nrf max buffer size = 32 
   {
-    uart_buffer_upper++;
+    uart_rx_buffer_size++;
   }
   else
   {
-    uart_buffer_upper = 0;
+    uart_rx_buffer_size = 0;
   }
 }
   
 void payload(void)
 {
-  if( (uart_buffer_upper >= uart_buffer_lower) )
+  unsigned char f;
+  if( (uart_rx_buffer_size > 0) )
   {
-    spi(uart_buffer[uart_buffer_lower])
-    uart_buffer[uart_buffer_lower] = 0;
-    uart_buffer_lower++;
+    DISABLE_INTERRUPT;
+    for(f = 0 ; f <= uart_rx_buffer_size ; f++)
+    {
+      nrf_tx_buffer[f] = uart_rx_buffer[f];
+    }
+    nrf_tx_buffer_size = uart_rx_buffer_size;
+    if(UART1_SR & (1 << UART1_SR_RXNE) )
+    {
+      nrf_tx_buffer[uart_rx_buffer_size + 1]
+      nrf_tx_buffer_size = uart_rx_buffer_size + 1;
+    }
+    uart_rx_buffer_size = 0;
+    ENABLE_INTERRUPT;
+    for(f = 0 ; f <= nrf_tx_buffer_size ; f++)
+    {
+      nrf_send(nrf_tx_buffer[f]);
+      nrf_request();
+    }
   }
   else
   {
-  
+    nrf_request();
   }
 }
   
