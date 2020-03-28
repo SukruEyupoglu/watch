@@ -8,9 +8,27 @@
 #include "error.h"
 #include "setting.h"
 #include "systick.h"
-#include "alarm.h"
+//#include "alarm.h"
 
 void show_watch(void);
+void stop_alarm(void);
+void check_alarm(void);
+void alert(void);
+
+void stop_alarm(void)
+{
+  
+}
+
+void check_alarm(void)
+{
+  
+}
+
+void alert(void)
+{
+  
+}
 
 void show_watch(void)
 {
