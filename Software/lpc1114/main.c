@@ -81,7 +81,8 @@ int main(void)
           if(setting_e2prom() == ERR)
           {
             error();
-          }          
+          }
+          deadline_systick_sec(SEC_10);
         }
         break;
       case SETTING_CLK:
@@ -90,7 +91,8 @@ int main(void)
           if(setting_ds3231() == ERR)
           {
             error();
-          }          
+          }
+          deadline_systick_sec(SEC_10);
         }
         break;
       default:
