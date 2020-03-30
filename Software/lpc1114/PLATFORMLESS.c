@@ -189,28 +189,28 @@ void delay(volatile unsigned int bekle)
 unsigned char check_hex_data(unsigned char data)
 {
 	if(
-		data == '0' |
-		data == '1' |
-		data == '2' |
-		data == '3' |
-		data == '4' |
-		data == '5' |
-		data == '6' |
-		data == '7' |
-		data == '8' |
-		data == '9' |
-		data == 'a' |
-		data == 'b' |
-		data == 'c' |
-		data == 'd' |
-		data == 'e' |
-		data == 'f' |
-		data == 'A' |
-		data == 'B' |
-		data == 'C' |
-		data == 'D' |
-		data == 'E' |
-		data == 'F'
+		( data == '0' ) |
+		( data == '1' ) |
+		( data == '2' ) |
+		( data == '3' ) |
+		( data == '4' ) |
+		( data == '5' ) |
+		( data == '6' ) |
+		( data == '7' ) |
+		( data == '8' ) |
+		( data == '9' ) |
+		( data == 'a' ) |
+		( data == 'b' ) |
+		( data == 'c' ) |
+		( data == 'd' ) |
+		( data == 'e' ) |
+		( data == 'f' ) |
+		( data == 'A' ) |
+		( data == 'B' ) |
+		( data == 'C' ) |
+		( data == 'D' ) |
+		( data == 'E' ) |
+		( data == 'F' )
 	)
 	{
 		return 1;
