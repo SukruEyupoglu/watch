@@ -80,7 +80,7 @@ unsigned char write_ds3231_control(unsigned char control)
     return OK;    
 }
 
-unsigned char read_ds3231_conrol(unsigned char * control)
+unsigned char read_ds3231_control(unsigned char * control)
 {
     if(i2c(DS3231_ADDR | 0x01,DS3231_CONTROL_REG,DS3231_ADDR_SIZE,control,READING_NUMBER) == ERR)
     {
