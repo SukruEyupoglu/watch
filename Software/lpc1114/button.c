@@ -1,6 +1,6 @@
 
 #include "LPC11xx.h"
-#include "lpc1114_button.h"
+#include "button.h"
 
 
 void gpio_init(void)
