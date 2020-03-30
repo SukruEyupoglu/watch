@@ -3,7 +3,7 @@
 #include "button.h"
 
 
-void gpio_init(void)
+void button_init(void)
 {
 	//	ENABLE IOCON CLK
 	LPC_SYSCON->SYSAHBCLKCTRL		|=	(1 << 16);
