@@ -1,5 +1,8 @@
-#include "lpc1114_i2c.h"
-#include "lpc1114_ds3231.h"
+#include "i2c.h"
+#include "ds3231.h"
+#include "error.h"
+
+
 
 static unsigned char time2reg(unsigned char time);
 static unsigned char reg2time(unsigned char reg);
