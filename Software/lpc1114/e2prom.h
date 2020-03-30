@@ -8,7 +8,7 @@
 #define E2PROM_24C32_END_ADDR                             0xFFF             // MAX ADDR
 #define VERSION_ADDR                                      0x000             // FIRSTLY READ THIS BYTE FOR VERSION
 
-###############################################################################
+////////////////////////////////////////////////////////////////////////////////
 
 #define ARE_THERE_ALARM                                   0x001              // 1 or 0 EXTRA ALARM VARMI
 
@@ -21,7 +21,7 @@
 #define EXTRA_ALARM_TOTAL_BYTE_PER_DATA                   4                  // 4 BYTE TOTAL PER 1 SPECIAL DATE
                                                                              // 0x030 FIRST DATA TO 0X111 (NAMAZ START ADDR)
 
-###############################################################################
+////////////////////////////////////////////////////////////////////////////////
 
 #define DOES_ALERT_AT_NAMAZ_CLOCK                         0x002             // 1 or 0 NAMAZ SAATLERINDE CALSINMI
 
@@ -45,7 +45,7 @@
                                                                             // 4095 MAX VALUE
                                                                             // 4095 - 2928 = 1167 = 0X48F = MAX START ADDR
 
-###############################################################################
+////////////////////////////////////////////////////////////////////////////////
 
 #define DOES_ALERT_AT_HOURLY                              0x003             // 1 or 0 HER SAAT BASI CALMA AYARI
 
@@ -58,7 +58,7 @@
 #define TWEVE_HOURLY_ALERT_SETTING_ADDR                   0x011             // 1 or 0 HER ONIKI SAAT BASI CALMA AYARI
 #define HOURLY_ALERT_START_SETTING_ADDR                   0x012             // SAAT BASI CALMA AYARI BASLANGIC SAATI
 
-###############################################################################                                                                            // HANGI SAATTEN SONRA SAYMAYA BASLASIN
+////////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -67,14 +67,14 @@
 #define INTERVAL_REPEATED_ALERT_SETTING_ADDR              0x005             // DAKIKA OLARAK KAC DAKIKADA BIR
 #define NUMBER_REPEATED_ALERT_SETTING_ADDR                0x006             // 1 or 2 or 3 or 4 or 6 or 12 or 24 KAC DEFA
 
-###############################################################################
+////////////////////////////////////////////////////////////////////////////////
 
                                                                             // MSB+LSB = DUTY = 16 BIT TIMER FOR PWM
 #define LED_LIGHT_SETTING_DUTY_LSB_ADDR                   0x007             // MAX 0xFF 
 #define LED_LIGHT_SETTING_DUTY_MSB_ADDR                   0x008             // MAX 0xFF 
 #define LED_LIGHT_SETTING_PERCENT_ADDR                    0x009             // DEFAULT %50 IF EMPTY MAX 99 MIN 1
 
-###############################################################################
+////////////////////////////////////////////////////////////////////////////////
 
 unsigned char e2prom_write(unsigned int addr,unsigned char * data,unsigned int size);
 unsigned char e2prom_read(unsigned int addr,unsigned char * data,unsigned int size);
