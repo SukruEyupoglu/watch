@@ -122,7 +122,7 @@ unsigned char start_temp_conversion(void);
 unsigned char read_ds3231_temp(unsigned char * temp_msb, unsigned char * temp_lsb);
 
 unsigned char write_ds3231_control(unsigned char control);
-unsigned char read_ds3231_conrol(unsigned char * control);
+unsigned char read_ds3231_control(unsigned char * control);
 
 unsigned char write_ds3231_status(unsigned char status);
 unsigned char read_ds3231_status(unsigned char * status);
