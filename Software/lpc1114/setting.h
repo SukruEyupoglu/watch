@@ -8,6 +8,14 @@
 #define SET_YEAR          0x06
 
 
+#define BUTON_UP          201
+#define BUTTON_DOWN       202
+#define BUTTON_CANCEL     203
+#define BUTTON_OK         204
+#define BUTTON_WRITE      205
+
+
+
 unsigned char setting_ds3231(void);
 unsigned char set_second(void);
 unsigned char set_minute(void);
