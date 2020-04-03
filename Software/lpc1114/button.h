@@ -29,6 +29,7 @@
 #define SETTING_E2PROM_0x050_0x100 181
 #define SETTING_E2PROM_0x000_0x050 180
 
+void button_delay(volatile unsigned int wait);
 void button_init(void);
 unsigned char check_button(void);
 
