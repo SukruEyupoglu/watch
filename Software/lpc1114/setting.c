@@ -685,6 +685,8 @@ unsigned char reduce_year(unsigned char year)
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
+/*
+
 unsigned char setting_e2prom(void)
 {
   unsigned char picky = SHOW_VERSION;
@@ -855,7 +857,7 @@ unsigned char set_special_alarm()
   }
   return OK;  
 }
-
+*/
 
 
 
