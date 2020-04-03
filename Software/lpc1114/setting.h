@@ -8,7 +8,7 @@
 #define SET_YEAR          0x06
 
 
-#define BUTON_UP          201
+#define BUTTON_UP          201
 #define BUTTON_DOWN       202
 #define BUTTON_CANCEL     203
 #define BUTTON_OK         204
@@ -16,6 +16,7 @@
 
 #define SKIP                0
 #define WAIT_FOR_SETTING    1
+#define EXIT                9
 
 
 unsigned char setting_ds3231(void);
