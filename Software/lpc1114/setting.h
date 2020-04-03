@@ -14,6 +14,8 @@
 #define BUTTON_OK         204
 #define BUTTON_WRITE      205
 
+#define SKIP                0
+#define WAIT_FOR_SETTING    1
 
 
 unsigned char setting_ds3231(void);
