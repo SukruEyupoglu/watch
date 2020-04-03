@@ -3,6 +3,12 @@
 #include "button.h"
 
 
+
+void button_delay(volatile unsigned int wait)
+{
+	while(wait)wait--;
+}
+
 void button_init(void)
 {
 	//	ENABLE IOCON CLK
@@ -27,6 +33,7 @@ void button_init(void)
 
 unsigned char check_button(void)
 {
+  button_delay( (SECOND / 4) );	// SECOND = Systemcoreclock = 12 000 000
   if(setting_alarm_button_pressed != 0)
   {
 	if(boot_button_pressed != 0)
