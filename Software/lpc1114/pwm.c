@@ -1,7 +1,7 @@
 #include "LPC11xx.h"
 #include "e2prom.h"
 #include "error.h"
-
+/*
 void tmr16b1_pwm_init(void)
 {
   LPC_SYSCON->SYSAHBCLKCTRL |= (1 << 16) | (1 << 8);          // ENABLE IOCON CLK AND TMR16B1 CLK
@@ -66,6 +66,6 @@ unsigned char led_power_init(void)
   LPC_TMR16B1->TCR = 0x01;                                    // ENABLE TIMER    
   return OK;
 }
-
+*/
 
 
