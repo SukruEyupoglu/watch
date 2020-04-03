@@ -1,4 +1,7 @@
 #include "LPC11xx.h"
+#include "spi.h"
+
+
 void spi_init(void)
 {
 	//	ENABLE IOCON CLK
@@ -21,6 +24,21 @@ void spi_init(void)
 	LPC_SSP0->CR0			                |=	0x07;
 	//	ENABLE SPI
 	LPC_SSP0->CR1			                |=	0x02;
+  
+  // LATCH SETTINGS FOR SHIFT REGISTERS
+  LPC_IOCON->PIO2_10      = 0;
+  LPC_GPIO2->DIR					|=	(1 << 10);
+  // THERE IS A TRANSISTOR AT LINE ACTIVE LOW BUT BECAUSE TRANSISTOR ACTIVE HIGH
+  // LOW IS INACTIVE (ACTIVE HIGH) SET LOW NOW
+  LPC_GPIO2->DATA					&=	~(1 << 10);
+	
+	// OUTPUT ENABLE SETTING FOR MBI5026GF 
+	LPC_IOCON->PIO1_9      = 0;
+	LPC_GPIO1->DIR		|= (1 << 9);
+	// FOR REDUCE LIGHT POWER ENABLE TIMER CT16B1_MAT0 PWM
+	// FOR NOW ONLY GPIO
+	// LOW ENABLE BUT THERE IS A TRANSISTOR AT LINE THUS FOR CODE HIGH ENABLE
+	LPC_GPIO1->DATA		|= (1 << 9);
 }
 unsigned char spi(unsigned char TX_Data)
 {
@@ -29,3 +47,12 @@ unsigned char spi(unsigned char TX_Data)
 	while ((LPC_SSP0->SR & (SSPSR_BSY | SSPSR_RNE)) != SSPSR_RNE);
 	return LPC_SSP0->DR;
 }
+void latch(void)
+{	
+	// WITHOUT DELAY APPROXYMATELY 2.5MHZ SIGNAL LENGTH
+	LPC_GPIO2->DATA					|=	(1 << 10);
+	LPC_GPIO2->DATA					&=	~(1 << 10);
+}
+
+
+
