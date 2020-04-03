@@ -627,7 +627,7 @@ unsigned char reduce_monthday(unsigned char monthday,unsigned char month_number)
   }  
 }
 
-unsigned char increase_year(unsigned char month)
+unsigned char increase_month(unsigned char month)
 {
   if(month == 12)
   {
@@ -638,7 +638,7 @@ unsigned char increase_year(unsigned char month)
     return (month + 1);
   }  
 }
-unsigned char reduce_year(unsigned char month)
+unsigned char reduce_month(unsigned char month)
 {
   if(month == 1)
   {
