@@ -90,7 +90,7 @@ unsigned char set_second(void)
     {
       case BUTTON_UP:
         {
-          if(status = SKIP)
+          if(status == SKIP)
           {
             return SET_MINUTE;
           }
@@ -99,7 +99,7 @@ unsigned char set_second(void)
         break;
       case BUTTON_DOWN:
         {
-          if(status = SKIP)
+          if(status == SKIP)
           {
             return SET_SECOND;
           }
@@ -153,7 +153,7 @@ unsigned char set_minute(void)
     {
       case BUTTON_UP:
         {
-          if(status = SKIP)
+          if(status == SKIP)
           {
             return SET_HOUR;
           }
@@ -162,7 +162,7 @@ unsigned char set_minute(void)
         break;
       case BUTTON_DOWN:
         {
-          if(status = SKIP)
+          if(status == SKIP)
           {
             return SET_SECOND;
           }
@@ -216,7 +216,7 @@ unsigned char set_hour(void)
     {
       case BUTTON_UP:
         {
-          if(status = SKIP)
+          if(status == SKIP)
           {
             return SET_WEEKDAY;
           }
@@ -225,7 +225,7 @@ unsigned char set_hour(void)
         break;
       case BUTTON_DOWN:
         {
-          if(status = SKIP)
+          if(status == SKIP)
           {
             return SET_MINUTE;
           }
@@ -279,7 +279,7 @@ unsigned char set_weekday(void)
     {
       case BUTTON_UP:
         {
-          if(status = SKIP)
+          if(status == SKIP)
           {
             return SET_MONTHDAY;
           }
@@ -288,7 +288,7 @@ unsigned char set_weekday(void)
         break;
       case BUTTON_DOWN:
         {
-          if(status = SKIP)
+          if(status == SKIP)
           {
             return SET_HOUR;
           }
@@ -350,7 +350,7 @@ unsigned char set_monthday(void)
     {
       case BUTTON_UP:
         {
-          if(status = SKIP)
+          if(status == SKIP)
           {
             return SET_YEAR;
           }
@@ -359,7 +359,7 @@ unsigned char set_monthday(void)
         break;
       case BUTTON_DOWN:
         {
-          if(status = SKIP)
+          if(status == SKIP)
           {
             return SET_WEEKDAY;
           }
@@ -413,7 +413,7 @@ unsigned char set_month(void)
     {
       case BUTTON_UP:
         {
-          if(status = SKIP)
+          if(status == SKIP)
           {
             return SET_YEAR;
           }
@@ -422,7 +422,7 @@ unsigned char set_month(void)
         break;
       case BUTTON_DOWN:
         {
-          if(status = SKIP)
+          if(status == SKIP)
           {
             return SET_MONTHDAY;
           }
@@ -476,7 +476,7 @@ unsigned char set_year(void)
     {
       case BUTTON_UP:
         {
-          if(status = SKIP)
+          if(status == SKIP)
           {
             return SET_YEAR;
           }
@@ -485,7 +485,7 @@ unsigned char set_year(void)
         break;
       case BUTTON_DOWN:
         {
-          if(status = SKIP)
+          if(status == SKIP)
           {
             return SET_MONTH;
           }
