@@ -8,6 +8,17 @@
 
 const unsigned char monthdays[12] = {31,28,31,30,31,30,31,31,30,31,30,31};
 
+void blink_on(void);
+void blink_off(void);
+
+void blink_on(void)
+{
+}
+
+void blink_off(void)
+{
+}
+
 unsigned char setting_ds3231(void)
 {
   unsigned char picky = SET_SECOND;
