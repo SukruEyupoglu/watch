@@ -33,7 +33,7 @@ void button_init(void)
 
 unsigned char check_button(void)
 {
-  button_delay( (SECOND / 4) );	// SECOND = Systemcoreclock = 12 000 000
+  button_delay( (ONE_SECOND / 4) );	// ONE_SECOND = Systemcoreclock = 12 000 000
   if(setting_alarm_button_pressed != 0)
   {
 	if(boot_button_pressed != 0)
