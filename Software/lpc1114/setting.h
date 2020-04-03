@@ -19,5 +19,18 @@ unsigned char set_year(void);
 
 
 
-
+unsigned char increase_second(unsigned char second);
+unsigned char reduce_second(unsigned char second);
+unsigned char increase_minute(unsigned char minute);
+unsigned char reduce_minute(unsigned char minute);
+unsigned char increase_hour(unsigned char hour);
+unsigned char reduce_hour(unsigned char hour);
+unsigned char increase_weekday(unsigned char weekday);
+unsigned char reduce_weekday(unsigned char weekday);
+unsigned char increase_monthday(unsigned char monthday,unsigned char month_number,unsigned char year_number);
+unsigned char reduce_monthday(unsigned char monthday,unsigned char month_number);
+unsigned char increase_month(unsigned char month);
+unsigned char reduce_month(unsigned char month);
+unsigned char increase_year(unsigned char year);
+unsigned char reduce_year(unsigned char year);
 
