@@ -29,6 +29,8 @@
 #define SETTING_E2PROM_0x050_0x100 181
 #define SETTING_E2PROM_0x000_0x050 180
 
+#define ONE_SECOND 12000000 // 12 000 000 = sYSTEM CORE CLOCK
+
 void button_delay(volatile unsigned int wait);
 void button_init(void);
 unsigned char check_button(void);
