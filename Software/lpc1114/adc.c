@@ -19,7 +19,7 @@ void adc_init(void)
     //  LIGHT UP DOWN ADC SETTING
 	LPC_IOCON->R_PIO1_1 		            	=	0x2;
     //  PIR ADC SETTING
-	LPC_IOCON->R_PIO1_3 		            	=	0x2;
+	LPC_IOCON->SWDIO_PIO1_3 		        =	0x2;
 	// ADC CONTROL REGISTER
 	// ACTIVATE AD0,AD1,AD2,AD4
 	LPC_ADC->CR					|=	(1 << 0) | (1 << 1) | (1 << 2) | (1 << 4);
@@ -30,7 +30,7 @@ void adc_init(void)
 }
 unsigned char adc_0_mic_read(void)
 {
-		
+		return 0;
 }
 unsigned char adc_1_time_up_down_read(void)
 {
@@ -96,5 +96,5 @@ unsigned char adc_2_light_up_down_read(void)
 }
 unsigned char adc_4_pir_read(void)
 {
-		
+		return 0;
 }
