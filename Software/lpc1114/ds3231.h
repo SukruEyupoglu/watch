@@ -161,6 +161,9 @@ unsigned char read_ds3231_alarm_2_hour(unsigned char * hour);
 unsigned char read_ds3231_alarm_2_day(unsigned char * day);
 unsigned char read_ds3231_alarm_2_date(unsigned char * date);
 
+
+unsigned char ds3231_every_minute_alarm_init(void);
+
 // static unsigned char time2reg(unsigned char time);
 // static unsigned char reg2time(unsigned char reg);
 // static void raw_to_ds_t(ds_t * ds,unsigned char array[19]);
