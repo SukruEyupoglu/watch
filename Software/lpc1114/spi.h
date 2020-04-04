@@ -1,6 +1,6 @@
 void spi_init(void);
 unsigned char spi(unsigned char TX_Data);
-void latch(void);
+
 
 #define SSPSR_TNF (1 << 1)
 #define SSPSR_BSY (1 << 4)
