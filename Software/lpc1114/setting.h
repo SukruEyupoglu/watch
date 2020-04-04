@@ -17,6 +17,7 @@
 #define SKIP                0
 #define WAIT_FOR_SETTING    1
 #define EXIT                9
+#define SET_ERROR           10
 
 
 unsigned char setting_ds3231(void);
