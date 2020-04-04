@@ -540,10 +540,7 @@ unsigned char increase_minute(unsigned char minute)
   {
     return 0;
   }
-  else
-  {
-    return (minute + 1);
-  }
+  return (minute + 1);
 }
 unsigned char reduce_minute(unsigned char minute)
 {
@@ -551,10 +548,7 @@ unsigned char reduce_minute(unsigned char minute)
   {
     return 59;
   }
-  else
-  {
-    return (minute - 1);
-  }  
+  return (minute - 1);  
 }
 unsigned char increase_hour(unsigned char hour)
 {
@@ -562,10 +556,7 @@ unsigned char increase_hour(unsigned char hour)
   {
     return 0;
   }
-  else
-  {
-    return (hour + 1);
-  }  
+  return (hour + 1);  
 }
 unsigned char reduce_hour(unsigned char hour)
 {
@@ -573,10 +564,7 @@ unsigned char reduce_hour(unsigned char hour)
   {
     return 23;
   }
-  else
-  {
-    return (hour - 1);
-  }  
+  return (hour - 1);  
 }
 
 unsigned char increase_weekday(unsigned char weekday)
@@ -585,10 +573,7 @@ unsigned char increase_weekday(unsigned char weekday)
   {
     return 1;
   }
-  else
-  {
-    return (weekday + 1);
-  }  
+  return (weekday + 1);  
 }
 unsigned char reduce_weekday(unsigned char weekday)
 {
@@ -596,10 +581,7 @@ unsigned char reduce_weekday(unsigned char weekday)
   {
     return 7;
   }
-  else
-  {
-    return (weekday - 1);
-  }  
+  return (weekday - 1);  
 }
 
 unsigned char increase_monthday(unsigned char monthday,unsigned char month_number,unsigned char year_number)
@@ -625,6 +607,7 @@ unsigned char increase_monthday(unsigned char monthday,unsigned char month_numbe
       return (monthday + 1);
     }
   }
+  return 1;
 }
 unsigned char reduce_monthday(unsigned char monthday,unsigned char month_number)
 {
@@ -632,10 +615,7 @@ unsigned char reduce_monthday(unsigned char monthday,unsigned char month_number)
   {
     return monthdays[month_number - 1];
   }
-  else
-  {
-    return (monthday - 1);
-  }  
+  return (monthday - 1);  
 }
 
 unsigned char increase_month(unsigned char month)
@@ -644,10 +624,7 @@ unsigned char increase_month(unsigned char month)
   {
     return 1;
   }
-  else
-  {
-    return (month + 1);
-  }  
+  return (month + 1);  
 }
 unsigned char reduce_month(unsigned char month)
 {
@@ -655,10 +632,7 @@ unsigned char reduce_month(unsigned char month)
   {
     return 12;
   }
-  else
-  {
-    return (month - 1);
-  }  
+  return (month - 1);  
 }
 
 unsigned char increase_year(unsigned char year)
@@ -667,10 +641,7 @@ unsigned char increase_year(unsigned char year)
   {
     return 0;
   }
-  else
-  {
-    return (year + 1);
-  }  
+  return (year + 1);  
 }
 unsigned char reduce_year(unsigned char year)
 {
@@ -678,10 +649,7 @@ unsigned char reduce_year(unsigned char year)
   {
     return 99;
   }
-  else
-  {
-    return (year - 1);
-  }  
+  return (year - 1);  
 }
 
 
