@@ -20,10 +20,6 @@
 #define DS3231_DATE_OUT_OF_UP_RANGE       32
 #define DS3231_DATE_OUT_OF_DOWN_RANGE     0
 
-#define ERR 1
-#define ERROR 1
-#define OK 0
-
 #define ZERO 0
 #define ONE 1
 
