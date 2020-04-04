@@ -10,10 +10,7 @@ void brightness_down(void)
 {
   
 }
-void main()
-{
 
-}
 
 
 
