@@ -29,13 +29,13 @@ void set_led_write_reg(unsigned char minute,unsigned char hour)
   // sol digite 10(ON) ve katları, sag digite 10(ON) a kadar olan sayılar
   led_write_digit((hour / 10),(hour % 10));
 }
-	
+/*	
 void latch(void) // duzeltildi.
 {
 LPC_GPIO2->DATA   	&= ~(1 << 10);
 LPC_GPIO2->DATA		|= (1 << 10);
 }
-
+*/
 void led_write(void)
 {
   unsigned char f;
