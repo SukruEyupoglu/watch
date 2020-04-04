@@ -1,5 +1,5 @@
 #include "LPC11xx.h"
-#include "lpc1114_i2c.h"
+#include "i2c.h"
 //#include "lpc1114_delay.h"
 
 void i2c_init(void)
