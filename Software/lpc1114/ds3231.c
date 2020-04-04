@@ -40,7 +40,7 @@ unsigned char start_temp_conversion(void)
     {
         return ERROR;
     }
-    if( read_ds3231_conrol(&x) == ERR)
+    if( read_ds3231_control(&x) == ERR)
     {
         return ERROR;
     }
