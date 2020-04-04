@@ -69,7 +69,7 @@ unsigned char setting_ds3231(void)
         break;
       case SET_ERROR:
         {
-          return ERR;          
+          return ERROR;
         }
         break;
     }
@@ -81,7 +81,7 @@ unsigned char set_second(void)
   unsigned char x,status = SKIP;
   if(read_ds3231_second(&x) == ERR)
   {
-    return ERROR;
+    return SET_ERROR;
   }
   while(1)
   {
@@ -123,7 +123,7 @@ unsigned char set_second(void)
         {
           if(write_ds3231_second(x) == ERR)
           {
-            return ERROR;
+            return SET_ERROR;
           }
           blink_off();
           status = SKIP;
@@ -136,7 +136,7 @@ unsigned char set_second(void)
         break;
     }
   }
-  return ERROR;
+  return OK;
 }
 
 unsigned char set_minute(void)
@@ -144,7 +144,7 @@ unsigned char set_minute(void)
   unsigned char x,status = SKIP;
   if(read_ds3231_minute(&x) == ERR)
   {
-    return ERROR;
+    return SET_ERROR;
   }
   while(1)
   {
@@ -186,7 +186,7 @@ unsigned char set_minute(void)
         {
           if(write_ds3231_minute(x) == ERR)
           {
-            return ERROR;
+            return SET_ERROR;
           }
           blink_off();
           status = SKIP;
@@ -199,7 +199,7 @@ unsigned char set_minute(void)
         break;
     }
   }
-  return ERROR;
+  return OK;
 }
 
 unsigned char set_hour(void)
@@ -207,7 +207,7 @@ unsigned char set_hour(void)
   unsigned char x,status = SKIP;
   if(read_ds3231_hour(&x) == ERR)
   {
-    return ERROR;
+    return SET_ERROR;
   }
   while(1)
   {
@@ -249,7 +249,7 @@ unsigned char set_hour(void)
         {
           if(write_ds3231_hour(x) == ERR)
           {
-            return ERROR;
+            return SET_ERROR;
           }
           blink_off();
           status = SKIP;
@@ -262,7 +262,7 @@ unsigned char set_hour(void)
         break;
     }
   }
-  return ERROR;
+  return OK;
 }
 
 unsigned char set_weekday(void)
@@ -270,7 +270,7 @@ unsigned char set_weekday(void)
   unsigned char x,status = SKIP;
   if(read_ds3231_day(&x) == ERR)
   {
-    return ERROR;
+    return SET_ERROR;
   }
   while(1)
   {
@@ -312,7 +312,7 @@ unsigned char set_weekday(void)
         {
           if(write_ds3231_day(x) == ERR)
           {
-            return ERROR;
+            return SET_ERROR;
           }
           blink_off();
           status = SKIP;
@@ -325,7 +325,7 @@ unsigned char set_weekday(void)
         break;
     }
   }
-  return ERROR;
+  return OK;
 }
 
 unsigned char set_monthday(void)
@@ -333,15 +333,15 @@ unsigned char set_monthday(void)
   unsigned char x,y,z,status = SKIP;
   if(read_ds3231_date(&x) == ERR)
   {
-    return ERROR;
+    return SET_ERROR;
   }
   if(read_ds3231_month(&y) == ERR)
   {
-    return ERROR;
+    return SET_ERROR;
   }
   if(read_ds3231_year(&z) == ERR)
   {
-    return ERROR;
+    return SET_ERROR;
   }
   while(1)
   {
@@ -383,7 +383,7 @@ unsigned char set_monthday(void)
         {
           if(write_ds3231_date(x) == ERR)
           {
-            return ERROR;
+            return SET_ERROR;
           }
           blink_off();
           status = SKIP;
@@ -396,7 +396,7 @@ unsigned char set_monthday(void)
         break;
     }
   }
-  return ERROR;
+  return OK;
 }
 
 unsigned char set_month(void)
@@ -404,7 +404,7 @@ unsigned char set_month(void)
   unsigned char x,status = SKIP;
   if(read_ds3231_month(&x) == ERR)
   {
-    return ERROR;
+    return SET_ERROR;
   }
   while(1)
   {
@@ -446,7 +446,7 @@ unsigned char set_month(void)
         {
           if(write_ds3231_month(x) == ERR)
           {
-            return ERROR;
+            return SET_ERROR;
           }
           blink_off();
           status = SKIP;
@@ -459,7 +459,7 @@ unsigned char set_month(void)
         break;
     }
   }
-  return ERROR;
+  return OK;
 }
 
 unsigned char set_year(void)
@@ -467,7 +467,7 @@ unsigned char set_year(void)
   unsigned char x,status = SKIP;
   if(read_ds3231_year(&x) == ERR)
   {
-    return ERROR;
+    return SET_ERROR;
   }
   while(1)
   {
@@ -509,7 +509,7 @@ unsigned char set_year(void)
         {
           if(write_ds3231_year(x) == ERR)
           {
-            return ERROR;
+            return SET_ERROR;
           }
           blink_off();
           status = SKIP;
@@ -522,7 +522,7 @@ unsigned char set_year(void)
         break;
     }
   }
-  return ERROR;
+  return OK;
 }
 
 
@@ -549,7 +549,7 @@ unsigned char reduce_minute(unsigned char minute)
   {
     return 59;
   }
-  return (minute - 1);  
+  return (minute - 1);
 }
 unsigned char increase_hour(unsigned char hour)
 {
@@ -557,7 +557,7 @@ unsigned char increase_hour(unsigned char hour)
   {
     return 0;
   }
-  return (hour + 1);  
+  return (hour + 1);
 }
 unsigned char reduce_hour(unsigned char hour)
 {
@@ -565,7 +565,7 @@ unsigned char reduce_hour(unsigned char hour)
   {
     return 23;
   }
-  return (hour - 1);  
+  return (hour - 1);
 }
 
 unsigned char increase_weekday(unsigned char weekday)
@@ -574,7 +574,7 @@ unsigned char increase_weekday(unsigned char weekday)
   {
     return 1;
   }
-  return (weekday + 1);  
+  return (weekday + 1);
 }
 unsigned char reduce_weekday(unsigned char weekday)
 {
@@ -582,7 +582,7 @@ unsigned char reduce_weekday(unsigned char weekday)
   {
     return 7;
   }
-  return (weekday - 1);  
+  return (weekday - 1);
 }
 
 unsigned char increase_monthday(unsigned char monthday,unsigned char month_number,unsigned char year_number)
@@ -616,7 +616,7 @@ unsigned char reduce_monthday(unsigned char monthday,unsigned char month_number)
   {
     return monthdays[month_number - 1];
   }
-  return (monthday - 1);  
+  return (monthday - 1);
 }
 
 unsigned char increase_month(unsigned char month)
@@ -625,7 +625,7 @@ unsigned char increase_month(unsigned char month)
   {
     return 1;
   }
-  return (month + 1);  
+  return (month + 1);
 }
 unsigned char reduce_month(unsigned char month)
 {
@@ -633,7 +633,7 @@ unsigned char reduce_month(unsigned char month)
   {
     return 12;
   }
-  return (month - 1);  
+  return (month - 1);
 }
 
 unsigned char increase_year(unsigned char year)
@@ -642,7 +642,7 @@ unsigned char increase_year(unsigned char year)
   {
     return 0;
   }
-  return (year + 1);  
+  return (year + 1);
 }
 unsigned char reduce_year(unsigned char year)
 {
@@ -650,7 +650,7 @@ unsigned char reduce_year(unsigned char year)
   {
     return 99;
   }
-  return (year - 1);  
+  return (year - 1);
 }
 
 
@@ -709,9 +709,9 @@ unsigned char setting_e2prom(void)
           return EXIT;          
         }
         break;
-      case ERROR:
+      case SET_ERROR:
         {
-          return ERROR;          
+          return SET_ERROR;
         }
         break;
       default:
@@ -730,7 +730,7 @@ unsigned char show_version(void)
   unsigned char data,status = SKIP;
   if(e2prom_read(reg_addr,&data,size) == ERR)
   {
-    return ERROR;
+    return SET_ERROR;
   }
   while(1)
   {
@@ -786,7 +786,7 @@ unsigned char set_special_alarm()
   unsigned char data,status = SKIP;
   if(e2prom_read(reg_addr,&data,size) == ERR)
   {
-    return ERROR;
+    return SET_ERROR;
   }
   while(1)
   {
@@ -877,7 +877,7 @@ void setting(void)
   systick_second_sleep(255);
   if(i2c(eeprom_addr,ee_reg,2,1,&set,1) == ERR)
   {
-    error();
+    SET_ERROR();
   }
   while(1)
   {
@@ -942,7 +942,7 @@ void setting(void)
             mux = (ee_reg % 60) + 1;
             if(i2c(eeprom_addr,ee_reg,2,1,&set,1) == ERR)
             {
-              error();
+              SET_ERROR();
             }
           }
           break;
@@ -961,7 +961,7 @@ void setting(void)
             mux = (ee_reg % 60) + 1;
             if(i2c(eeprom_addr,ee_reg,2,1,&set,1) == ERR)
             {
-              error();
+              SET_ERROR();
             }
           }
           break;
