@@ -68,7 +68,7 @@ unsigned char setting_ds3231(void)
         break;
       case ERROR:
         {
-          return ERROR;          
+          return ERR;          
         }
         break;
     }
@@ -363,7 +363,7 @@ unsigned char set_monthday(void)
           {
             return SET_WEEKDAY;
           }
-          x = reduce_monthday(x,y,z);
+          x = reduce_monthday(x,y);
         }
         break;
       case BUTTON_CANCEL:
