@@ -76,13 +76,13 @@ int main(void)
         }
         break;        
       case SETTING_LRM:
-        {
+        {/*
           relax_systick_sec();
           if(setting_e2prom() == ERR)
           {
             error();
           }
-          deadline_systick_sec(SEC_10);
+          deadline_systick_sec(SEC_10);*/
         }
         break;
       case SETTING_CLK:
