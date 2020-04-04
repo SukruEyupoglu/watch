@@ -4,6 +4,7 @@
 #include "ds3231.h"
 #include "error.h"
 #include "led.h"
+#include "button.h"
 
 
 const unsigned char monthdays[12] = {31,28,31,30,31,30,31,31,30,31,30,31};
@@ -66,7 +67,7 @@ unsigned char setting_ds3231(void)
           return EXIT;          
         }
         break;
-      case ERROR:
+      case SET_ERROR:
         {
           return ERR;          
         }
