@@ -35,7 +35,7 @@ void set_led_write_reg(unsigned char minute,unsigned char hour)
   led_write_digit((hour / 10),(hour % 10));
 }
 	
-void latch(void) // duzeltildi.
+void latch(void) // USELESS FUNCTION
 {
 LPC_GPIO2->DATA   	&= ~(1 << 10);
 LPC_GPIO2->DATA		|= (1 << 10);
@@ -44,11 +44,13 @@ LPC_GPIO2->DATA		|= (1 << 10);
 void led_write(void)
 {
   unsigned char f;
+  LPC_GPIO2->DATA		|= (1 << 10);
   for(f = 0 ; f < 12 ; f++)
   {
     spi( led[(11 - f)] );
   }
-  latch();
+  LPC_GPIO2->DATA   	&= ~(1 << 10);
+ // latch(); TRYED BUT NOT WORKED
 }        	
 // BELIRLI BIR ALANDAKI LEDLERI YAKAN FONKSIYON
 // x DEN BASLAYARAK y YE KADAR OLAN LEDLERI YAKAR
