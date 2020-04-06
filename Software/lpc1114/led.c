@@ -4,6 +4,11 @@
 
 void led_init(void)
 {
+		//	ENABLE IOCON CLK
+	LPC_SYSCON->SYSAHBCLKCTRL		        |=	(1 << 16);
+	//	ENABLE GPIO CLK
+	LPC_SYSCON->SYSAHBCLKCTRL			|=	(1 << 6);
+
   // LATCH SETTINGS FOR SHIFT REGISTERS
   LPC_IOCON->PIO2_10      = 0;
   LPC_GPIO2->DIR					|=	(1 << 10);
