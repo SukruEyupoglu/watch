@@ -1,146 +1,574 @@
-unsigned char i2c_write_1_char(unsigned char w_addr,unsigned char reg,unsigned char data)
-{
-LPC_I2C->CONSET = I2CONSET_STA_BIT5; 
-while(LPC_I2C->STAT != I2CSTAT_START_0x08);
-LPC_I2C->DAT					=	w_addr;
-LPC_I2C->CONCLR = (I2CONCLR_SIC_BIT3 | I2CONCLR_STAC_BIT5);
-while(!((LPC_I2C->STAT == I2CSTAT_NACK_0x20) | (LPC_I2C->STAT == I2CSTAT_ACK_0x18)));
-if(LPC_I2C->STAT == I2CSTAT_ACK_0x18)
-	{
-	LPC_I2C->DAT				=	reg;
-	LPC_I2C->CONCLR = I2CONCLR_SIC_BIT3;
-	}
-else 
-	{
-	LPC_I2C->CONSET = I2CONSET_STO_BIT4; 
-	LPC_I2C->CONCLR = I2CONCLR_SIC_BIT3;  
-    	return 1;
-	}
-while(!((LPC_I2C->STAT == I2CSTAT_NACK_0x30) | (LPC_I2C->STAT == I2CSTAT_ACK_0x28)));
-if(LPC_I2C->STAT == I2CSTAT_ACK_0x28)
-	{
-	LPC_I2C->DAT				=	data;
-    	LPC_I2C->CONSET = I2CONSET_STO_BIT4; 
-	LPC_I2C->CONCLR = I2CONCLR_SIC_BIT3;
-}
-else 
-{
-	LPC_I2C->CONSET = I2CONSET_STO_BIT4; 
-	LPC_I2C->CONCLR = I2CONCLR_SIC_BIT3;  
-    	return 1;
-}
-return 0;
-}
-unsigned char i2c_read_1_char(unsigned char w_addr,unsigned char r_addr,unsigned char reg,unsigned char *data)
-{
-LPC_I2C->CONSET = I2CONSET_STA_BIT5; 
-while(LPC_I2C->STAT != I2CSTAT_START_0x08);
-LPC_I2C->DAT					=	w_addr;
-LPC_I2C->CONCLR = (I2CONCLR_SIC_BIT3 | I2CONCLR_STAC_BIT5);
-while(!((LPC_I2C->STAT == I2CSTAT_NACK_0x20) | (LPC_I2C->STAT == I2CSTAT_ACK_0x18)));
-if(LPC_I2C->STAT == I2CSTAT_ACK_0x18)
-	{
-	LPC_I2C->DAT				=	reg;
-    	LPC_I2C->CONSET = I2CONSET_RSTA_BIT5; 
-	LPC_I2C->CONCLR = I2CONCLR_SIC_BIT3;
-	}
-else 
-	{
-	LPC_I2C->CONSET = I2CONSET_STO_BIT4; 
-	LPC_I2C->CONCLR = I2CONCLR_SIC_BIT3;  
-    	return 1;
-	}
-while(LPC_I2C->STAT != I2CSTAT_START_0x10);
-LPC_I2C->DAT					=	r_addr;
-LPC_I2C->CONCLR = (I2CONCLR_SIC_BIT3 | I2CONCLR_STAC_BIT5);	
-while(!((LPC_I2C->STAT == I2CSTAT_NACK_0x48) | (LPC_I2C->STAT == I2CSTAT_ACK_0x40)));
-if(LPC_I2C->STAT == I2CSTAT_ACK_0x40)
-	{
-	// LPC_I2C->CONSET = I2CONSET_AA_BIT2; // IF MULTIBYTE READ USE THIS
-	}
-else 
-	{
-	LPC_I2C->CONSET = I2CONSET_STO_BIT4; 
-	LPC_I2C->CONCLR = I2CONCLR_SIC_BIT3;  
-    	return 1;
-	}
-while(LPC_I2C->STAT != I2CSTAT_ACK_0x58);
-*data = LPC_I2C->DAT
-LPC_I2C->CONSET = I2CONSET_STO_BIT4; 
-LPC_I2C->CONCLR = I2CONCLR_SIC_BIT3;  
-return 0;	
-}
-unsigned char i2c_read_multi_char(unsigned char w_addr,unsigned char r_addr,unsigned char start_reg,unsigned char data[19])
-{
-unsigned char i,
-LPC_I2C->CONSET = I2CONSET_STA_BIT5; 
-while(LPC_I2C->STAT != I2CSTAT_START_0x08);
-LPC_I2C->DAT					=	w_addr;
-LPC_I2C->CONCLR = (I2CONCLR_SIC_BIT3 | I2CONCLR_STAC_BIT5);
-while(!((LPC_I2C->STAT == I2CSTAT_NACK_0x20) | (LPC_I2C->STAT == I2CSTAT_ACK_0x18)));
-if(LPC_I2C->STAT == I2CSTAT_ACK_0x18)
-	{
-	LPC_I2C->DAT				=	start_reg;
-    	LPC_I2C->CONSET = I2CONSET_RSTA_BIT5; 
-	LPC_I2C->CONCLR = I2CONCLR_SIC_BIT3;
-	}
-else 
-	{
-	LPC_I2C->CONSET = I2CONSET_STO_BIT4; 
-	LPC_I2C->CONCLR = I2CONCLR_SIC_BIT3;  
-    	return 1;
-	}
-while(LPC_I2C->STAT != I2CSTAT_START_0x10);
-LPC_I2C->DAT					=	r_addr;
-LPC_I2C->CONCLR = (I2CONCLR_SIC_BIT3 | I2CONCLR_STAC_BIT5);	
-while(!((LPC_I2C->STAT == I2CSTAT_NACK_0x48) | (LPC_I2C->STAT == I2CSTAT_ACK_0x40)));
-if(LPC_I2C->STAT == I2CSTAT_ACK_0x40)
-	{
-	LPC_I2C->CONSET = I2CONSET_MULTIBYTE_AA_BIT2;
-	}
-else 
-	{
-	LPC_I2C->CONSET = I2CONSET_STO_BIT4; 
-	LPC_I2C->CONCLR = I2CONCLR_SIC_BIT3;  
-    	return 1;
-	}
-for(i=0;i<18;i++)
-{
-	while(LPC_I2C->STAT != I2CSTAT_ACK_0x50);
-	if(LPC_I2C->STAT == I2CSTAT_ACK_0x50)
-		{
-		data[i] = LPC_I2C->DAT;
-		LPC_I2C->CONCLR = I2CONCLR_SIC_BIT3;
-		}
-	else 
-		{
-		LPC_I2C->CONSET = I2CONSET_STO_BIT4; 
-		LPC_I2C->CONCLR = I2CONCLR_SIC_BIT3;  
-    		return 1;
-		}
-}
-LPC_I2C->CONCLR = I2CONCLR_MULTIBYTE_AAC_BIT2;
-while(LPC_I2C->STAT != I2CSTAT_ACK_0x58);
-data[i] = LPC_I2C->DAT;
-LPC_I2C->CONSET = I2CONSET_STO_BIT4; 
-LPC_I2C->CONCLR = I2CONCLR_SIC_BIT3;  
-return 0;		
-}
-void i2c1_init(void)
-{
-	//	ENABLE IOCON CLK
-	LPC_SYSCON->SYSAHBCLKCTRL		|=	(1 << 16);
+#include "lpc1114_spi.h"
+#include "lpc1114_led.h"
+#include "LPC11xx.h"
 
-	//	IOCONFIG I2C SETTINGS
-	LPC_IOCON->PIO0_4 				=	0x1;
-	LPC_IOCON->PIO0_5 				=	0x1;
-	//	I2C CLK
-	LPC_SYSCON->SYSAHBCLKCTRL		|=	(1 << 5);
-	LPC_SYSCON->PRESETCTRL			|=	0x2;
-	LPC_I2C->CONSET					|=	(1 << 6);
-	//	400 khz setting = 3C---100 khz setting = F0
-	LPC_I2C->SCLH					=	0x3C;
-	LPC_I2C->SCLL					=	0x3C;
+// FOR LED DATA HOLDER ARRAY EVERY FUNCTION REACABLE OPTION
+volatile unsigned char led[12] = {0,0,0,0,0,0,0,0,0,0,0,0};
+
+void set_led_write_reg(unsigned char minute,unsigned char hour)
+{
+  // ZERO dan minuteye kadar olan ledleri yakar.
+  limit_yaz(ONE,minute);
+  // sol digite 10(ON) ve katları, sag digite 10(ON) a kadar olan sayılar
+  led_write_digit((hour / 10),(hour % 10));
+}
+/* wrong reverse shift register
+void led_write(void)
+{
+  unsigned char f;
+  for(f = 0 ; f < 12 ; f++)
+  {
+    spi( led[f] );
+  }
+  latch();         
+}        
+*/ // true at below
+void led_write(void)
+{
+  LPC_GPIO2->DATA					|=	(1 << 10);
+  unsigned char f;
+  for(f = 0 ; f < 12 ; f++)
+  {
+    spi( led[(11 - f)] );
+  }
+  LPC_GPIO2->DATA					&=	~(1 << 10);
+  //latch();
+}        
+
+// BELIRLI BIR ALANDAKI LEDLERI YAKAN FONKSIYON
+// x DEN BASLAYARAK y YE KADAR OLAN LEDLERI YAKAR
+// SAAT YADA DAKIKA YAZMAK ICIN UYGUNDUR
+void limit_yaz(unsigned char x,unsigned char y)
+{
+  unsigned char f;
+  // led_zero();
+  if( (x < 60) & (y < 60) )
+  {
+    if(y < x)
+    {
+      for(f = y ; f <= x ; f++)
+      {
+        led_yan(f);
+      }
+    }
+    else
+    {
+      for(f = x ; f <= y ; f++)
+      {
+        led_yan(f);
+      }
+    }
+  }
+}
+// BELIRLI BIR ALANDAKI LEDLERI SONDUREN FONSIYON 
+// ORNEGIN x DEN BASLAYARAK y YE KADAR SIL
+void limit_sil(unsigned char x,unsigned char y)
+{
+  unsigned char f;
+  // led_one();
+  if( (x < 60) & (y < 60) )
+  {
+    if(y < x)
+    {
+      for(f = y ; f <= x ; f++)
+      {
+        led_son(f);
+      }
+    }
+    else
+    {
+      for(f = x ; f <= y ; f++)
+      {
+        led_son(f);
+      }
+    }
+  }
+}
+// 0 - 60 between
+// SADECE BIR LEDI YAKAN FONKSIYON
+void led_yan(unsigned char xx)
+{
+  unsigned char x = xx;
+  if(xx < 61)
+  {
+    if(x == 0)
+    {
+      x = 60;
+    }
+    led[ (x - 1) / 8] |= (1 << ( (x - 1) % 8) );
+  }
+  // yaz();
+}
+// 0 - 60 between
+// SADECE BIR LEDI SONDUREN FONKSIYON
+void led_son(unsigned char xx)
+{
+  unsigned char x = xx;
+  if(x < 61)
+  {
+    if( x == 0)
+    {
+      x = 60;
+    }
+    led[ (x - 1) / 8] &= ~(1 << ( (x - 1) % 8) );
+  }
+  // yaz();
+}
+// BUTUN LEDLERI SONDUREN FONKSIYON
+void led_zero(void)
+{
+  unsigned char f = 60;
+  while(f)
+  {
+    led_son(f);
+    f--;
+  }
+}
+// BUTUN LEDLERI YAKAN FONKSIYON
+void led_one(void)
+{
+  unsigned char f = 60;
+  while(f)
+  {
+    led_yan(f);
+    f--;
+  }
 }
 
+void led_write_digit(unsigned char left,unsigned char right)
+{
+  switch(left)
+  {
+    case '.':
+    {
+      led[8] = 0x00;
+      led[9] = 0x00;
+    }
+    break;
+    case 0:
+    {
+      led[8] = 0xFF;
+      led[9] = 0x0F;
+    }
+    break;
+    case 1:
+    {
+      led[8] = 0x3C;
+      led[9] = 0x00;
+    }
+    break;
+    case 2:
+    {
+      led[8] = 0xCF;
+      led[9] = 0x33;
+    }
+    break;
+    case 3:
+    {
+      led[8] = 0xFF;
+      led[9] = 0x30;
+    }
+    break;
+    case 4:
+    {
+      led[8] = 0x3C;
+      led[9] = 0x3C;
+    }
+    break;
+    case 5:
+    {
+      led[8] = 0xF3;
+      led[9] = 0x3C;
+    }
+    break;
+    case 6:
+    {
+      led[8] = 0xF3;
+      led[9] = 0x3F;
+    }
+    break;
+    case 7:
+    {
+      led[8] = 0x3F;
+      led[9] = 0x00;
+    }
+    break;
+    case 8:
+    {
+      led[8] = 0xFF;
+      led[9] = 0x3F;
+    }
+    break;
+    case 9:
+    {
+      led[8] = 0xFF;
+      led[9] = 0x3C;
+    }
+    break;      
+    case 'A':
+    {
+      led[8] = 0x3F;
+      led[9] = 0x3F;
+    }
+    break;
+    case 'B':
+    {
+      led[8] = 0xDB;
+      led[9] = 0x1F;
+    }
+    break;
+    case 'C':
+    {
+      led[8] = 0xC3;
+      led[9] = 0x0F;
+    }
+    break;
+    case 'D':
+    {
+      led[8] = 0xDB;
+      led[9] = 0x0F;
+    }
+    break;
+    case 'E':
+    {
+      led[8] = 0xC3;
+      led[9] = 0x3F;
+    }
+    break;
+    case 'F':
+    {
+      led[8] = 0x03;
+      led[9] = 0x3F;
+    }
+    break;
+    case 'G':
+    {
+      led[8] = 0xD3;
+      led[9] = 0x1F;
+    }
+    break;
+    case 'H':
+    {
+      led[8] = 0x3C;
+      led[9] = 0x3F;
+    }
+    break;
+    case 'I':
+    {
+      led[8] = 0x00;
+      led[9] = 0x0F;
+    }
+    break;
+    case 'J':
+    {
+      led[8] = 0xFC;
+      led[9] = 0x00;
+    }
+    break;
+    case 'K':
+    {
+      led[8] = 0x24;
+      led[9] = 0x3F;
+    }
+    break;
+    case 'L':
+    {
+      led[8] = 0xC0;
+      led[9] = 0x0F;
+    }
+    break;
+    case 'M':
+    {
+      led[8] = 0x34;
+      led[9] = 0x3B;
+    }
+    break;
+    case 'N':
+    {
+      led[8] = 0x3B;
+      led[9] = 0x07;
+    }
+    break;
+    case 'O':
+    {
+      led[8] = 0xDB;
+      led[9] = 0x06;
+    }
+    break;
+    case 'P':
+    {
+      led[8] = 0x0F;
+      led[9] = 0x3F;
+    }
+    break;
+    case 'R':
+    {
+      led[8] = 0x03;
+      led[9] = 0x0F;
+    }
+    break;
+    case 'S':
+    {
+      led[8] = 0xD1;
+      led[9] = 0x2C;
+    }
+    break;
+     case 'T':
+    {
+      led[8] = 0x00;
+      led[9] = 0x3F;
+    }
+    break;
+    case 'U':
+    {
+      led[8] = 0xFC;
+      led[9] = 0x0F;
+    }
+    break;
+    case 'V':
+    {
+      led[8] = 0xD4;
+      led[9] = 0x0A;
+    }
+    break;
+    case 'Y':
+    {
+      led[8] = 0xFD;
+      led[9] = 0x3D;
+    }
+    break;
+    case 'Z':
+    {
+      led[8] = 0xD8;
+      led[9] = 0x32;
+    }
+    break;
+    default:
+    {
+      led[8] = 0x00;
+      led[9] = 0x00;
+    }
+    break;    
+  }
+  switch(right)
+  {
+    case '.':
+    {
+      led[10] = 0x00;
+      led[11] = 0x00;
+    }
+    break;
+    case 0:
+    {
+      led[10] = 0xFF;
+      led[11] = 0x0F;
+    }
+    break;
+    case 1:
+    {
+      led[10] = 0x3C;
+      led[11] = 0x00;
+    }
+    break;
+    case 2:
+    {
+      led[10] = 0xCF;
+      led[11] = 0x33;
+    }
+    break;
+    case 3:
+    {
+      led[10] = 0xFF;
+      led[11] = 0x30;
+    }
+    break;
+    case 4:
+    {
+      led[10] = 0x3C;
+      led[11] = 0x3C;
+    }
+    break;
+    case 5:
+    {
+      led[10] = 0xF3;
+      led[11] = 0x3C;
+    }
+    break;
+    case 6:
+    {
+      led[10] = 0xF3;
+      led[11] = 0x3F;
+    }
+    break;
+    case 7:
+    {
+      led[10] = 0x3F;
+      led[11] = 0x00;
+    }
+    break;
+    case 8:
+    {
+      led[10] = 0xFF;
+      led[11] = 0x3F;
+    }
+    break;
+    case 9:
+    {
+      led[10] = 0xFF;
+      led[11] = 0x3C;
+    }
+    break;      
 
+    case 'A':
+    {
+      led[10] = 0x3F;
+      led[11] = 0x3F;
+    }
+    break;
+    case 'B':
+    {
+      led[10] = 0xDB;
+      led[11] = 0x1F;
+    }
+    break;
+    case 'C':
+    {
+      led[10] = 0xC3;
+      led[11] = 0x0F;
+    }
+    break;
+    case 'D':
+    {
+      led[10] = 0xDB;
+      led[11] = 0x0F;
+    }
+    break;
+    case 'E':
+    {
+      led[10] = 0xC3;
+      led[11] = 0x3F;
+    }
+    break;
+    case 'F':
+    {
+      led[10] = 0x03;
+      led[11] = 0x3F;
+    }
+    break;
+    case 'G':
+    {
+      led[10] = 0xD3;
+      led[11] = 0x1F;
+    }
+    break;
+    case 'H':
+    {
+      led[10] = 0x3C;
+      led[11] = 0x3F;
+    }
+    break;
+    case 'I':
+    {
+      led[10] = 0x00;
+      led[11] = 0x0F;
+    }
+    break;
+    case 'J':
+    {
+      led[10] = 0xFC;
+      led[11] = 0x00;
+    }
+    break;
+    case 'K':
+    {
+      led[10] = 0x24;
+      led[11] = 0x3F;
+    }
+    break;
+    case 'L':
+    {
+      led[10] = 0xC0;
+      led[11] = 0x0F;
+    }
+    break;
+    case 'M':
+    {
+      led[10] = 0x34;
+      led[11] = 0x3B;
+    }
+    break;
+    case 'N':
+    {
+      led[10] = 0x3B;
+      led[11] = 0x07;
+    }
+    break;
+    case 'O':
+    {
+      led[10] = 0xDB;
+      led[11] = 0x06;
+    }
+    break;
+    case 'P':
+    {
+      led[10] = 0x0F;
+      led[11] = 0x3F;
+    }
+    break;
+    case 'R':
+    {
+      led[10] = 0x03;
+      led[11] = 0x0F;
+    }
+    break;
+    case 'S':
+    {
+      led[10] = 0xD1;
+      led[11] = 0x2C;
+    }
+    break;
+     case 'T':
+    {
+      led[10] = 0x00;
+      led[11] = 0x3F;
+    }
+    break;
+    case 'U':
+    {
+      led[10] = 0xFC;
+      led[11] = 0x0F;
+    }
+    break;
+    case 'V':
+    {
+      led[10] = 0xD4;
+      led[11] = 0x0A;
+    }
+    break;
+    case 'Y':
+    {
+      led[10] = 0xFD;
+      led[11] = 0x3D;
+    }
+    break;
+    case 'Z':
+    {
+      led[10] = 0xD8;
+      led[11] = 0x32;
+    }
+    break;
+    default:
+    {
+      led[10] = 0x00;
+      led[11] = 0x00;
+    }
+    break;    
+  }
+  /*
+  for(f = 0 ; f < 12 ; f++)
+  {
+    spi( led[f] );
+  }
+  latch();
+  */
+}
