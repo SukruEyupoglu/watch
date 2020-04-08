@@ -23,6 +23,7 @@
 #define I2CONSET_STO_BIT4 (1 << 4)
 #define I2CONSET_RSTA_BIT5 (1 << 5)
 #define I2CONSET_AA_BIT2 (1 << 2)
+#define I2CONCLR_AA_BIT2 (1 << 2)
 #define I2CONCLR_MULTIBYTE_AAC_BIT2 (1 << 2)
 
 #define I2CSTAT_START_0x08 0x08
