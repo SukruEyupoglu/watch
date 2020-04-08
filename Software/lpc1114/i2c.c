@@ -106,7 +106,7 @@ unsigned char i2c
 		while(CHECK_SI_BIT);
 		if(LPC_I2C->STAT == I2CSTAT_ACK_0x40)
 		{
-			LPC_I2C->CONSET = I2CONSET_AA_BIT2;
+			//LPC_I2C->CONSET = I2CONSET_AA_BIT2;
 			CLEAR_SI_BIT;
 		}
 		else
@@ -121,6 +121,14 @@ unsigned char i2c
 			if(LPC_I2C->STAT == I2CSTAT_ACK_0x50)
 			{
 				*(data + f) = LPC_I2C->DAT;
+				if(data_size < 2)
+				{
+					LPC_I2C->CONCLR = I2CONCLR_AA_BIT2;
+				}
+				else
+				{
+					LPC_I2C->CONSET = I2CONSET_AA_BIT2;
+				}
 				CLEAR_SI_BIT;
 			}
 			else 
