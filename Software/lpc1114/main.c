@@ -82,7 +82,7 @@ int main(void)
           //{
           //  error();
           //}
-          //deadline_systick_sec(SEC_10);*/
+          //deadline_systick_sec(SEC_10);
         }
         break;
       case SETTING_CLK:
