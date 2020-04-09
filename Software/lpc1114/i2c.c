@@ -121,7 +121,7 @@ unsigned char i2c
 			if(LPC_I2C->STAT == I2CSTAT_ACK_0x50)
 			{
 				*(data + f) = LPC_I2C->DAT;
-				if(f == (data_size -1) )
+				if(f == (data_size - 2) )
 				{
 					LPC_I2C->CONCLR = I2CONCLR_AA_BIT2;
 				}
