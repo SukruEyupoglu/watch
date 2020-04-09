@@ -1,6 +1,6 @@
 #include "LPC11xx.h"
 #include "i2c.h"
-//#include "lpc1114_delay.h"
+#include "error.h"
 
 void i2c_init(void)
 {
@@ -13,7 +13,7 @@ void i2c_init(void)
 	//	I2C CLK
 	LPC_SYSCON->SYSAHBCLKCTRL		|=	(1 << 5);
 	LPC_SYSCON->PRESETCTRL			|=	0x2;
-	LPC_I2C->CONSET					|=	(1 << 6);
+	//    LPC_I2C->CONSET					|=	(1 << 6);
 	//	400 khz setting = 3C      <--->      100 khz setting = F0
 	LPC_I2C->SCLH					=	0x3C;
 	LPC_I2C->SCLL					=	0x3C;
@@ -39,6 +39,7 @@ unsigned char i2c
 		return ERROR;
 	}
 				//delay(1000); // in succession this line must be
+	SET_EN_BIT;		
 	CLEAR_SI_BIT;
 	SET_STA_BIT;
 	while(CHECK_SI_BIT);
@@ -52,6 +53,7 @@ unsigned char i2c
 	{
 		SET_STO_BIT;
 		CLEAR_SI_BIT;
+		CLEAR_EN_BIT;
 		return ERROR_0x08;
 	}
 	while(CHECK_SI_BIT);
@@ -73,6 +75,7 @@ unsigned char i2c
 			{
 					SET_STO_BIT;
 					CLEAR_SI_BIT;
+					CLEAR_EN_BIT;
     					return ERROR_0x28;
 			}
 		}
@@ -81,6 +84,7 @@ unsigned char i2c
 	{
 		SET_STO_BIT;
 		CLEAR_SI_BIT;
+		CLEAR_EN_BIT;
     		return ERROR_0x18;
 	}
 	
@@ -101,6 +105,7 @@ unsigned char i2c
 		{
 			SET_STO_BIT;
 			CLEAR_SI_BIT;
+			CLEAR_EN_BIT;
 			return ERROR_0x10;
 		}
 		while(CHECK_SI_BIT);
@@ -113,6 +118,7 @@ unsigned char i2c
 		{
 			SET_STO_BIT;
 			CLEAR_SI_BIT;
+			CLEAR_EN_BIT;
     			return ERROR_0x40;
 		}
 		for(f = 0 ; f < data_size ; f++)
@@ -125,21 +131,20 @@ unsigned char i2c
 				{
 					LPC_I2C->CONCLR = I2CONCLR_AA_BIT2;
 				}
-				else
-				{
-					LPC_I2C->CONSET = I2CONSET_AA_BIT2;
-				}
+
 				CLEAR_SI_BIT;
 			}
 			else 
 			{
 				SET_STO_BIT;
 				CLEAR_SI_BIT;
+				CLEAR_EN_BIT;
     				return ERROR_0x50;
 			}
 		}
 		SET_STO_BIT;
 		CLEAR_SI_BIT;
+		CLEAR_EN_BIT;
 		return OK;
 	}
 	else
@@ -156,6 +161,7 @@ unsigned char i2c
 			{
 				SET_STO_BIT;
 				CLEAR_SI_BIT;
+				CLEAR_EN_BIT;
     				return ERROR_0x28;
 			}
 			while(CHECK_SI_BIT);
@@ -164,12 +170,14 @@ unsigned char i2c
 		{
 			SET_STO_BIT;
 			CLEAR_SI_BIT;
+			CLEAR_EN_BIT;
 			return OK;
 		}
 		else
 		{
 			SET_STO_BIT;
 			CLEAR_SI_BIT;
+			CLEAR_EN_BIT;
 			return ERROR_0x28;
 		}
 	}
