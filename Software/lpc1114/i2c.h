@@ -14,8 +14,8 @@
 #define CLEAR_STA_BIT (LPC_I2C->CONCLR = (1 << 5))
 #define SET_STA_BIT (LPC_I2C->CONSET = (1 << 5))
 #define SET_STO_BIT (LPC_I2C->CONSET = (1 << 4))
-#define ERROR 1
-#define OK 0
+#define SET_EN_BIT (LPC_I2C->CONSET	= (1 << 6))
+#define CLEAR_EN_BIT (LPC_I2C->CONCLR	= (1 << 6))
 
 #define I2CONSET_STA_BIT5 (1 << 5)
 #define I2CONCLR_STAC_BIT5 (1 << 5)
