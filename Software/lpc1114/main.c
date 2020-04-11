@@ -53,7 +53,9 @@ int main(void)
   spi_init();           // spi.h      --> spi settings
   led_init();           // led.h      --> latch and output enable settings
 //  led_power_init();     // alarm.h    --> look at e2prom and set pwm output for leds
-  
+ //  write_ds3231_minute(21);
+//  write_ds3231_hour(11);
+ 
   if(ds3231_every_minute_alarm_init() == ERR)
   {
     error();
@@ -70,6 +72,7 @@ int main(void)
           stop_alarm();
         }
         break;
+        /*
       case SLP:
         {
           sleep_or_powerdown(POWER_DOWN);
@@ -85,6 +88,7 @@ int main(void)
           //deadline_systick_sec(SEC_10);
         }
         break;
+        */
       case SETTING_CLK:
         {
           relax_systick_sec();
