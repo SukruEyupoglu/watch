@@ -40,7 +40,7 @@ unsigned char i2c
 	}
 				//delay(1000); // in succession this line must be
 	CLEAR_ALL_BIT;
-	SET_EN_BIT;		
+	SET_EN_BIT;		// every read write need to enable disable i2c MUST!
 	//CLEAR_SI_BIT;
 	SET_STA_BIT;
 	while(CHECK_SI_BIT);
