@@ -39,8 +39,9 @@ unsigned char i2c
 		return ERROR;
 	}
 				//delay(1000); // in succession this line must be
+	CLEAR_ALL_BIT;
 	SET_EN_BIT;		
-	CLEAR_SI_BIT;
+	//CLEAR_SI_BIT;
 	SET_STA_BIT;
 	while(CHECK_SI_BIT);
 	if(LPC_I2C->STAT == I2CSTAT_START_0x08)
