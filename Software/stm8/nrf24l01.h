@@ -100,19 +100,19 @@
 #define FIFO_STATUS_RX_FULL         (1 << 1)
 #define FIFO_STATUS_RX_EMPTY        (1 << 0)
 
+// Enable dynamic payload length data pipe X.
+// (Requires EN_DPL and ENAA_PX )
+#define DYNPD 0x1C
+#define DYNPD_DPL_P5                (1 << 5)
+#define DYNPD_DPL_P4                (1 << 4)
+#define DYNPD_DPL_P3                (1 << 3)
+#define DYNPD_DPL_P2                (1 << 2)
+#define DYNPD_DPL_P1                (1 << 1)
+#define DYNPD_DPL_P0                (1 << 0)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+#define FEATURE 0x1D
+#define FEATURE_EN_DPL              (1 << 2) // Enables Dynamic Payload Length
+#define FEATURE_EN_ACK_PAY          (1 << 1) // Enables Payload with ACK
+#define FEATURE_EN_DYN_ACK          (1 << 0) // Enables the W_TX_PAYLOAD_NOACK command
 
 
