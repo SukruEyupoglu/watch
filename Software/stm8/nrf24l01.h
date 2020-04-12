@@ -55,8 +55,64 @@
 #define RF_SETUP_2M_MBPS_06_DBM     ( (1 << 3) | (1 << 2) )
 #define RF_SETUP_2M_MBPS_00_DBM     ( (1 << 3) | (1 << 2) | (1 << 1) )
 
-
-
 #define STATUS 0x07
-// underconstruction
+#define STATUS_RX_DR                (1 << 6)
+#define STATUS_TX_DS                (1 << 5)
+#define STATUS_MAX_RT               (1 << 4)
+#define STATUS_RX_P_NO              ( (1 << 3) | (1 << 2) | (1 << 1) )
+#define STATUS_TX_FULL              (1 << 0)
+
+#define OBSERVE_TX 0x08
+#define OBSERVE_TX_PLOS_CNT         0xF0
+#define OBSERVE_TX_ARC_CNT          0x0F
+
+#define RPD 0x09
+#define RPD_RPD                     (1 << 0)
+
+// Receive address data pipe 0. 5 Bytes maximum length. 
+// (LSByte is written first. 
+// Write the number of bytes defined by SETUP_AW)
+#define RX_ADDR_P0 0x0A
+#define RX_ADDR_P1 0x0B
+#define RX_ADDR_P2 0x0C // Only LSB. MSBytes are equal to RX_ADDR_P1[39:8]
+#define RX_ADDR_P3 0x0D // Only LSB. MSBytes are equal to RX_ADDR_P1[39:8]
+#define RX_ADDR_P4 0x0E // Only LSB. MSBytes are equal to RX_ADDR_P1[39:8]
+#define RX_ADDR_P5 0x0F // Only LSB. MSBytes are equal to RX_ADDR_P1[39:8]
+
+// Transmit address. Used for a PTX device only.
+// (LSByte is written first)
+// Set RX_ADDR_P0 equal to this address to handle automatic acknowledge if this is a PTX device with
+// Enhanced ShockBurstTM enabled  <<------BEWARE HERE
+#define TX_ADDR 0x10
+
+// Number of bytes in RX payload in data pipe 5 (1 to 32 bytes).0 Pipe not used
+#define RX_PW_P0 0x11
+#define RX_PW_P0 0x12
+#define RX_PW_P0 0x13
+#define RX_PW_P0 0x14
+#define RX_PW_P0 0x15
+#define RX_PW_P0 0x16
+
+#define FIFO_STATUS 0x17
+#define FIFO_STATUS_TX_REUSE        (1 << 6)
+#define FIFO_STATUS_TX_FULL         (1 << 5)
+#define FIFO_STATUS_TX_EMPTY        (1 << 4)
+#define FIFO_STATUS_RX_FULL         (1 << 1)
+#define FIFO_STATUS_RX_EMPTY        (1 << 0)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
