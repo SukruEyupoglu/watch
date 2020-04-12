@@ -38,14 +38,24 @@
 #define RF_SETUP 0x06
 #define RF_SETUP_CONT_WAVE          (1 << 7)
 #define RF_SETUP_PLL_LOCK           (1 << 4)
-// DATA RATE SELECT - SPEED SELECT
-#define RF_SETUP_RF_250K            (1 << 5)  // if used not look at to 1M_2M
-#define RF_SETUP_RF_1M_2M           (1 << 3)  // 1 = 2M --- 0 = 1M if 250K not used
-// DBM SELECT -OUTPUT POWER SELECT - DISTANCE SELECT
-#define RF_SETUP_RF_PWR_DBM_18      0xF9
-#define RF_SETUP_RF_PWR_DBM_12      0xFB
-#define RF_SETUP_RF_PWR_DBM_6       0xFD
-#define RF_SETUP_RF_PWR_DBM_0       0xFF
+
+// DATA RATE SELECT - SPEED SELECT - DBM SELECT -OUTPUT POWER SELECT - DISTANCE SELECT
+#define RF_SETUP_250K_MBPS_18_DBM   (1 << 5)
+#define RF_SETUP_250K_MBPS_12_DBM   ( (1 << 5) | (1 << 1) )
+#define RF_SETUP_250K_MBPS_06_DBM   ( (1 << 5) | (1 << 2) )
+#define RF_SETUP_250K_MBPS_00_DBM   ( (1 << 5) | (1 << 2) | (1 << 1) )
+
+#define RF_SETUP_1M_MBPS_18_DBM     0x0
+#define RF_SETUP_1M_MBPS_12_DBM     (1 << 1)
+#define RF_SETUP_1M_MBPS_06_DBM     (1 << 2)
+#define RF_SETUP_1M_MBPS_00_DBM     ( (1 << 2) | (1 << 1) )
+
+#define RF_SETUP_2M_MBPS_18_DBM     (1 << 3)
+#define RF_SETUP_2M_MBPS_12_DBM     ( (1 << 3) | (1 << 1) )
+#define RF_SETUP_2M_MBPS_06_DBM     ( (1 << 3) | (1 << 2) )
+#define RF_SETUP_2M_MBPS_00_DBM     ( (1 << 3) | (1 << 2) | (1 << 1) )
+
+
 
 #define STATUS 0x07
 // underconstruction
