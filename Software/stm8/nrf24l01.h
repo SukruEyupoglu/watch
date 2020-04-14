@@ -1,3 +1,18 @@
+
+// commands
+#define R_REGISTER                  0x1F // 000A AAAA ---> AAAAA = 5 bit Register Map Address
+#define W_REGISTER                  0x3F // 001A AAAA ---> AAAAA = 5 bit Register Map Address
+#define R_RX_PAYLOAD                0x61
+#define W_TX_PAYLOAD                0xA0
+#define FLUSH_TX                    0xE1
+#define FLUSH_RX                    0xE2
+#define REUSE_TX_PL                 0xE3
+#define R_RX_PL_WID                 0x60
+#define W_ACK_PAYLOAD               0xAF // use and for appropriate PPP(PIPE) 000 to 101
+#define W_TX_PAYLOAD_NO_ACK         0xB0
+#define NOP                         0xFF
+
+// registers
 #define CONFIG 0x00
 #define CONFIG_MASK_RX_DR           (1 << 6)
 #define CONFIG_MASK_TX_DS           (1 << 5)
