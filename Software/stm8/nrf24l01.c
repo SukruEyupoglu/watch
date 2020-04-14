@@ -1,7 +1,6 @@
 #include "nrf24l01.h"
 #include "stm8s.h"
-#include "nrf8.h"
-
+#include "spi.h"
 
 ////////////////////////////////////////////////////////////////
 // THIS TESTED WITH OSCILOSKOP
@@ -67,10 +66,17 @@ void nrf_gpio_init(void)
 }
 void nrf24l01_init(void)
 {
-	delay_ms(100);
-	spi(W_REGISTER | CONFIG);
+	delay_ms(100);							// wait until it happens to power down mode 100ms
+	NRF_write_reg(W_REGISTER | CONFIG , CONFIG_PWR_UP);		// only start up for make standby-1
+	delay_ms(2);							// wait 1.5ms for power up
+	NRF_write_reg(W_REGISTER | EN_AA , EN_AA_ENAA_P0);		// pipe0 icin auto ack set et
+	NRF_write_reg(W_REGISTER | EN_RXADDR , EN_RXADDR_ERX_P0);	// sadece pipe 0 aktif olsun
+	NRF_write_reg(W_REGISTER | SETUP_RETR , 0x01);			// transfer retry miktari 250us de bir "1" defa tekrar et
+	NRF_write_reg(W_REGISTER | RF_SETUP , RF_SETUP_250K_BPS_18_DBM); // 250kbps , -18dbm setting
+	
 	make_tx();
 	// make_rx();
+	delay_us(130);							// wait for convert to tx or rx from datasheet
 	
 }
 	
