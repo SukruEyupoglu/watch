@@ -73,11 +73,12 @@ void nrf24l01_init(void)
 	NRF_write_reg(W_REGISTER | EN_RXADDR , EN_RXADDR_ERX_P0);	// sadece pipe 0 aktif olsun
 	NRF_write_reg(W_REGISTER | SETUP_RETR , 0x01);			// transfer retry miktari 250us de bir "1" defa tekrar et
 	NRF_write_reg(W_REGISTER | RF_SETUP , RF_SETUP_250K_BPS_18_DBM); // 250kbps , -18dbm setting
-	
-	make_tx();
+	NRF_write_reg(W_REGISTER | RX_PW_P0 , 0x05);			// RX 5 byte data payload beklesin pipe 0 icin ayari
+	// NRF_write_reg(W_REGISTER | DYNPD , (1 << 0));		// not used here dynamic payload lengh
+	NRF_write_reg(W_REGISTER | FEATURE , FEATURE_EN_ACK_PAY);	// Enables Payload with ACK
+	make_tx();							// default is tx at config register
 	// make_rx();
-	delay_us(130);							// wait for convert to tx or rx from datasheet
-	
+	delay_us(130);							// wait for convert to tx or rx from datasheet	
 }
 	
 void make_tx(void)
@@ -104,7 +105,7 @@ void NRF_TX_INIT(void)
 	NRF_write_reg(W_REGISTER | SETUP_RETR , 0xFF);
 	// 250kbps sec -18db sec
 	NRF_write_reg(W_REGISTER | RF_SETUP , (1 << 5));
-	// rx 5 byte payload beklesin pipe 0 icin ayari
+	// rx 5 byte payload beklesin pipe 0 icin ayari (data byte count)
 	NRF_write_reg(W_REGISTER | RX_PW_P0 , 0x05);
 	// ack'li veri tranferi aktif etme ayari
 	NRF_write_reg(W_REGISTER | DYNPD , (1 << 0));
