@@ -1,3 +1,4 @@
+#include "nrf24l01.h"
 #include "stm8s.h"
 #include "nrf8.h"
 
@@ -63,6 +64,24 @@ void nrf_gpio_init(void)
 	
  	//	100ms delay for nrf24l01 wakeup ---  FROM DATASHEET
 	delay(100000);
+}
+void nrf24l01_init(void)
+{
+	delay_ms(100);
+	spi(W_REGISTER | CONFIG);
+	make_tx();
+	// make_rx();
+	
+}
+	
+void make_tx(void)
+{
+	
+}
+
+void make_rx(void)
+{
+	
 }
 
 
