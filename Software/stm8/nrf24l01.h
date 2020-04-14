@@ -8,7 +8,7 @@
 #define FLUSH_RX                    0xE2
 #define REUSE_TX_PL                 0xE3
 #define R_RX_PL_WID                 0x60
-#define W_ACK_PAYLOAD               0xAF // use and for appropriate PPP(PIPE) 000 to 101
+#define W_ACK_PAYLOAD               0xAF // 1010 1PPP ----> use and for appropriate PPP(PIPE) 000 to 101
 #define W_TX_PAYLOAD_NO_ACK         0xB0
 #define NOP                         0xFF
 
