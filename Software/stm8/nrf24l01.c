@@ -66,6 +66,7 @@ void nrf_gpio_init(void)
         // For double device 
         
 }
+// ready for testing only 1 byte data waiting for rx look at DYNPD later
 void nrf24l01_init(void)
 {
 	delay_ms(100);							// wait until it happens to power down mode 100ms
@@ -75,8 +76,8 @@ void nrf24l01_init(void)
 	NRF_write_reg(W_REGISTER | EN_RXADDR , EN_RXADDR_ERX_P0);	// sadece pipe 0 aktif olsun
 	NRF_write_reg(W_REGISTER | SETUP_RETR , 0x01);			// transfer retry miktari 250us de bir "1" defa tekrar et
 	NRF_write_reg(W_REGISTER | RF_SETUP , RF_SETUP_250K_BPS_18_DBM); // 250kbps , -18dbm setting
-	NRF_write_reg(W_REGISTER | RX_PW_P0 , 0x05);			// RX 5 byte data payload beklesin pipe 0 icin ayari
-	NRF_write_reg(W_REGISTER | DYNPD , DYNPD_DPL_P0);		// not used here dynamic payload lengh but try 
+	NRF_write_reg(W_REGISTER | RX_PW_P0 , 0x01);			// RX 5 byte data payload beklesin pipe 0 icin ayari
+	NRF_write_reg(W_REGISTER | DYNPD , DYNPD_DPL_P0);		// must be tryed dynamic payload lengh MUST! 
 	NRF_write_reg(W_REGISTER | FEATURE , FEATURE_EN_ACK_PAY);	// Enables Payload with ACK
 	make_tx();							// default is tx at config register
 	// make_rx();
@@ -174,21 +175,23 @@ void NRF_RX_INIT_NO_ACK(void)
 	NRF_write_reg(W_REGISTER | FEATURE , (1 << 0));
 }
 
-void NRF_write_buf(unsigned char komut,unsigned char *veri,unsigned int size) {
-    unsigned int turn;
+void NRF_write_buf(unsigned char komut,unsigned char *veri,unsigned char size) {
+    unsigned char f;
     NRF_CSN_LOW;
     spi(komut);
-    for (turn = 0; turn < size; turn++) {
-    spi(veri[turn]);
+    for (f = 0; f < size; f++)
+    {
+    spi(veri[f]);
     }
     NRF_CSN_HIGH;
 }
-void NRF_read_buf(unsigned char komut,unsigned char *veri,unsigned int size) {
-    unsigned int turn;
+void NRF_read_buf(unsigned char komut,unsigned char *veri,unsigned char size) {
+    unsigned char f;
     NRF_CSN_LOW;
     spi(komut);
-    for (turn = 0; turn < size; turn++) {
-    veri[turn] = spi(NOP);
+    for (f = 0; f < size; f++)
+    {
+    veri[f] = spi(NOP);
     }
     NRF_CSN_HIGH;
 }
@@ -218,7 +221,7 @@ void NRF_flush_rx(void) {
 }
 
 //	sadece ilk bytini degistir gonder toplamda 5 byte var
-void NRF_send(unsigned char data)
+void NRF_send(unsigned char * data , unsigned char size)
 {
 	unsigned char var[5] = {data,0x1,0x2,0x3,0x4};
 	NRF_write_buf(W_TX_PAYLOAD, var, 5);
