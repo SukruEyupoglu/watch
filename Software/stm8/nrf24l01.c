@@ -62,7 +62,9 @@ void nrf_gpio_init(void)
 	PD_ODR |= (1 << 3); // OUTPUT HIGH
 	
  	//	100ms delay for nrf24l01 wakeup ---  FROM DATASHEET
-	delay(100000);
+	// delay(100000);
+        // For double device 
+        
 }
 void nrf24l01_init(void)
 {
@@ -83,16 +85,16 @@ void nrf24l01_init(void)
 	
 void make_tx(void)
 {
+        NRF_CE_LOW;
 	NRF_write_reg(W_REGISTER | CONFIG , CONFIG_PWR_UP);
         delay_us(130);
-        NRF_CE_OUT;
-        NRF_CE_LOW;
 }
 
 void make_rx(void)
 {
 	NRF_write_reg(W_REGISTER | CONFIG , (CONFIG_PWR_UP | PRIM_RX) );
-        delay_us(130); 
+        delay_us(130);
+        NRF_CE_HIGH;
 }
 
 
