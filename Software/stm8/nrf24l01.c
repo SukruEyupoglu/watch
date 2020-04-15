@@ -85,12 +85,14 @@ void make_tx(void)
 {
 	NRF_write_reg(W_REGISTER | CONFIG , CONFIG_PWR_UP);
         delay_us(130);
+        NRF_CE_OUT;
+        NRF_CE_LOW;
 }
 
 void make_rx(void)
 {
 	NRF_write_reg(W_REGISTER | CONFIG , (CONFIG_PWR_UP | PRIM_RX) );
-        delay_us(130);
+        delay_us(130); 
 }
 
 
@@ -203,12 +205,12 @@ unsigned char NRF_read_reg(unsigned char komut) {
     return sonuc;
 }
 void NRF_flush_tx(void) {
-	NRF_CSN_LOW;
+    NRF_CSN_LOW;
     spi(FLUSH_TX);
     NRF_CSN_HIGH;
 }
 void NRF_flush_rx(void) {
-	NRF_CSN_LOW;
+    NRF_CSN_LOW;
     spi(FLUSH_RX);
     NRF_CSN_HIGH;
 }
@@ -221,7 +223,7 @@ void NRF_send(unsigned char data)
     NRF_CE_HIGH;
     delay(10);
     NRF_CE_LOW;
-    delay(130);
+    // delay(130);
 }
 //	sadece ilk byt ini al
 unsigned char NRF_get(void)
