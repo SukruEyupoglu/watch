@@ -59,16 +59,24 @@ void uart_isr() __interrupt(UART1_RXC_ISR) // uart rx interrupt function
 }
 void comminicating(void)
 {
+  unsigned char x;
   while(1)
   {
+    ///////////
     if(UART1_SR & (1 << UART1_SR_RXNE) )
     {
-      NRF_write_buf(unsigned char komut,unsigned char *veri,unsigned char size);
+      x = UART1_DR;
     }
     else
     {
-      
+      x = 0;
     }
+    NRF_write_buf(&x,1);
+    ///////////
+    NRF_send();
+    make_rx();
+    NRF_get();
+    
   }
 }
 void payload(void)
