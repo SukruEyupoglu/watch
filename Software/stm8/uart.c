@@ -71,12 +71,14 @@ void comminicating(void)
     {
       x = 0;
     }
+    make_tx();
     NRF_write_buf(&x,1);
     ///////////
     NRF_send();
     make_rx();
     NRF_get();
-    
+    NRF_read_buf(&x,1);
+    uart_send(x);
   }
 }
 void payload(void)
