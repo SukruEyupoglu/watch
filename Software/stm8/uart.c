@@ -57,12 +57,12 @@ void uart_isr() __interrupt(UART1_RXC_ISR) // uart rx interrupt function
     uart_rx_buffer_size = 0;
   }
 }
-void comminicating(void)
+
+void comminicating_sender(void)
 {
   unsigned char x;
   while(1)
   {
-    ///////////
     if(UART1_SR & (1 << UART1_SR_RXNE) )
     {
       x = UART1_DR;
@@ -73,7 +73,6 @@ void comminicating(void)
     }
     make_tx();
     NRF_write_buf(&x,1);
-    ///////////
     NRF_send();
     make_rx();
     NRF_get();
@@ -81,6 +80,32 @@ void comminicating(void)
     uart_send(x);
   }
 }
+
+
+void comminicating_receiver(void)
+{
+  unsigned char x,y;
+  while(1)
+  {
+    make_rx();
+    NRF_get();
+    NRF_read_buf(&y,1);
+    if(UART1_SR & (1 << UART1_SR_RXNE) )
+    {
+      x = UART1_DR;
+    }
+    else
+    {
+      x = 0;
+    }
+    UART1_DR = y;
+    make_tx();
+    NRF_write_buf(&x,1);
+    NRF_send();
+    while( ! (UART1_SR & (1 << UART1_SR_TC) ) );
+  }
+}
+
 void payload(void)
 {
   unsigned char nrf_tx_buffer_size = 0;
