@@ -178,7 +178,28 @@ void NRF_RX_INIT_NO_ACK(void)
 	// ack'li veri tranferi aktif etme ayari
 	NRF_write_reg(W_REGISTER | FEATURE , (1 << 0));
 }
-
+void NRF_write_buf(unsigned char * data,unsigned char size)
+{
+    unsigned char f;
+    NRF_CSN_LOW;
+    spi(W_TX_PAYLOAD);
+    for (f = 0; f < size; f++)
+    {
+    spi(data[f]);
+    }
+    NRF_CSN_HIGH;
+}
+void NRF_read_buf(unsigned char * data,unsigned char size) {
+    unsigned char f;
+    NRF_CSN_LOW;
+    spi(R_RX_PAYLOAD);
+    for (f = 0; f < size; f++)
+    {
+    data[f] = spi(NOP);
+    }
+    NRF_CSN_HIGH;
+}
+/*
 void NRF_write_buf(unsigned char komut,unsigned char *veri,unsigned char size) {
     unsigned char f;
     NRF_CSN_LOW;
@@ -199,6 +220,7 @@ void NRF_read_buf(unsigned char komut,unsigned char *veri,unsigned char size) {
     }
     NRF_CSN_HIGH;
 }
+*/
 void NRF_write_reg(unsigned char komut,unsigned char deger) {
     NRF_CSN_LOW;
     spi(komut);
