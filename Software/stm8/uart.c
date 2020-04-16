@@ -63,6 +63,8 @@ void comminicating_sender(void)
   unsigned char x;
   while(1)
   {
+    make_tx();
+    while( ! (UART1_SR & (1 << UART1_SR_TC) ) ); // WAIT HERE IF U NEED
     if(UART1_SR & (1 << UART1_SR_RXNE) )
     {
       x = UART1_DR;
@@ -71,13 +73,12 @@ void comminicating_sender(void)
     {
       x = 0;
     }
-    make_tx();
     NRF_write_buf(&x,1);
     NRF_send();
-    make_rx();
-    NRF_get();
-    NRF_read_buf(&x,1);
-    uart_send(x);
+    make_rx();                            // receiver mode enable
+    NRF_get();                            // get data from air
+    NRF_read_buf(&x,1);                   // get data from device
+    UART1_DR = x;                         // put data to peripheral "DONT WAIT"
   }
 }
 
