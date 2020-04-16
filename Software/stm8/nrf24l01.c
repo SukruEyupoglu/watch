@@ -98,6 +98,10 @@ void make_rx(void)
         NRF_CE_HIGH;
 }
 
+void set_rx_p0_size(unsigned char size)
+{
+  NRF_write_reg(W_REGISTER | RX_PW_P0 , size);	// RX size kadar byte data payload beklesin pipe 0 icin ayari
+}
 
 void NRF_TX_INIT(void)
 {
