@@ -6,6 +6,13 @@
 #define DISABLE_INTERRUPT UART1_CR2 &= ~(1 << UART1_CR2_RIEN)
 #define ENABLE_INTERRUPT UART1_CR2 |= (1 << UART1_CR2_RIEN)
 
+
+volatile unsigned char uart_rx_buffer_size = 0;
+volatile unsigned char uart_rx_buffer[32];
+
+
+
+
 void uart_init(void)
 {
   // stm8s003 has 1 byte uart buffer
@@ -53,7 +60,11 @@ void uart_isr() __interrupt(UART1_RXC_ISR) // uart rx interrupt function
   
 void payload(void)
 {
+  unsigned char nrf_tx_buffer_size = 0;
+  unsigned char nrf_tx_buffer[32];
+
   unsigned char f;
+
   if( (uart_rx_buffer_size > 0) )
   {
     DISABLE_INTERRUPT;
@@ -62,13 +73,16 @@ void payload(void)
       nrf_tx_buffer[f] = uart_rx_buffer[f];
     }
     nrf_tx_buffer_size = uart_rx_buffer_size;
+
+    uart_rx_buffer_size = 0;
+    ENABLE_INTERRUPT;
+
     if(UART1_SR & (1 << UART1_SR_RXNE) )
     {
       nrf_tx_buffer[uart_rx_buffer_size + 1]
       nrf_tx_buffer_size = uart_rx_buffer_size + 1;
     }
-    uart_rx_buffer_size = 0;
-    ENABLE_INTERRUPT;
+ 
     nrf_load(nrf_tx_buffer[f],nrf_tx_buffer_size);
     //nrf_request();
   }
