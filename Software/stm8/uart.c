@@ -1,5 +1,5 @@
 
-
+#include "nrf24l01.h"
 #include "stm8s.h"
 #include "uart.h"
 
@@ -57,7 +57,20 @@ void uart_isr() __interrupt(UART1_RXC_ISR) // uart rx interrupt function
     uart_rx_buffer_size = 0;
   }
 }
-  
+void comminicating(void)
+{
+  while(1)
+  {
+    if(UART1_SR & (1 << UART1_SR_RXNE) )
+    {
+      NRF_write_buf(unsigned char komut,unsigned char *veri,unsigned char size);
+    }
+    else
+    {
+      
+    }
+  }
+}
 void payload(void)
 {
   unsigned char nrf_tx_buffer_size = 0;
