@@ -2,9 +2,9 @@
 
 unsigned char adc_read(unsigned char adcx)
 {
-	LPC_ADC->CR     |= (1<<24);
-	while((LPC_ADC->DR[adcx] < 0x7FFFFFFF));
-	return ((LPC_ADC->DR[adcx] & 0xFFC0) >> 8);
+	LPC_ADC->CR	|=	AD0CR_START_CONVERSION;
+	while((LPC_ADC->DR[adcx] < AD0DR_DONE));
+	return ((LPC_ADC->DR[adcx] & AD0DR_V_VREF) >> 8);
 }
 
 
