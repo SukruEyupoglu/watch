@@ -20,7 +20,7 @@ unsigned char adc_read(unsigned char adcx);
 #define AD0CR_BURST                     (1 << 16)
 #define AD0CR_BURST_CLKS                (0x000 << 17)
 
-#define AD0CR_START_CONVERSION          (1 << 24)
+#define AD0CR_START_CONVERSION_BIT      (1 << 24)
 // if capture or match u need for start look datasheet
 #define AD0CR_START_CONVERSION_WITH_CAP0_MAT0          (0x7 << 24)
 #define AD0CR_START_EDGE                (1 << 27)
