@@ -41,11 +41,39 @@ unsigned char adc_0_mic_read(void)
 }
 unsigned char adc_1_time_up_down_read(void)
 {
-	return adc_read(ADC1);
+	unsigned char x
+	x = adc_read(ADC1);
+				// 0x3FF = 1023 and %60 is up %30 is down
+			   // between %70 and %50 is up
+			   // between %40 and %20 is down
+			   // %70 = 716 --> %50 = 512 --> %40 = 409 --> %20 = 204
+			   if((x < 716) & (x > 512))
+			   {
+				   return 20;
+			   }
+			   if((x < 409) & (x > 204))
+			   {
+				   return 5;
+			   }
+	return 0;
 }
 unsigned char adc_2_light_up_down_read(void)
 {
-	return adc_read(ADC2);
+	unsigned char x
+	x = adc_read(ADC2);
+				// 0x3FF = 1023 and %60 is up %30 is down
+			   // between %70 and %50 is up
+			   // between %40 and %20 is down
+			   // %70 = 716 --> %50 = 512 --> %40 = 409 --> %20 = 204
+			   if((x < 716) & (x > 512))
+			   {
+				   return 20;
+			   }
+			   if((x < 409) & (x > 204))
+			   {
+				   return 5;
+			   }
+	return 0;
 }
 unsigned char adc_4_pir_read(void)
 {
