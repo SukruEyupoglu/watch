@@ -10,6 +10,9 @@ unsigned char adc_4_pir_read(void);
 
 unsigned char adc_read(unsigned char adcx);
 
+// try this for too much instruction
+#define ADC(x)    (x)
+
 #define ADC0      0
 #define ADC1      1
 #define ADC2      2
