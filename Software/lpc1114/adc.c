@@ -1,6 +1,11 @@
 #include "LPC11xx.h"
 
-
+unsigned char adc_read(unsigned char adcx)
+{
+	LPC_ADC->CR     |= (1<<24);
+	while((LPC_ADC->DR[adcx] < 0x7FFFFFFF));
+	return ((LPC_ADC->DR[adcx] & 0xFFC0) >> 8);
+}
 
 
 void adc_init(void)
@@ -37,7 +42,7 @@ unsigned char adc_1_time_up_down_read(void)
 	unsigned int x;
 	// START CONVERSION
 	LPC_ADC->CR					|=	(1 << 24);
-	while(1)
+	while((LPC_ADC->DR[0] < 0x7FFFFFFF));
 	{
 		x = LPC_ADC->DR[1];
 		if(x & (1 << 31))
