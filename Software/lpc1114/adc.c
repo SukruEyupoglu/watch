@@ -3,7 +3,7 @@
 
 unsigned char adc_read(unsigned char adcx)
 {
-	LPC_ADC->CR	|=	(1 << adcx);
+	LPC_ADC->CR	=	( (1 << adcx) | (0x77 << 8) ); // 100KHZ
 	LPC_ADC->CR	|=	AD0CR_START_CONVERSION_BIT;
 	while((LPC_ADC->DR[adcx] < AD0DR_DONE));
 	return ((LPC_ADC->DR[adcx] & AD0DR_V_VREF) >> 8);
@@ -31,7 +31,7 @@ void adc_init(void)
 	// ACTIVATE AD0,AD1,AD2,AD4
 	// LPC_ADC->CR					|=	(1 << 0) | (1 << 1) | (1 << 2) | (1 << 4);
 	// SET ADC CLK DIVIDER TO (PCLK / (CLKDIV +1)) 100KHZ --> 12000000/120=100000 --> CLKDIV = (120 - 1) = 0x77
-	LPC_ADC->CR					|=	(0x77 << 8);
+	// LPC_ADC->CR					|=	(0x77 << 8);
 	// START CONVERSION
 	//LPC_ADC->CR					|=	(1 << 24);
 }
