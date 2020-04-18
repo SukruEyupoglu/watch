@@ -4,6 +4,8 @@ unsigned char adc_1_time_up_down_read(void);
 unsigned char adc_2_light_up_down_read(void);
 unsigned char adc_4_pir_read(void);
 
+unsigned char adc_read(unsigned char adcx);
+
 #define AD0CR_SEL_AD0                   (1 << 0)
 #define AD0CR_SEL_AD1                   (1 << 1)
 #define AD0CR_SEL_AD2                   (1 << 2)
@@ -40,8 +42,10 @@ unsigned char adc_4_pir_read(void);
 #define AD0INTEN_ADGINTEN               (1 << 8)
 
 #define AD0DRX_V_VREF                   (0x3FF << 6)
+#define AD0DR_V_VREF                    0xFFC0
 #define AD0DRX_OVERRUN                  (1 << 30)
 #define AD0DRX_DONE                     (1 << 31)
+#define AD0DR_DONE                      0x7FFFFFFF
 
 
 
