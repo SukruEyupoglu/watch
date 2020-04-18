@@ -1,3 +1,7 @@
+
+
+
+
 void adc_init(void);
 unsigned char adc_0_mic_read(void);
 unsigned char adc_1_time_up_down_read(void);
@@ -5,6 +9,15 @@ unsigned char adc_2_light_up_down_read(void);
 unsigned char adc_4_pir_read(void);
 
 unsigned char adc_read(unsigned char adcx);
+
+#define ADC0      0
+#define ADC1      1
+#define ADC2      2
+#define ADC3      3
+#define ADC4      4
+#define ADC5      5
+#define ADC6      6
+#define ADC7      7
 
 #define AD0CR_SEL_AD0                   (1 << 0)
 #define AD0CR_SEL_AD1                   (1 << 1)
