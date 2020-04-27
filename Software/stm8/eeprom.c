@@ -1,8 +1,6 @@
 #include "stm8s.h"
 #include "eeprom.h"
 
-#define EEPROM_START_ADDR 0x4000
-#define EEPROM_END_ADDR 0x407F
 
 void eeprom_unlock(void) {
     FLASH_DUKR = FLASH_DUKR_KEY1;
