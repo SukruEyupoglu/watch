@@ -82,6 +82,24 @@ void set_rx_p0_size(unsigned char size)
   NRF_write_reg(W_REGISTER | RX_PW_P0 , size);	// RX size kadar byte data payload beklesin pipe 0 icin ayari
 }
 
+void set_rx_addr_p_0_1(unsigned char x_0_1,unsigned char addr[5])
+{
+
+    unsigned char f;
+    NRF_CSN_LOW;
+    spi(W_REGISTER | (RX_ADDR_PX + x_0_1));
+    for (f = 0 ; f < 5 ; f++)
+    {
+    	spi(addr[f]);
+    }
+    NRF_CSN_HIGH;
+}
+
+void set_rx_addr_p_2_5(unsigned char x_2_3_4_5,unsigned char addr)
+{
+	NRF_write_reg(W_REGISTER | (RX_ADDR_PX + x_2_3_4_5) , addr);
+}
+
 void NRF_TX_INIT(void)
 {
 	// config registerini set et default tx modu zaten 1.5ms bekle
