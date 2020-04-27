@@ -1,11 +1,10 @@
-
+#include "delay.h"
 
 
 ////////////////////////////////////////////////////////////////
 // THIS TESTED WITH OSCILOSKOP
   // SET CLK TO FULL SPEED (16MHZ)
   //CLK_CKDIVR = 0;
-void delay_us(volatile unsigned char bekle);
 void delay_us(volatile unsigned char bekle)
 {
 	while(bekle)
@@ -24,9 +23,8 @@ void delay_us(volatile unsigned char bekle)
 	//	delay(224)	100.1us	
 	//	delay(255)	113.8us  //MAX
 }
-#define delay_10us delay(20)
 ///////////////////////////////////////////////////////////////////////
-void delay_ms(volatile unsigned char bekle);
+
 void delay_ms(volatile unsigned char bekle)
 {
 	while(bekle)
