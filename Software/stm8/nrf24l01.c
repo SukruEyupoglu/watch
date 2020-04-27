@@ -22,11 +22,8 @@ void nrf24l01_init(void)
 	
 	NRF_write_reg(W_REGISTER | RF_SETUP , RF_SETUP_250K_BPS_18_DBM); // 250kbps , -18dbm setting
 	
-	
-	
-	NRF_write_reg(W_REGISTER | RX_PW_P0 , 0x01);			// RX 5 byte data payload WAITS FOR PIPE0
-	
-	
+	// Number of bytes in RX payload in data pipe
+	set_rx_pw_px(0,unsigned char 5);
 	
 	NRF_write_reg(W_REGISTER | DYNPD , DYNPD_DPL_P0);		// must be tryed dynamic payload lengh MUST! 
 	NRF_write_reg(W_REGISTER | FEATURE , FEATURE_EN_ACK_PAY);	// Enables Payload with ACK
@@ -34,7 +31,45 @@ void nrf24l01_init(void)
 	// make_rx();
 	// delay_us(130);							// wait for convert to tx or rx from datasheet	
 }
+
+void nrf24l01_init_from_eeprom(void)
+{
+	unsigned char data;
+	delay_ms(100);							// wait until it happens to power down mode 100ms
 	
+	eeprom_read(CONFIG, &data, 1);
+	NRF_write_reg(W_REGISTER | CONFIG , data);			// only start up for make standby-1
+	
+	delay_ms(2);							// wait 1.5ms for power up
+	
+	eeprom_read(EN_AA, &data, 1);
+	NRF_write_reg(W_REGISTER | EN_AA , data);			// FOR PIPE0 SET OUTO ACK
+	
+	eeprom_read(EN_RXADDR, &data, 1);
+	NRF_write_reg(W_REGISTER | EN_RXADDR , data);			// ONLY ACTIVE PIPE0
+	
+	
+	
+	// communication addr byte size (3,4,5 byte)  RESET_VALUE = 5(GOOD NOT CHANGED) 
+	// NRF_write_reg(W_REGISTER | SETUP_AW , 0x3);
+	
+	NRF_write_reg(W_REGISTER | SETUP_RETR , 0x01);			// TRANSFER RETRY COUNT 250us ONLY "1" 
+	
+	// SETS FREQUENCY CHANNEL (0 - 128) RESET_VALUE = 2(GOOD NOT CHANGED) 
+	// NRF_write_reg(W_REGISTER | RF_CH , 0x2);
+	
+	NRF_write_reg(W_REGISTER | RF_SETUP , RF_SETUP_250K_BPS_18_DBM); // 250kbps , -18dbm setting
+	
+	// Number of bytes in RX payload in data pipe
+	set_rx_pw_px(0,unsigned char 5);
+	
+	NRF_write_reg(W_REGISTER | DYNPD , DYNPD_DPL_P0);		// must be tryed dynamic payload lengh MUST! 
+	NRF_write_reg(W_REGISTER | FEATURE , FEATURE_EN_ACK_PAY);	// Enables Payload with ACK
+	make_tx();							// default is tx at config register
+	// make_rx();
+	// delay_us(130);							// wait for convert to tx or rx from datasheet	
+}
+
 void make_tx(void)
 {
         NRF_CE_LOW;
@@ -61,7 +96,7 @@ void set_rx_addr_p_0_1(unsigned char x_0_1,unsigned char addr[5])
     }
     NRF_CSN_HIGH;
 }
-
+// MSB 4 BYTE SAME AS P1 ONLY LAST BYTE WRITE THIS REG (FROM DATASHEET)
 void set_rx_addr_p_2_3_4_5(unsigned char x_2_3_4_5,unsigned char addr)
 {
 	NRF_write_reg(W_REGISTER | (RX_ADDR_PX + x_2_3_4_5) , addr);
