@@ -39,10 +39,20 @@ void nrf24l01_init(void)
 	delay_ms(2);							// wait 1.5ms for power up
 	NRF_write_reg(W_REGISTER | EN_AA , EN_AA_ENAA_P0);		// pipe0 icin auto ack set et
 	NRF_write_reg(W_REGISTER | EN_RXADDR , EN_RXADDR_ERX_P0);	// sadece pipe 0 aktif olsun
-	// NRF_write_reg(W_REGISTER | SETUP_AW , 3); 			// 3,4,5 byte communication addr byte size RESET_VALUE = 5
+	
+	// communication addr byte size (3,4,5 byte)  RESET_VALUE = 5(GOOD NOT CHANGED) 
+	// NRF_write_reg(W_REGISTER | SETUP_AW , 0x3);
+	
 	NRF_write_reg(W_REGISTER | SETUP_RETR , 0x01);			// transfer retry miktari 250us de bir "1" defa tekrar et
+	
+	// SETS FREQUENCY CHANNEL (0 - 128) RESET_VALUE = 2(GOOD NOT CHANGED) 
+	// NRF_write_reg(W_REGISTER | RF_CH , 0x2);
+	
 	NRF_write_reg(W_REGISTER | RF_SETUP , RF_SETUP_250K_BPS_18_DBM); // 250kbps , -18dbm setting
 	NRF_write_reg(W_REGISTER | RX_PW_P0 , 0x01);			// RX 5 byte data payload beklesin pipe 0 icin ayari
+	
+	
+	
 	NRF_write_reg(W_REGISTER | DYNPD , DYNPD_DPL_P0);		// must be tryed dynamic payload lengh MUST! 
 	NRF_write_reg(W_REGISTER | FEATURE , FEATURE_EN_ACK_PAY);	// Enables Payload with ACK
 	make_tx();							// default is tx at config register
