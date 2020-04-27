@@ -100,6 +100,11 @@ void set_rx_addr_p_2_3_4_5(unsigned char x_2_3_4_5,unsigned char addr)
 	NRF_write_reg(W_REGISTER | (RX_ADDR_PX + x_2_3_4_5) , addr);
 }
 
+void set_rx_pw_px(unsigned char pipe,unsigned char x_1_32) // x_1_32 = Number of bytes in RX payload in data pipe
+{
+	NRF_write_reg(W_REGISTER | (RX_PW_PX + pipe) , x_1_32);
+}
+
 void NRF_TX_INIT(void)
 {
 	// config registerini set et default tx modu zaten 1.5ms bekle
