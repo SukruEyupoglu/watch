@@ -104,11 +104,13 @@
 
 // Number of bytes in RX payload in data pipe 5 (1 to 32 bytes).0 Pipe not used
 #define RX_PW_P0 0x11
-#define RX_PW_P0 0x12
-#define RX_PW_P0 0x13
-#define RX_PW_P0 0x14
-#define RX_PW_P0 0x15
-#define RX_PW_P0 0x16
+#define RX_PW_P1 0x12
+#define RX_PW_P2 0x13
+#define RX_PW_P3 0x14
+#define RX_PW_P4 0x15
+#define RX_PW_P5 0x16
+
+#define RX_PW_PX 0x11
 
 #define FIFO_STATUS 0x17
 #define FIFO_STATUS_TX_REUSE        (1 << 6)
