@@ -135,3 +135,19 @@
 #define FEATURE_EN_DYN_ACK          (1 << 0) // Enables the W_TX_PAYLOAD_NOACK command
 
 
+
+void nrf24l01_init(void);
+void make_tx(void);
+void make_rx(void);
+void set_rx_addr_p_0_1(unsigned char x_0_1,unsigned char addr[5]);
+void set_rx_addr_p_2_3_4_5(unsigned char x_2_3_4_5,unsigned char addr);
+void set_tx_addr(unsigned char addr[5]);
+void set_rx_pw_px(unsigned char pipe,unsigned char x_1_32); // x_1_32 = Number of bytes in RX payload in data pipe
+
+
+
+
+
+
+
+
