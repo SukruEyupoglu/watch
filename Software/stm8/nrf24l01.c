@@ -2,6 +2,7 @@
 #include "delay.h"
 #include "stm8s.h"
 #include "spi.h"
+#include "eeprom.h"
 
 // ready for testing only 1 byte data waiting for rx look at DYNPD later
 void nrf24l01_init(void)
