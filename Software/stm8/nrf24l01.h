@@ -94,6 +94,8 @@
 #define RX_ADDR_P4 0x0E // Only LSB. MSBytes are equal to RX_ADDR_P1[39:8]
 #define RX_ADDR_P5 0x0F // Only LSB. MSBytes are equal to RX_ADDR_P1[39:8]
 
+#define RX_ADDR_PX 0x0A
+
 // Transmit address. Used for a PTX device only.
 // (LSByte is written first)
 // Set RX_ADDR_P0 equal to this address to handle automatic acknowledge if this is a PTX device with
