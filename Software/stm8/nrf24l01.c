@@ -90,7 +90,7 @@ void set_rx_addr_p_0_1(unsigned char x_0_1,unsigned char addr[5])
     spi(W_REGISTER | (RX_ADDR_PX + x_0_1));
     for (f = 0 ; f < 5 ; f++)
     {
-    	spi(addr[f]);
+    	spi(addr[f]); // LSByte is written first
     }
     NRF_CSN_HIGH;
 }
@@ -98,6 +98,19 @@ void set_rx_addr_p_0_1(unsigned char x_0_1,unsigned char addr[5])
 void set_rx_addr_p_2_3_4_5(unsigned char x_2_3_4_5,unsigned char addr)
 {
 	NRF_write_reg(W_REGISTER | (RX_ADDR_PX + x_2_3_4_5) , addr);
+}
+
+void set_tx_addr(unsigned char addr[5])
+{
+
+    unsigned char f;
+    NRF_CSN_LOW;
+    spi(W_REGISTER | TX_ADDR);
+    for (f = 0 ; f < 5 ; f++)
+    {
+    	spi(addr[f]); // LSByte is written first
+    }
+    NRF_CSN_HIGH;
 }
 
 void set_rx_pw_px(unsigned char pipe,unsigned char x_1_32) // x_1_32 = Number of bytes in RX payload in data pipe
