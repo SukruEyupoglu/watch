@@ -33,38 +33,6 @@ void nrf24l01_init(void)
 	// delay_us(130);							// wait for convert to tx or rx from datasheet	
 }
 
-#define CONFIG_EE_ADDR			0x0A
-#define EN_AA_EE_ADDR			0x0B
-#define EN_RXADDR_EE_ADDR		0x0C
-#define SETUP_AW_EE_ADDR		0x0D
-#define SETUP_RETR_EE_ADDR		0x0E
-#define RF_CH_EE_ADDR			0x0F
-#define RF_SETUP_EE_ADDR		0x10
-#define RX_ADDR_P0_EE_ADDR		0x11 // 5 byte length
-#define RX_ADDR_P1_EE_ADDR		0x16 // 5 byte length
-#define RX_ADDR_P2_EE_ADDR		0x1B
-#define RX_ADDR_P3_EE_ADDR		0x1C
-#define RX_ADDR_P4_EE_ADDR		0x1D
-#define RX_ADDR_P5_EE_ADDR		0x1E
-#define TX_ADDR_EE_ADDR			0x1F // 5 byte length
-#define RX_PW_P0_EE_ADDR		0x25
-#define RX_PW_P1_EE_ADDR		0x26
-#define RX_PW_P2_EE_ADDR		0x27
-#define RX_PW_P3_EE_ADDR		0x28
-#define RX_PW_P4_EE_ADDR		0x29
-#define RX_PW_P5_EE_ADDR		0x2A
-#define DYNPD_EE_ADDR			0x2B
-#define FEATURE_EE_ADDR			0x2C
-
-#define MAX_ADDR_SIZE			5
-#define P0				0
-#define P1				1
-#define P2				2
-#define P3				3
-#define P4				4
-#define P5				5
-
-
 void nrf24l01_init_from_eeprom(void)
 {
 	unsigned char data;
