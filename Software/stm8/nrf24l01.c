@@ -62,7 +62,12 @@ void nrf24l01_init_from_eeprom(void)
 	
 	// RF Channel 0 - 127
 	eeprom_read(RF_CH, &data, 1);
-	NRF_write_reg(W_REGISTER | RF_CH , data);	
+	NRF_write_reg(W_REGISTER | RF_CH , data);
+	
+	// RF Setup Register
+	eeprom_read(RF_SETUP, &data, 1);
+	NRF_write_reg(W_REGISTER | RF_SETUP , data);
+	
 	
 	
 	
