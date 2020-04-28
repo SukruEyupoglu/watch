@@ -274,7 +274,7 @@ void NRF_RX_INIT_NO_ACK(void)
 	NRF_write_reg(W_REGISTER | FEATURE , (1 << 0));
 }
 */
-void NRF_write_buf(unsigned char * data,unsigned char size)
+void nrf_write_buf(unsigned char * data,unsigned char size)
 {
     unsigned char f;
     NRF_CSN_LOW;
@@ -285,7 +285,7 @@ void NRF_write_buf(unsigned char * data,unsigned char size)
     }
     NRF_CSN_HIGH;
 }
-void NRF_read_buf(unsigned char * data,unsigned char size) {
+void nrf_read_buf(unsigned char * data,unsigned char size) {
     unsigned char f;
     NRF_CSN_LOW;
     spi(R_RX_PAYLOAD);
@@ -317,13 +317,13 @@ void NRF_read_buf(unsigned char komut,unsigned char *veri,unsigned char size) {
     NRF_CSN_HIGH;
 }
 */
-void NRF_write_reg(unsigned char komut,unsigned char deger) {
+void nrf_write_reg(unsigned char reg,unsigned char data) {
     NRF_CSN_LOW;
     spi(komut);
     spi(deger);
     NRF_CSN_HIGH;
 }
-unsigned char NRF_read_reg(unsigned char komut) {
+unsigned char nrf_read_reg(unsigned char reg) {
     unsigned char sonuc;
     NRF_CSN_LOW;
     spi(komut);
@@ -331,12 +331,12 @@ unsigned char NRF_read_reg(unsigned char komut) {
     NRF_CSN_HIGH;
     return sonuc;
 }
-void NRF_flush_tx(void) {
+void nrf_flush_tx(void) {
     NRF_CSN_LOW;
     spi(FLUSH_TX);
     NRF_CSN_HIGH;
 }
-void NRF_flush_rx(void) {
+void nrf_flush_rx(void) {
     NRF_CSN_LOW;
     spi(FLUSH_RX);
     NRF_CSN_HIGH;
