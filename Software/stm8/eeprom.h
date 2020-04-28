@@ -4,8 +4,8 @@
 
 
 
-#define EEPROM_START_ADDR 0x4000
-#define EEPROM_END_ADDR 0x407F
+#define EEPROM_START_ADDR     0x4000
+#define EEPROM_END_ADDR       0x407F
 
 
 
@@ -30,7 +30,7 @@
 #define RX_PW_P4_EE_ADDR		0x29
 #define RX_PW_P5_EE_ADDR		0x2A
 #define DYNPD_EE_ADDR			0x2B
-#define FEATURE_EE_ADDR	0x2C
+#define FEATURE_EE_ADDR   0x2C
 
 
 void eeprom_unlock(void);
