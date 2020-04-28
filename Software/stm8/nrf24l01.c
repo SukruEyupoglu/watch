@@ -33,40 +33,81 @@ void nrf24l01_init(void)
 	// delay_us(130);							// wait for convert to tx or rx from datasheet	
 }
 
+#define CONFIG_EE_ADDR			0x0A
+#define EN_AA_EE_ADDR			0x0B
+#define EN_RXADDR_EE_ADDR		0x0C
+#define SETUP_AW_EE_ADDR		0x0D
+#define SETUP_RETR_EE_ADDR		0x0E
+#define RF_CH_EE_ADDR			0x0F
+#define RF_SETUP_EE_ADDR		0x10
+#define RX_ADDR_P0_EE_ADDR		0x11 // 5 byte length
+#define RX_ADDR_P1_EE_ADDR		0x16 // 5 byte length
+#define RX_ADDR_P2_EE_ADDR		0x1B
+#define RX_ADDR_P3_EE_ADDR		0x1C
+#define RX_ADDR_P4_EE_ADDR		0x1D
+#define RX_ADDR_P5_EE_ADDR		0x1E
+
+
+
+
+#define MAX_ADDR_SIZE			5
+#define P0				0
+#define P1				1
+#define P2				2
+#define P3				3
+#define P4				4
+#define P5				5
+
+
 void nrf24l01_init_from_eeprom(void)
 {
 	unsigned char data;
+	unsigned char data_array[5];
 	delay_ms(100);							// wait until it happens to power down mode 100ms
 	
 	// Configuration Register
-	eeprom_read(CONFIG, &data, 1);
+	eeprom_read(CONFIG_EE_ADDR, &data, 1);
 	NRF_write_reg(W_REGISTER | CONFIG , data);			// only start up for make standby-1
 	
 	delay_ms(2);							// wait 1.5ms for power up
 	
 	// Enable ‘Auto Acknowledgment’ Function Disable this functionality to be compatible with nRF2401
-	eeprom_read(EN_AA, &data, 1);
+	eeprom_read(EN_AA_EE_ADDR, &data, 1);
 	NRF_write_reg(W_REGISTER | EN_AA , data);
 	
 	// Enabled RX Addresses
-	eeprom_read(EN_RXADDR, &data, 1);
+	eeprom_read(EN_RXADDR_EE_ADDR, &data, 1);
 	NRF_write_reg(W_REGISTER | EN_RXADDR , data);
 	
 	// Setup of Address Widths (common for all data pipes)
-	eeprom_read(SETUP_AW, &data, 1);
+	eeprom_read(SETUP_AW_EE_ADDR, &data, 1);
 	NRF_write_reg(W_REGISTER | SETUP_AW , data);
 	
 	// Setup of Automatic Retransmission
-	eeprom_read(SETUP_RETR, &data, 1);
+	eeprom_read(SETUP_RETR_EE_ADDR, &data, 1);
 	NRF_write_reg(W_REGISTER | SETUP_RETR , data);
 	
 	// RF Channel 0 - 127
-	eeprom_read(RF_CH, &data, 1);
+	eeprom_read(RF_CH_EE_ADDR, &data, 1);
 	NRF_write_reg(W_REGISTER | RF_CH , data);
 	
 	// RF Setup Register
-	eeprom_read(RF_SETUP, &data, 1);
+	eeprom_read(RF_SETUP_EE_ADDR, &data, 1);
 	NRF_write_reg(W_REGISTER | RF_SETUP , data);
+	
+	// Receive address data pipe
+	eeprom_read(RX_ADDR_P0_EE_ADDR, data_array, MAX_ADDR_SIZE);
+	set_rx_addr_p_0_1(P0,data_array);
+	eeprom_read(RX_ADDR_P1_EE_ADDR, data_array, MAX_ADDR_SIZE);
+	set_rx_addr_p_0_1(P1,data_array);
+	eeprom_read(RX_ADDR_P2_EE_ADDR, &data, 1);
+	set_rx_addr_p_2_3_4_5(P2,data);
+	eeprom_read(RX_ADDR_P3_EE_ADDR, &data, 1);
+	set_rx_addr_p_2_3_4_5(P3,data);	
+	eeprom_read(RX_ADDR_P4_EE_ADDR, &data, 1);
+	set_rx_addr_p_2_3_4_5(P4,data);
+	eeprom_read(RX_ADDR_P5_EE_ADDR, &data, 1);
+	set_rx_addr_p_2_3_4_5(P5,data);
 	
 	
 	
