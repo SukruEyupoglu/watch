@@ -46,9 +46,15 @@ void nrf24l01_init(void)
 #define RX_ADDR_P3_EE_ADDR		0x1C
 #define RX_ADDR_P4_EE_ADDR		0x1D
 #define RX_ADDR_P5_EE_ADDR		0x1E
-
-
-
+#define TX_ADDR_EE_ADDR			0x1F // 5 byte length
+#define RX_PW_P0_EE_ADDR		0x25
+#define RX_PW_P1_EE_ADDR		0x26
+#define RX_PW_P2_EE_ADDR		0x27
+#define RX_PW_P3_EE_ADDR		0x28
+#define RX_PW_P4_EE_ADDR		0x29
+#define RX_PW_P5_EE_ADDR		0x2A
+#define DYNPD_EE_ADDR			0x2B
+#define FEATURE_EE_ADDR			0x2C
 
 #define MAX_ADDR_SIZE			5
 #define P0				0
@@ -95,7 +101,7 @@ void nrf24l01_init_from_eeprom(void)
 	eeprom_read(RF_SETUP_EE_ADDR, &data, 1);
 	NRF_write_reg(W_REGISTER | RF_SETUP , data);
 	
-	// Receive address data pipe
+	// Receive address data pipe (LSByte is written first)
 	eeprom_read(RX_ADDR_P0_EE_ADDR, data_array, MAX_ADDR_SIZE);
 	set_rx_addr_p_0_1(P0,data_array);
 	eeprom_read(RX_ADDR_P1_EE_ADDR, data_array, MAX_ADDR_SIZE);
@@ -109,19 +115,37 @@ void nrf24l01_init_from_eeprom(void)
 	eeprom_read(RX_ADDR_P5_EE_ADDR, &data, 1);
 	set_rx_addr_p_2_3_4_5(P5,data);
 	
+	// Transmit address. Used for a PTX device only. (LSByte is written first)
+	eeprom_read(TX_ADDR_EE_ADDR, data_array, MAX_ADDR_SIZE);
+	set_tx_addr(data_array);
 	
+	// Number of bytes in RX payload in data pipe ( 1 to 32 bytes )
+	eeprom_read(RX_PW_P0_EE_ADDR, &data, 1);
+	NRF_write_reg(W_REGISTER | RX_PW_P0 , data);
+	eeprom_read(RX_PW_P1_EE_ADDR, &data, 1);
+	NRF_write_reg(W_REGISTER | RX_PW_P1 , data);
+	eeprom_read(RX_PW_P2_EE_ADDR, &data, 1);
+	NRF_write_reg(W_REGISTER | RX_PW_P2 , data);
+	eeprom_read(RX_PW_P3_EE_ADDR, &data, 1);
+	NRF_write_reg(W_REGISTER | RX_PW_P3 , data);
+	eeprom_read(RX_PW_P4_EE_ADDR, &data, 1);
+	NRF_write_reg(W_REGISTER | RX_PW_P4 , data);
+	eeprom_read(RX_PW_P5_EE_ADDR, &data, 1);
+	NRF_write_reg(W_REGISTER | RX_PW_P5 , data);
 	
+	// Enable dynamic payload length
+	eeprom_read(DYNPD_EE_ADDR, &data, 1);
+	NRF_write_reg(W_REGISTER | DYNPD , data);
 	
-	NRF_write_reg(W_REGISTER | RF_SETUP , RF_SETUP_250K_BPS_18_DBM); // 250kbps , -18dbm setting
+	// Enable dynamic payload length
+	eeprom_read(FEATURE_EE_ADDR, &data, 1);
+	NRF_write_reg(W_REGISTER | FEATURE , data);
 	
-	// Number of bytes in RX payload in data pipe
-	set_rx_pw_px(0,unsigned char 5);
-	
-	NRF_write_reg(W_REGISTER | DYNPD , DYNPD_DPL_P0);		// must be tryed dynamic payload lengh MUST! 
-	NRF_write_reg(W_REGISTER | FEATURE , FEATURE_EN_ACK_PAY);	// Enables Payload with ACK
-	make_tx();							// default is tx at config register
+	// default is tx at config register
+	make_tx();
 	// make_rx();
-	// delay_us(130);							// wait for convert to tx or rx from datasheet	
+	// wait for convert to tx or rx from datasheet
+	// delay_us(130);
 }
 
 void make_tx(void)
