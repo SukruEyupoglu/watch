@@ -94,6 +94,15 @@
 #define RX_ADDR_P4 0x0E // Only LSB. MSBytes are equal to RX_ADDR_P1[39:8]
 #define RX_ADDR_P5 0x0F // Only LSB. MSBytes are equal to RX_ADDR_P1[39:8]
 
+#define MAX_ADDR_SIZE			5
+#define P0				0
+#define P1				1
+#define P2				2
+#define P3				3
+#define P4				4
+#define P5				5
+
+
 #define RX_ADDR_PX 0x0A
 
 // Transmit address. Used for a PTX device only.
@@ -137,6 +146,7 @@
 
 
 void nrf24l01_init(void);
+void nrf24l01_init_from_eeprom(void);
 void make_tx(void);
 void make_rx(void);
 void set_rx_addr_p_0_1(unsigned char x_0_1,unsigned char addr[5]);
@@ -144,9 +154,12 @@ void set_rx_addr_p_2_3_4_5(unsigned char x_2_3_4_5,unsigned char addr);
 void set_tx_addr(unsigned char addr[5]);
 void set_rx_pw_px(unsigned char pipe,unsigned char x_1_32); // x_1_32 = Number of bytes in RX payload in data pipe
 
-
-
-
+void nrf_write_buf(unsigned char * data,unsigned char size);
+void nrf_read_buf(unsigned char * data,unsigned char size);
+void nrf_write_reg(unsigned char reg,unsigned char data);
+unsigned char nrf_read_reg(unsigned char reg);
+void nrf_flush_tx(void);
+void nrf_flush_rx(void);
 
 
 
