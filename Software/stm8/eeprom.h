@@ -8,7 +8,7 @@
 #define EEPROM_END_ADDR       0x407F
 
 
-
+// NRF24L01 RELATED DEFINIATIONS
 #define CONFIG_EE_ADDR			0x0A
 #define EN_AA_EE_ADDR			0x0B
 #define EN_RXADDR_EE_ADDR		0x0C
@@ -30,7 +30,7 @@
 #define RX_PW_P4_EE_ADDR		0x29
 #define RX_PW_P5_EE_ADDR		0x2A
 #define DYNPD_EE_ADDR			0x2B
-#define FEATURE_EE_ADDR   0x2C
+#define FEATURE_EE_ADDR           0x2C
 
 
 void eeprom_unlock(void);
