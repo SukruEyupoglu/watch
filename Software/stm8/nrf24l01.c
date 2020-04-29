@@ -88,6 +88,19 @@ void nrf24l01_init_from_eeprom(void)
 	set_tx_addr(data_array);
 
 	
+	// Number of waiting bytes in RX payload without DYNPD in data pipe ( 1 to 32 bytes )
+	eeprom_read(RX_PW_P0_EE_ADDR, &data, 1);
+	NRF_write_reg(W_REGISTER | RX_PW_P0 , data);
+	eeprom_read(RX_PW_P1_EE_ADDR, &data, 1);
+	NRF_write_reg(W_REGISTER | RX_PW_P1 , data);
+	eeprom_read(RX_PW_P2_EE_ADDR, &data, 1);
+	NRF_write_reg(W_REGISTER | RX_PW_P2 , data);
+	eeprom_read(RX_PW_P3_EE_ADDR, &data, 1);
+	NRF_write_reg(W_REGISTER | RX_PW_P3 , data);
+	eeprom_read(RX_PW_P4_EE_ADDR, &data, 1);
+	NRF_write_reg(W_REGISTER | RX_PW_P4 , data);
+	eeprom_read(RX_PW_P5_EE_ADDR, &data, 1);
+	NRF_write_reg(W_REGISTER | RX_PW_P5 , data);
 	// Enable dynamic payload length
 	eeprom_read(DYNPD_EE_ADDR, &data, 1);
 	NRF_write_reg(W_REGISTER | DYNPD , data);
