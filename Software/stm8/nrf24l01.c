@@ -4,6 +4,31 @@
 #include "spi.h"
 #include "eeprom.h"
 
+unsigned char check_irq_status(void)
+{
+  switch(nrf_read_reg(STATUS_REG) & 
+    (
+      STATUS_RX_DR |
+      STATUS_TX_DS |
+      STATUS_MAX_RT
+    ) )
+  {
+    case STATUS_RX_DR :
+    {
+      return RX_DR_INT;
+    }
+    case STATUS_TX_DS :
+    {
+      return TX_DS_INT;
+    }
+    case STATUS_MAX_RT :
+    {
+      return MAX_RT_INT;
+    }
+  }
+  return VOID_INT;
+}
+
 // ready for testing only 1 byte data waiting for rx look at DYNPD later
 void nrf24l01_init(void)
 {
@@ -86,7 +111,6 @@ void nrf24l01_init_from_eeprom(void)
 	// Transmit address. Used for a PTX device only. (LSByte is written first)
 	eeprom_read(TX_ADDR_EE_ADDR, data_array, MAX_ADDR_SIZE);
 	set_tx_addr(data_array);
-
 	
 	// Number of waiting bytes in RX payload without DYNPD in data pipe ( 1 to 32 bytes )
 	eeprom_read(RX_PW_P0_EE_ADDR, &data, 1);
@@ -101,6 +125,7 @@ void nrf24l01_init_from_eeprom(void)
 	NRF_write_reg(W_REGISTER | RX_PW_P4 , data);
 	eeprom_read(RX_PW_P5_EE_ADDR, &data, 1);
 	NRF_write_reg(W_REGISTER | RX_PW_P5 , data);
+
 	// Enable dynamic payload length
 	eeprom_read(DYNPD_EE_ADDR, &data, 1);
 	NRF_write_reg(W_REGISTER | DYNPD , data);
@@ -287,14 +312,14 @@ void NRF_read_buf(unsigned char komut,unsigned char *veri,unsigned char size) {
 */
 void nrf_write_reg(unsigned char reg,unsigned char data) {
     NRF_CSN_LOW;
-    spi(komut);
-    spi(deger);
+    spi(reg);
+    spi(data);
     NRF_CSN_HIGH;
 }
 unsigned char nrf_read_reg(unsigned char reg) {
     unsigned char sonuc;
     NRF_CSN_LOW;
-    spi(komut);
+    spi(reg);
     sonuc = spi(NOP);
     NRF_CSN_HIGH;
     return sonuc;
