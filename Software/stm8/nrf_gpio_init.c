@@ -1,5 +1,5 @@
 #include "stm8s.h
-#include "nrf_init.h
+#include "nrf_gpio_init.h
 
 void nrf_gpio_init(void)
 {
