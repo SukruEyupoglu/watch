@@ -49,7 +49,7 @@ void nrf24l01_init(void)
 	NRF_write_reg(W_REGISTER | RF_SETUP , RF_SETUP_250K_BPS_18_DBM); // 250kbps , -18dbm setting
 	
 	// Number of bytes in RX payload in data pipe
-	set_rx_pw_px(0,unsigned char 5);
+	set_rx_pw_px(0,5);
 	
 	NRF_write_reg(W_REGISTER | DYNPD , DYNPD_DPL_P0);		// must be tryed dynamic payload lengh MUST! 
 	NRF_write_reg(W_REGISTER | FEATURE , FEATURE_EN_ACK_PAY);	// Enables Payload with ACK
