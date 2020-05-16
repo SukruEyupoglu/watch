@@ -70,12 +70,19 @@
 #define RF_SETUP_2M_BPS_06_DBM     ( (1 << 3) | (1 << 2) )
 #define RF_SETUP_2M_BPS_00_DBM     ( (1 << 3) | (1 << 2) | (1 << 1) )
 
-#define STATUS 0x07
+#define STATUS_REG 0x07
 #define STATUS_RX_DR                (1 << 6)
 #define STATUS_TX_DS                (1 << 5)
 #define STATUS_MAX_RT               (1 << 4)
 #define STATUS_RX_P_NO              ( (1 << 3) | (1 << 2) | (1 << 1) )
 #define STATUS_TX_FULL              (1 << 0)
+
+#define VOID_INT                    0
+#define RX_DR_INT                   1
+#define TX_DS_INT                   2
+#define MAX_RT_INT                  3
+
+
 
 #define OBSERVE_TX 0x08
 #define OBSERVE_TX_PLOS_CNT         0xF0
