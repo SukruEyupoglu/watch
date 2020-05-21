@@ -1,6 +1,7 @@
 
-
+#include "uart.h"
 #include "list.h"
+#include "nrf24l01.h"
 
 void list(void)
 {
@@ -16,10 +17,20 @@ void list(void)
   const unsigned char config[15] = {'C','O','N','F','I','G',SPACE,SPACE,SPACE,SPACE,SPACE,SPACE,SPACE,SPACE,'='};
   const unsigned char dynpd_feature[15] = {'D','Y','N','P','D','/','F','E','A','T','U','R','E',SPACE,'='};
   
+  const unsigned char dynpd_feature[8] = {'R','X','_','D','R',SPACE,SPACE,'='};
+  
+  unsigned char nrf_read_reg(unsigned char reg)
   
   
 }
-
+void uart_send_array(unsigned char * array , unsigned char size)
+{
+  unsigned char f;
+  for(f = 0 ; f < size ; f++)
+  {
+    uart_send( *(array + f) );
+  }
+}
 
 
 
