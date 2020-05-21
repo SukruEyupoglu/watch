@@ -20,8 +20,9 @@ void list(void)
   const unsigned char rx_dr[8] = {'R','X','_','D','R',SPACE,SPACE,'='};
   const unsigned char tx_ds[8] = {'T','X','_','D','S',SPACE,SPACE,'='};
   const unsigned char max_rt[8] = {'M','A','X','_','R','T',SPACE,'='};
-  
-  
+  const unsigned char rx_p_no[8] = {'R','X','_','P','_','N','O','='};
+  const unsigned char tx_full[8] = {'T','X','_','F','U','L','L','='};
+  const unsigned char hex_0x[2] = {'0','x'};
   
   
   unsigned char nrf_read_reg(unsigned char reg)
