@@ -17,7 +17,12 @@ void list(void)
   const unsigned char config[15] = {'C','O','N','F','I','G',SPACE,SPACE,SPACE,SPACE,SPACE,SPACE,SPACE,SPACE,'='};
   const unsigned char dynpd_feature[15] = {'D','Y','N','P','D','/','F','E','A','T','U','R','E',SPACE,'='};
   
-  const unsigned char dynpd_feature[8] = {'R','X','_','D','R',SPACE,SPACE,'='};
+  const unsigned char rx_dr[8] = {'R','X','_','D','R',SPACE,SPACE,'='};
+  const unsigned char tx_ds[8] = {'T','X','_','D','S',SPACE,SPACE,'='};
+  const unsigned char max_rt[8] = {'M','A','X','_','R','T',SPACE,'='};
+  
+  
+  
   
   unsigned char nrf_read_reg(unsigned char reg)
   
