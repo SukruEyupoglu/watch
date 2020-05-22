@@ -2,6 +2,7 @@
 #include "uart.h"
 #include "list.h"
 #include "nrf24l01.h"
+#include "PLATFORMLESS.h"
 
 void list(void)
 {
@@ -22,10 +23,13 @@ void list(void)
   const unsigned char max_rt[8] = {'M','A','X','_','R','T',SPACE,'='};
   const unsigned char rx_p_no[8] = {'R','X','_','P','_','N','O','='};
   const unsigned char tx_full[8] = {'T','X','_','F','U','L','L','='};
+  
   const unsigned char hex_0x[2] = {'0','x'};
   
-  
-  unsigned char nrf_read_reg(unsigned char reg)
+  unsigned char x;
+  uart_send_array(status, 15);
+  x = nrf_read_reg(STATUS_REG);
+  uart_send_array(rx_dr, 8);
   
   
 }
