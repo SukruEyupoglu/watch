@@ -151,8 +151,19 @@ void list(void)
   
   // line 5 start here
   
+  uart_send_array(rx_pw_p0_6, 15);
+  for(f = 0 ; f < 6 ; f++)
+  {
+    uart_send_array(hex_0x, 3);
+    x = nrf_read_reg(RX_PW_PX + f);
+    uart_send(hex_to_ascii( (x >> 4) & 0xF) );
+    uart_send(hex_to_ascii(x & 0xF) );
+  }
   
+  uart_send('\r');
+  uart_send('\n');
   
+  // line 6 start here
   
 }
 void uart_send_array(unsigned char * array , unsigned char size)
