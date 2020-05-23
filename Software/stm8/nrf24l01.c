@@ -33,26 +33,26 @@ unsigned char check_irq_status(void)
 void nrf24l01_init(void)
 {
 	delay_ms(100);							// wait until it happens to power down mode 100ms
-	NRF_write_reg(W_REGISTER | CONFIG , CONFIG_PWR_UP);		// only start up for make standby-1
+	nrf_write_reg(W_REGISTER | CONFIG , CONFIG_PWR_UP);		// only start up for make standby-1
 	delay_ms(2);							// wait 1.5ms for power up
-	NRF_write_reg(W_REGISTER | EN_AA , EN_AA_ENAA_P0);		// FOR PIPE0 SET OUTO ACK
-	NRF_write_reg(W_REGISTER | EN_RXADDR , EN_RXADDR_ERX_P0);	// ONLY ACTIVE PIPE0
+	nrf_write_reg(W_REGISTER | EN_AA , EN_AA_ENAA_P0);		// FOR PIPE0 SET OUTO ACK
+	nrf_write_reg(W_REGISTER | EN_RXADDR , EN_RXADDR_ERX_P0);	// ONLY ACTIVE PIPE0
 	
 	// communication addr byte size (3,4,5 byte)  RESET_VALUE = 5(GOOD NOT CHANGED) 
 	// NRF_write_reg(W_REGISTER | SETUP_AW , 0x3);
 	
-	NRF_write_reg(W_REGISTER | SETUP_RETR , 0x01);			// TRANSFER RETRY COUNT 250us ONLY "1" 
+	nrf_write_reg(W_REGISTER | SETUP_RETR , 0x01);			// TRANSFER RETRY COUNT 250us ONLY "1" 
 	
 	// SETS FREQUENCY CHANNEL (0 - 128) RESET_VALUE = 2(GOOD NOT CHANGED) 
 	// NRF_write_reg(W_REGISTER | RF_CH , 0x2);
 	
-	NRF_write_reg(W_REGISTER | RF_SETUP , RF_SETUP_250K_BPS_18_DBM); // 250kbps , -18dbm setting
+	nrf_write_reg(W_REGISTER | RF_SETUP , RF_SETUP_250K_BPS_18_DBM); // 250kbps , -18dbm setting
 	
 	// Number of bytes in RX payload in data pipe
 	set_rx_pw_px(0,5);
 	
-	NRF_write_reg(W_REGISTER | DYNPD , DYNPD_DPL_P0);		// must be tryed dynamic payload lengh MUST! 
-	NRF_write_reg(W_REGISTER | FEATURE , FEATURE_EN_ACK_PAY);	// Enables Payload with ACK
+	nrf_write_reg(W_REGISTER | DYNPD , DYNPD_DPL_P0);		// must be tryed dynamic payload lengh MUST! 
+	nrf_write_reg(W_REGISTER | FEATURE , FEATURE_EN_ACK_PAY);	// Enables Payload with ACK
 	make_tx();							// default is tx at config register
 	// make_rx();
 	// delay_us(130);							// wait for convert to tx or rx from datasheet	
@@ -66,33 +66,33 @@ void nrf24l01_init_from_eeprom(void)
 	
 	// Configuration Register
 	eeprom_read(CONFIG_EE_ADDR, &data, 1);
-	NRF_write_reg(W_REGISTER | CONFIG , data);			// only start up for make standby-1
+	nrf_write_reg(W_REGISTER | CONFIG , data);			// only start up for make standby-1
 	
 	delay_ms(2);							// wait 1.5ms for power up
 	
 	// Enable ‘Auto Acknowledgment’ Function Disable this functionality to be compatible with nRF2401
 	eeprom_read(EN_AA_EE_ADDR, &data, 1);
-	NRF_write_reg(W_REGISTER | EN_AA , data);
+	nrf_write_reg(W_REGISTER | EN_AA , data);
 	
 	// Enabled RX Addresses
 	eeprom_read(EN_RXADDR_EE_ADDR, &data, 1);
-	NRF_write_reg(W_REGISTER | EN_RXADDR , data);
+	nrf_write_reg(W_REGISTER | EN_RXADDR , data);
 	
 	// Setup of Address Widths (common for all data pipes)
 	eeprom_read(SETUP_AW_EE_ADDR, &data, 1);
-	NRF_write_reg(W_REGISTER | SETUP_AW , data);
+	nrf_write_reg(W_REGISTER | SETUP_AW , data);
 	
 	// Setup of Automatic Retransmission
 	eeprom_read(SETUP_RETR_EE_ADDR, &data, 1);
-	NRF_write_reg(W_REGISTER | SETUP_RETR , data);
+	nrf_write_reg(W_REGISTER | SETUP_RETR , data);
 	
 	// RF Channel 0 - 127
 	eeprom_read(RF_CH_EE_ADDR, &data, 1);
-	NRF_write_reg(W_REGISTER | RF_CH , data);
+	nrf_write_reg(W_REGISTER | RF_CH , data);
 	
 	// RF Setup Register
 	eeprom_read(RF_SETUP_EE_ADDR, &data, 1);
-	NRF_write_reg(W_REGISTER | RF_SETUP , data);
+	nrf_write_reg(W_REGISTER | RF_SETUP , data);
 	
 	// Receive address data pipe (LSByte is written first)
 	eeprom_read(RX_ADDR_P0_EE_ADDR, data_array, MAX_ADDR_SIZE);
