@@ -165,6 +165,61 @@ void list(void)
   
   // line 6 start here
   
+  uart_send_array(en_aa, 15);
+  uart_send_array(hex_0x, 3);
+  x = nrf_read_reg(EN_AA);
+  uart_send(hex_to_ascii( (x >> 4) & 0xF) );
+  uart_send(hex_to_ascii(x & 0xF) );
+  
+  uart_send('\r');
+  uart_send('\n');
+  
+  // line 7 start here
+  
+  uart_send_array(en_rxaddr, 15);
+  uart_send_array(hex_0x, 3);
+  x = nrf_read_reg(EN_RXADDR);
+  uart_send(hex_to_ascii( (x >> 4) & 0xF) );
+  uart_send(hex_to_ascii(x & 0xF) );
+  
+  uart_send('\r');
+  uart_send('\n');
+  
+  // line 8 start here
+  
+  uart_send_array(rf_ch, 15);
+  uart_send_array(hex_0x, 3);
+  x = nrf_read_reg(RF_CH);
+  uart_send(hex_to_ascii( (x >> 4) & 0xF) );
+  uart_send(hex_to_ascii(x & 0xF) );
+  
+  uart_send('\r');
+  uart_send('\n');
+  
+  // line 9 start here
+  
+  uart_send_array(rf_setup, 15);
+  uart_send_array(hex_0x, 3);
+  x = nrf_read_reg(RF_SETUP);
+  uart_send(hex_to_ascii( (x >> 4) & 0xF) );
+  uart_send(hex_to_ascii(x & 0xF) );
+  
+  uart_send('\r');
+  uart_send('\n');
+  
+  // line 10 start here
+  
+  uart_send_array(config, 15);
+  uart_send_array(hex_0x, 3);
+  x = nrf_read_reg(CONFIG);
+  uart_send(hex_to_ascii( (x >> 4) & 0xF) );
+  uart_send(hex_to_ascii(x & 0xF) );
+  
+  uart_send('\r');
+  uart_send('\n');
+  
+  // line 11 start here
+  
 }
 void uart_send_array(unsigned char * array , unsigned char size)
 {
