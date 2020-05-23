@@ -168,9 +168,9 @@ void get_rx_addr_p_0_1(unsigned char x_0_1,unsigned char addr[5])
     NRF_CSN_HIGH;
 }
 
-void get_rx_addr_p_2_3_4_5(unsigned char x_2_3_4_5,unsigned char * addr)
+unsigned char get_rx_addr_p_2_3_4_5(unsigned char x_2_3_4_5)
 {
-	addr = nrf_read_reg(R_REGISTER | (RX_ADDR_PX + x_2_3_4_5) );
+	return nrf_read_reg(R_REGISTER | (RX_ADDR_PX + x_2_3_4_5) );
 }
 
 void set_rx_addr_p_0_1(unsigned char x_0_1,unsigned char addr[5])
