@@ -28,6 +28,8 @@ void list(void)
   const unsigned char space_2[2] = {SPACE,SPACE};
   
   unsigned char x;
+  unsigned char f;
+  unsigned char y[5];
   
     // line 1 start here
   
@@ -84,6 +86,27 @@ void list(void)
   
   uart_send_array(rx_addr_p0_1, 15);
   uart_send_array(hex_0x, 3);
+  get_rx_addr_p_0_1(PIPE_0,y);
+  for(f = 0 ; f < 5 ; f++)
+  {
+    uart_send(hex_to_ascii( ( y[(4 - f)] >> 4) & 0xF) );
+    uart_send(hex_to_ascii(y[(4 - f)] & 0xF) );
+  }
+  uart_send_array(space_2, 2);
+
+  get_rx_addr_p_0_1(PIPE_1,y);
+  for(f = 0 ; f < 5 ; f++)
+  {
+    uart_send(hex_to_ascii( ( y[(4 - f)] >> 4) & 0xF) );
+    uart_send(hex_to_ascii(y[(4 - f)] & 0xF) );
+  }
+  uart_send_array(space_2, 2);
+  uart_send('\r');
+  uart_send('\n');
+  
+    // line 3 start here
+  
+  
   
   
 }
