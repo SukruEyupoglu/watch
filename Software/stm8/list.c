@@ -219,6 +219,17 @@ void list(void)
   uart_send('\n');
   
   // line 11 start here
+  // underconstruction
+  uart_send_array(dynpd_feature, 15);
+  uart_send_array(hex_0x, 3);
+  x = nrf_read_reg();
+  uart_send(hex_to_ascii( (x >> 4) & 0xF) );
+  uart_send(hex_to_ascii(x & 0xF) );
+  
+  uart_send('\r');
+  uart_send('\n');
+  
+  // end of list
   
 }
 void uart_send_array(unsigned char * array , unsigned char size)
