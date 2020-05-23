@@ -110,9 +110,31 @@ void list(void)
     // line 3 start here
   
   uart_send_array(rx_addr_p2_5, 15);
-  uart_send_array(hex_0x, 3);
-  get_rx_addr_p_2_3_4_5(PIPE_2,unsigned char * addr)
   
+  uart_send_array(hex_0x, 3);
+  x = get_rx_addr_p_2_3_4_5(PIPE_2);
+  uart_send(hex_to_ascii( (x >> 4) & 0xF) );
+  uart_send(hex_to_ascii(x & 0xF) );
+  
+  uart_send_array(hex_0x, 3);
+  x = get_rx_addr_p_2_3_4_5(PIPE_3);
+  uart_send(hex_to_ascii( (x >> 4) & 0xF) );
+  uart_send(hex_to_ascii(x & 0xF) );
+  
+  uart_send_array(hex_0x, 3);
+  x = get_rx_addr_p_2_3_4_5(PIPE_4);
+  uart_send(hex_to_ascii( (x >> 4) & 0xF) );
+  uart_send(hex_to_ascii(x & 0xF) );
+  
+  uart_send_array(hex_0x, 3);
+  x = get_rx_addr_p_2_3_4_5(PIPE_5);
+  uart_send(hex_to_ascii( (x >> 4) & 0xF) );
+  uart_send(hex_to_ascii(x & 0xF) );
+  
+  uart_send('\r');
+  uart_send('\n');
+  
+  // line 4 start here
   
 }
 void uart_send_array(unsigned char * array , unsigned char size)
