@@ -6,7 +6,7 @@
 
 void list(void)
 {
-  const unsigned char status[15] = {'S','T','A','T','U','S',SPACE,SPACE,SPACE,SPACE,SPACE,SPACE,SPACE,SPACE,'='};
+  const unsigned char status[15] = {'S','T','A','T','U','S',SPACE,SPACE,SPACE,SPACE,SPACE,SPACE,SPACE,SPACE,SPACE};
   const unsigned char rx_addr_p0_1[15] = {'R','X','_','A','D','D','R','_','P','0','-','1',SPACE,SPACE,'='};
   const unsigned char rx_addr[15] = {'R','X','_','A','D','D','R','_','P','2','-','5',SPACE,SPACE,'='};
   const unsigned char tx_addr[15] = {'T','X','_','A','D','D','R',SPACE,SPACE,SPACE,SPACE,SPACE,SPACE,SPACE,'='};
@@ -25,13 +25,55 @@ void list(void)
   const unsigned char tx_full[8] = {'T','X','_','F','U','L','L','='};
   
   const unsigned char hex_0x[2] = {'0','x'};
+  const unsigned char space_2[2] = {SPACE,SPACE};
   
   unsigned char x;
   uart_send_array(status, 15);
   x = nrf_read_reg(STATUS_REG);
   uart_send_array(rx_dr, 8);
+  if(x & STATUS_RX_DR)
+  {
+    uart_send('1');
+  }
+  else
+  {
+    uart_send('0')
+  }
+  uart_send_array(space_2, 2);
+  uart_send_array(tx_ds, 8);
+  if(x & STATUS_TX_DS)
+  {
+    uart_send('1');
+  }
+  else
+  {
+    uart_send('0')
+  }
+  uart_send_array(space_2, 2);
+  uart_send_array(max_rt, 8);
+  if(x & STATUS_MAX_RT)
+  {
+    uart_send('1');
+  }
+  else
+  {
+    uart_send('0')
+  }
+  uart_send_array(space_2, 2);
   
+  uart_send_array(rx_p_no, 8);
+  uart_send(hex_to_ascii( ( 0x7 & (x >> 1) ) ) );
   
+  uart_send_array(space_2, 2);
+  uart_send_array(tx_full, 8);
+  if(x & STATUS_TX_FULL)
+  {
+    uart_send('1');
+  }
+  else
+  {
+    uart_send('0')
+  }
 }
 void uart_send_array(unsigned char * array , unsigned char size)
 {
