@@ -28,6 +28,9 @@ void list(void)
   const unsigned char space_2[2] = {SPACE,SPACE};
   
   unsigned char x;
+  
+    // line 1 start here
+  
   uart_send_array(status, 15);
   x = nrf_read_reg(STATUS_REG);
   uart_send_array(rx_dr, 8);
@@ -74,6 +77,12 @@ void list(void)
   {
     uart_send('0')
   }
+  uart_send('\r');
+  uart_send('\n');
+  
+  // line 2 start here
+  
+  
 }
 void uart_send_array(unsigned char * array , unsigned char size)
 {
