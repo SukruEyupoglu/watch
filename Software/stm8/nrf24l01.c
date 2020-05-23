@@ -155,7 +155,7 @@ void make_rx(void)
         NRF_CE_HIGH;
 }
 
-void get_rx_addr_p_0_1(unsigned char x_0_1,unsigned char addr[5])
+void get_rx_addr_p_0_1(unsigned char x_0_1,unsigned char * addr) // 5 byte total
 {
 
     unsigned char f;
@@ -163,15 +163,30 @@ void get_rx_addr_p_0_1(unsigned char x_0_1,unsigned char addr[5])
     spi(R_REGISTER | (RX_ADDR_PX + x_0_1));
     for (f = 0 ; f < 5 ; f++)
     {
-    	* (addr + f) = spi(NOP); // LSByte is written first
+    	* (addr + f) = spi(NOP); // LSByte is read first
     }
     NRF_CSN_HIGH;
 }
 
+// MSB 4 BYTE SAME AS P1 ONLY LAST BYTE WRITE THIS REG (FROM DATASHEET)
 unsigned char get_rx_addr_p_2_3_4_5(unsigned char x_2_3_4_5)
 {
 	return nrf_read_reg(R_REGISTER | (RX_ADDR_PX + x_2_3_4_5) );
 }
+
+void get_tx_addr(unsigned char * addr)
+{
+
+    unsigned char f;
+    NRF_CSN_LOW;
+    spi(R_REGISTER | TX_ADDR);
+    for (f = 0 ; f < 5 ; f++)
+    {
+    	*( addr + f) = spi(NOP); // LSByte is read first
+    }
+    NRF_CSN_HIGH;
+}
+
 
 void set_rx_addr_p_0_1(unsigned char x_0_1,unsigned char addr[5])
 {
@@ -185,6 +200,7 @@ void set_rx_addr_p_0_1(unsigned char x_0_1,unsigned char addr[5])
     }
     NRF_CSN_HIGH;
 }
+
 // MSB 4 BYTE SAME AS P1 ONLY LAST BYTE WRITE THIS REG (FROM DATASHEET)
 void set_rx_addr_p_2_3_4_5(unsigned char x_2_3_4_5,unsigned char addr)
 {
