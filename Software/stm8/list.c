@@ -136,6 +136,24 @@ void list(void)
   
   // line 4 start here
   
+  uart_send_array(tx_addr, 15);
+  uart_send_array(hex_0x, 3);
+  
+  get_tx_addr(y);
+  for(f = 0 ; f < 5 ; f++)
+  {
+    uart_send(hex_to_ascii( ( y[(4 - f)] >> 4) & 0xF) );
+    uart_send(hex_to_ascii(y[(4 - f)] & 0xF) );
+  }
+  
+  uart_send('\r');
+  uart_send('\n');
+  
+  // line 5 start here
+  
+  
+  
+  
 }
 void uart_send_array(unsigned char * array , unsigned char size)
 {
