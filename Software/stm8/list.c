@@ -24,7 +24,7 @@ void list(void)
   const unsigned char rx_p_no[8] = {'R','X','_','P','_','N','O','='};
   const unsigned char tx_full[8] = {'T','X','_','F','U','L','L','='};
   
-  const unsigned char hex_0x[2] = {'0','x'};
+  const unsigned char hex_0x[3] = {SPACE,'0','x'};
   const unsigned char space_2[2] = {SPACE,SPACE};
   
   unsigned char x;
@@ -81,6 +81,9 @@ void list(void)
   uart_send('\n');
   
   // line 2 start here
+  
+  uart_send_array(rx_addr_p0_1, 15);
+  uart_send_array(hex_0x, 3);
   
   
 }
