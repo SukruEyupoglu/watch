@@ -114,25 +114,25 @@ void nrf24l01_init_from_eeprom(void)
 	
 	// Number of waiting bytes in RX payload without DYNPD in data pipe ( 1 to 32 bytes )
 	eeprom_read(RX_PW_P0_EE_ADDR, &data, 1);
-	NRF_write_reg(W_REGISTER | RX_PW_P0 , data);
+	nrf_write_reg(W_REGISTER | RX_PW_P0 , data);
 	eeprom_read(RX_PW_P1_EE_ADDR, &data, 1);
-	NRF_write_reg(W_REGISTER | RX_PW_P1 , data);
+	nrf_write_reg(W_REGISTER | RX_PW_P1 , data);
 	eeprom_read(RX_PW_P2_EE_ADDR, &data, 1);
-	NRF_write_reg(W_REGISTER | RX_PW_P2 , data);
+	nrf_write_reg(W_REGISTER | RX_PW_P2 , data);
 	eeprom_read(RX_PW_P3_EE_ADDR, &data, 1);
-	NRF_write_reg(W_REGISTER | RX_PW_P3 , data);
+	nrf_write_reg(W_REGISTER | RX_PW_P3 , data);
 	eeprom_read(RX_PW_P4_EE_ADDR, &data, 1);
-	NRF_write_reg(W_REGISTER | RX_PW_P4 , data);
+	nrf_write_reg(W_REGISTER | RX_PW_P4 , data);
 	eeprom_read(RX_PW_P5_EE_ADDR, &data, 1);
-	NRF_write_reg(W_REGISTER | RX_PW_P5 , data);
+	nrf_write_reg(W_REGISTER | RX_PW_P5 , data);
 
 	// Enable dynamic payload length
 	eeprom_read(DYNPD_EE_ADDR, &data, 1);
-	NRF_write_reg(W_REGISTER | DYNPD , data);
+	nrf_write_reg(W_REGISTER | DYNPD , data);
 	
 	// Enable dynamic payload length
 	eeprom_read(FEATURE_EE_ADDR, &data, 1);
-	NRF_write_reg(W_REGISTER | FEATURE , data);
+	nrf_write_reg(W_REGISTER | FEATURE , data);
 	
 	// default is tx at config register
 	make_tx();
@@ -144,15 +144,33 @@ void nrf24l01_init_from_eeprom(void)
 void make_tx(void)
 {
         NRF_CE_LOW;
-	NRF_write_reg(W_REGISTER | CONFIG , CONFIG_PWR_UP);
+	nrf_write_reg(W_REGISTER | CONFIG , CONFIG_PWR_UP);
         delay_us(130);
 }
 
 void make_rx(void)
 {
-	NRF_write_reg(W_REGISTER | CONFIG , (CONFIG_PWR_UP | PRIM_RX) );
+	nrf_write_reg(W_REGISTER | CONFIG , (CONFIG_PWR_UP | PRIM_RX) );
         delay_us(130);
         NRF_CE_HIGH;
+}
+
+void get_rx_addr_p_0_1(unsigned char x_0_1,unsigned char addr[5])
+{
+
+    unsigned char f;
+    NRF_CSN_LOW;
+    spi(R_REGISTER | (RX_ADDR_PX + x_0_1));
+    for (f = 0 ; f < 5 ; f++)
+    {
+    	* (addr + f) = spi(NOP); // LSByte is written first
+    }
+    NRF_CSN_HIGH;
+}
+
+void get_rx_addr_p_2_3_4_5(unsigned char x_2_3_4_5,unsigned char * addr)
+{
+	addr = nrf_read_reg(R_REGISTER | (RX_ADDR_PX + x_2_3_4_5) );
 }
 
 void set_rx_addr_p_0_1(unsigned char x_0_1,unsigned char addr[5])
@@ -170,7 +188,7 @@ void set_rx_addr_p_0_1(unsigned char x_0_1,unsigned char addr[5])
 // MSB 4 BYTE SAME AS P1 ONLY LAST BYTE WRITE THIS REG (FROM DATASHEET)
 void set_rx_addr_p_2_3_4_5(unsigned char x_2_3_4_5,unsigned char addr)
 {
-	NRF_write_reg(W_REGISTER | (RX_ADDR_PX + x_2_3_4_5) , addr);
+	nrf_write_reg(W_REGISTER | (RX_ADDR_PX + x_2_3_4_5) , addr);
 }
 
 void set_tx_addr(unsigned char addr[5])
@@ -188,7 +206,7 @@ void set_tx_addr(unsigned char addr[5])
 
 void set_rx_pw_px(unsigned char pipe,unsigned char x_1_32) // x_1_32 = Number of bytes in RX payload in data pipe
 {
-	NRF_write_reg(W_REGISTER | (RX_PW_PX + pipe) , x_1_32);
+	nrf_write_reg(W_REGISTER | (RX_PW_PX + pipe) , x_1_32);
 }
 /*
 void NRF_TX_INIT(void)
