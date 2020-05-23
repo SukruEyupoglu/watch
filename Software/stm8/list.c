@@ -8,7 +8,7 @@ void list(void)
 {
   const unsigned char status[15] = {'S','T','A','T','U','S',SPACE,SPACE,SPACE,SPACE,SPACE,SPACE,SPACE,SPACE,SPACE};
   const unsigned char rx_addr_p0_1[15] = {'R','X','_','A','D','D','R','_','P','0','-','1',SPACE,SPACE,'='};
-  const unsigned char rx_addr[15] = {'R','X','_','A','D','D','R','_','P','2','-','5',SPACE,SPACE,'='};
+  const unsigned char rx_addr_p2_5[15] = {'R','X','_','A','D','D','R','_','P','2','-','5',SPACE,SPACE,'='};
   const unsigned char tx_addr[15] = {'T','X','_','A','D','D','R',SPACE,SPACE,SPACE,SPACE,SPACE,SPACE,SPACE,'='};
   const unsigned char rx_pw_p0_6[15] = {'R','X','_','P','W','_','P','0','-','6',SPACE,SPACE,SPACE,SPACE,'='};
   const unsigned char en_aa[15] = {'E','N','_','A','A',SPACE,SPACE,SPACE,SPACE,SPACE,SPACE,SPACE,SPACE,SPACE,'='};
@@ -86,14 +86,17 @@ void list(void)
   
   uart_send_array(rx_addr_p0_1, 15);
   uart_send_array(hex_0x, 3);
+  
   get_rx_addr_p_0_1(PIPE_0,y);
   for(f = 0 ; f < 5 ; f++)
   {
     uart_send(hex_to_ascii( ( y[(4 - f)] >> 4) & 0xF) );
     uart_send(hex_to_ascii(y[(4 - f)] & 0xF) );
   }
+  
   uart_send_array(space_2, 2);
-
+  uart_send_array(hex_0x, 3);
+  
   get_rx_addr_p_0_1(PIPE_1,y);
   for(f = 0 ; f < 5 ; f++)
   {
@@ -106,7 +109,9 @@ void list(void)
   
     // line 3 start here
   
-  
+  uart_send_array(rx_addr_p2_5, 15);
+  uart_send_array(hex_0x, 3);
+  get_rx_addr_p_2_3_4_5(PIPE_2,unsigned char * addr)
   
   
 }
