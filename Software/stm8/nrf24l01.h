@@ -109,6 +109,12 @@
 #define P4				4
 #define P5				5
 
+#define PIPE_0    0
+#define PIPE_1    1
+#define PIPE_2    2
+#define PIPE_3    3
+#define PIPE_4    4
+#define PIPE_5    5
 
 #define RX_ADDR_PX 0x0A
 
