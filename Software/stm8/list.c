@@ -219,13 +219,14 @@ void list(void)
   uart_send('\n');
   
   // line 11 start here
-  // underconstruction
   uart_send_array(dynpd_feature, 15);
   uart_send_array(hex_0x, 3);
-  x = nrf_read_reg();
+  x = nrf_read_reg(DYNPD);
+  f = nrf_read_reg(FEATURE);
   uart_send(hex_to_ascii( (x >> 4) & 0xF) );
   uart_send(hex_to_ascii(x & 0xF) );
-  
+  uart_send_array(hex_0x, 3);
+  uart_send(hex_to_ascii(f & 0x7) );
   uart_send('\r');
   uart_send('\n');
   
