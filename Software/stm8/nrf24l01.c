@@ -8,11 +8,10 @@
 
 void nrf_send(unsigned char * data , unsigned char size)
 {
-    nrf_write_buf(W_TX_PAYLOAD , data , size);
+    nrf_write_buf(data , size);
     NRF_CE_HIGH;
-    delay(10);
+    delay_10us;
     NRF_CE_LOW;
-    // delay(130);
 }
 
 unsigned char check_irq_status(void)
@@ -235,6 +234,80 @@ void set_rx_pw_px(unsigned char pipe,unsigned char x_1_32) // x_1_32 = Number of
 {
 	nrf_write_reg(W_REGISTER | (RX_PW_PX + pipe) , x_1_32);
 }
+
+void nrf_write_buf(unsigned char * data,unsigned char size)
+{
+    unsigned char f;
+    if(size < 32)
+    {
+    	NRF_CSN_LOW;
+    	spi(W_TX_PAYLOAD);
+    	for (f = 0; f < size; f++)
+    	{
+    		spi( *(data + f) );
+    	}
+    	NRF_CSN_HIGH;
+    }
+    else
+    {
+	    // return ERROR;
+    }
+	
+}
+void nrf_read_buf(unsigned char * data,unsigned char size) {
+    unsigned char f;
+    NRF_CSN_LOW;
+    spi(R_RX_PAYLOAD);
+    for (f = 0; f < size; f++)
+    {
+    	*(data + f) = spi(NOP);
+    }
+    NRF_CSN_HIGH;
+}
+
+void nrf_write_reg(unsigned char reg,unsigned char data) {
+    NRF_CSN_LOW;
+    spi(reg);
+    spi(data);
+    NRF_CSN_HIGH;
+}
+unsigned char nrf_read_reg(unsigned char reg) {
+    unsigned char sonuc;
+    NRF_CSN_LOW;
+    spi(reg);
+    sonuc = spi(NOP);
+    NRF_CSN_HIGH;
+    return sonuc;
+}
+void nrf_flush_tx(void) {
+    NRF_CSN_LOW;
+    spi(FLUSH_TX);
+    NRF_CSN_HIGH;
+}
+void nrf_flush_rx(void) {
+    NRF_CSN_LOW;
+    spi(FLUSH_RX);
+    NRF_CSN_HIGH;
+}
+/*
+//	sadece ilk bytini degistir gonder toplamda 5 byte var
+void NRF_send(unsigned char * data , unsigned char size)
+{
+    unsigned char var[5] = {data,0x1,0x2,0x3,0x4};
+    NRF_write_buf(W_TX_PAYLOAD, var, 5);
+    NRF_CE_HIGH;
+    delay(10);
+    NRF_CE_LOW;
+    // delay(130);
+}
+//	sadece ilk byt ini al
+unsigned char NRF_get(void)
+{
+	unsigned char var[5];
+	NRF_read_buf(R_RX_PAYLOAD, var, 5);
+	return var[0];
+}
+*/
 /*
 void NRF_TX_INIT(void)
 {
@@ -312,30 +385,6 @@ void NRF_RX_INIT_NO_ACK(void)
 	NRF_write_reg(W_REGISTER | FEATURE , (1 << 0));
 }
 */
-void nrf_write_buf(unsigned char * data,unsigned char size)
-{
-    unsigned char f;
-    if(size < 32)
-    {
-    	NRF_CSN_LOW;
-    	spi(W_TX_PAYLOAD);
-    	for (f = 0; f < size; f++)
-    	{
-    		spi(data[f]);
-    	}
-    	NRF_CSN_HIGH;
-    }
-}
-void nrf_read_buf(unsigned char * data,unsigned char size) {
-    unsigned char f;
-    NRF_CSN_LOW;
-    spi(R_RX_PAYLOAD);
-    for (f = 0; f < size; f++)
-    {
-    data[f] = spi(NOP);
-    }
-    NRF_CSN_HIGH;
-}
 /*
 void NRF_write_buf(unsigned char komut,unsigned char *veri,unsigned char size) {
     unsigned char f;
@@ -358,48 +407,3 @@ void NRF_read_buf(unsigned char komut,unsigned char *veri,unsigned char size) {
     NRF_CSN_HIGH;
 }
 */
-void nrf_write_reg(unsigned char reg,unsigned char data) {
-    NRF_CSN_LOW;
-    spi(reg);
-    spi(data);
-    NRF_CSN_HIGH;
-}
-unsigned char nrf_read_reg(unsigned char reg) {
-    unsigned char sonuc;
-    NRF_CSN_LOW;
-    spi(reg);
-    sonuc = spi(NOP);
-    NRF_CSN_HIGH;
-    return sonuc;
-}
-void nrf_flush_tx(void) {
-    NRF_CSN_LOW;
-    spi(FLUSH_TX);
-    NRF_CSN_HIGH;
-}
-void nrf_flush_rx(void) {
-    NRF_CSN_LOW;
-    spi(FLUSH_RX);
-    NRF_CSN_HIGH;
-}
-/*
-//	sadece ilk bytini degistir gonder toplamda 5 byte var
-void NRF_send(unsigned char * data , unsigned char size)
-{
-    unsigned char var[5] = {data,0x1,0x2,0x3,0x4};
-    NRF_write_buf(W_TX_PAYLOAD, var, 5);
-    NRF_CE_HIGH;
-    delay(10);
-    NRF_CE_LOW;
-    // delay(130);
-}
-//	sadece ilk byt ini al
-unsigned char NRF_get(void)
-{
-	unsigned char var[5];
-	NRF_read_buf(R_RX_PAYLOAD, var, 5);
-	return var[0];
-}
-*/
-
-
