@@ -4,6 +4,17 @@
 #include "spi.h"
 #include "eeprom.h"
 
+
+
+void nrf_send(unsigned char * data , unsigned char size)
+{
+    nrf_write_buf(W_TX_PAYLOAD , data , size);
+    NRF_CE_HIGH;
+    delay(10);
+    NRF_CE_LOW;
+    // delay(130);
+}
+
 unsigned char check_irq_status(void)
 {
   switch(nrf_read_reg(STATUS_REG) & 
@@ -304,13 +315,16 @@ void NRF_RX_INIT_NO_ACK(void)
 void nrf_write_buf(unsigned char * data,unsigned char size)
 {
     unsigned char f;
-    NRF_CSN_LOW;
-    spi(W_TX_PAYLOAD);
-    for (f = 0; f < size; f++)
+    if(size < 32)
     {
-    spi(data[f]);
+    	NRF_CSN_LOW;
+    	spi(W_TX_PAYLOAD);
+    	for (f = 0; f < size; f++)
+    	{
+    		spi(data[f]);
+    	}
+    	NRF_CSN_HIGH;
     }
-    NRF_CSN_HIGH;
 }
 void nrf_read_buf(unsigned char * data,unsigned char size) {
     unsigned char f;
