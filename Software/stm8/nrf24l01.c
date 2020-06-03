@@ -4,7 +4,31 @@
 #include "spi.h"
 #include "eeprom.h"
 
+volatile unsigned char multi_nrf_select = 1;
 
+void nrf_csn_low(void)
+{
+	if(multi_nrf_select == 1)
+	{
+		PA_ODR &= ~(1 << 2); // MAKE A2 LOW
+	}
+	else
+	{
+		PD_ODR &= ~(1 << 2); // MAKE D2 LOW
+	}
+}
+
+void nrf_csn_high(void)
+{
+	if(multi_nrf_select == 1)
+	{
+		PA_ODR |= (1 << 2); // MAKE A2 HIGH
+	}
+	else
+	{
+		PD_ODR |= (1 << 2); // MAKE D2 HIGH
+	}
+}
 
 void nrf_send(unsigned char * data , unsigned char size)
 {
