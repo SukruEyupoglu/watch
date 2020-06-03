@@ -23,8 +23,8 @@ void nrf_gpio_init(void)
 	PD_DDR |= (1 << 2); // NRF2
 	PA_CR1 |= (1 << 2); // PUSH-PULL,DEFAULT OPEN DRAIN // NRF1
 	PD_CR1 |= (1 << 2); // PUSH-PULL,DEFAULT OPEN DRAIN // NRF2
-	PA_ODR |= (1 << 3); // OUTPUT HIGH
-	PD_ODR |= (1 << 3); // OUTPUT HIGH
+	PA_ODR |= (1 << 2); // OUTPUT HIGH
+	PD_ODR |= (1 << 2); // OUTPUT HIGH
 	
  	//	100ms delay for nrf24l01 wakeup ---  FROM DATASHEET
 	// delay(100000);
