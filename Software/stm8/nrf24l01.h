@@ -185,7 +185,7 @@ void nrf_send(unsigned char * data , unsigned char size);
 void nrf_get(unsigned char * data , unsigned char size);
 unsigned char check_irq_status(void);
 void second_nrf24l01_init(void);
-
+void wait_for_second_nrf(void);
 
 
 
