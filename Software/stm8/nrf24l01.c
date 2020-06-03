@@ -63,6 +63,15 @@ unsigned char check_irq_status(void)
   return VOID_INT;
 }
 
+// second nrf init same ic
+void second_nrf24l01_init()
+{
+	multi_nrf_select = 2;
+	nrf24l01_init();
+	make_rx();
+	multi_nrf_select = 1;
+}
+
 // ready for testing only 1 byte data waiting for rx look at DYNPD later
 void nrf24l01_init(void)
 {
@@ -83,13 +92,15 @@ void nrf24l01_init(void)
 	nrf_write_reg(W_REGISTER | RF_SETUP , RF_SETUP_250K_BPS_18_DBM); // 250kbps , -18dbm setting
 	
 	// Number of bytes in RX payload in data pipe
+	// from pipe 0 wait 5 byte data
 	set_rx_pw_px(0,5);
 	
 	nrf_write_reg(W_REGISTER | DYNPD , DYNPD_DPL_P0);		// must be tryed dynamic payload lengh MUST! 
 	nrf_write_reg(W_REGISTER | FEATURE , FEATURE_EN_ACK_PAY);	// Enables Payload with ACK
 	make_tx();							// default is tx at config register
 	// make_rx();
-	// delay_us(130);							// wait for convert to tx or rx from datasheet	
+	// delay_us(130);							// wait for convert to tx or rx from datasheet
+	// no need to hange comminication address for now
 }
 
 void nrf24l01_init_from_eeprom(void)
@@ -221,7 +232,7 @@ void get_tx_addr(unsigned char * addr)
     NRF_CSN_HIGH;
 }
 
-
+// set nrf rx comminication addr
 void set_rx_addr_p_0_1(unsigned char x_0_1,unsigned char addr[5])
 {
 
@@ -241,6 +252,7 @@ void set_rx_addr_p_2_3_4_5(unsigned char x_2_3_4_5,unsigned char addr)
 	nrf_write_reg(W_REGISTER | (RX_ADDR_PX + x_2_3_4_5) , addr);
 }
 
+// set nrf tx comminication addr
 void set_tx_addr(unsigned char addr[5])
 {
 
@@ -254,6 +266,8 @@ void set_tx_addr(unsigned char addr[5])
     NRF_CSN_HIGH;
 }
 
+
+// pipe number and how many byte watiting at this pipe
 void set_rx_pw_px(unsigned char pipe,unsigned char x_1_32) // x_1_32 = Number of bytes in RX payload in data pipe
 {
 	nrf_write_reg(W_REGISTER | (RX_PW_PX + pipe) , x_1_32);
