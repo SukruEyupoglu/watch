@@ -37,12 +37,14 @@ void nrf_send(unsigned char * data , unsigned char size)
     delay_10us;
     NRF_CE_LOW;
 }
+	  
 
 void nrf_get(unsigned char * data , unsigned char size)
 {
     nrf_read_buf(data , size);
 }
 
+// if IRQ be LOW call this function for reason
 unsigned char check_irq_status(void)
 {
   switch(nrf_read_reg(STATUS_REG) & 
@@ -69,13 +71,28 @@ unsigned char check_irq_status(void)
 }
 
 // second nrf init same ic
-void second_nrf24l01_init()
+void second_nrf24l01_init(void)
 {
 	multi_nrf_select = 2;
 	nrf24l01_init();
 	make_rx();
 	multi_nrf_select = 1;
 }
+
+void wait_for_second_nrf(void) // BEWARE multi_nrf_select = 2; from here
+{
+	unsigned char x;
+	multi_nrf_select = 2;
+	while(1)
+	{
+		x = nrf_read_reg(STATUS_REG);
+		if( x & STATUS_RX_DR)
+		{
+			break;
+		}
+	}
+}
+
 
 // ready for testing only 1 byte data waiting for rx look at DYNPD later
 void nrf24l01_init(void)
