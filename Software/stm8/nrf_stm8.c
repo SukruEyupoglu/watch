@@ -10,7 +10,7 @@ int main(void)
   second_nrf24l01_init(); // default rx
   
   nrf_send(send_data , 5);
-  wait_for_second_nrf();
+  wait_for_second_nrf(); // BEWARE multi_nrf_select = 2; from here
   nrf_get(get_data , 5);
   
   if(send_data[0] == get_data[0])
