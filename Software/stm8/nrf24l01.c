@@ -38,6 +38,11 @@ void nrf_send(unsigned char * data , unsigned char size)
     NRF_CE_LOW;
 }
 
+void nrf_get(unsigned char * data , unsigned char size)
+{
+    nrf_read_buf(data , size);
+}
+
 unsigned char check_irq_status(void)
 {
   switch(nrf_read_reg(STATUS_REG) & 
