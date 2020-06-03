@@ -179,6 +179,15 @@ unsigned char nrf_read_reg(unsigned char reg);
 void nrf_flush_tx(void);
 void nrf_flush_rx(void);
 
+void nrf_csn_low(void);
+void nrf_csn_high(void);
+void nrf_send(unsigned char * data , unsigned char size);
+void nrf_get(unsigned char * data , unsigned char size);
+unsigned char check_irq_status(void);
+void second_nrf24l01_init(void);
+
+
+
 
 
 
