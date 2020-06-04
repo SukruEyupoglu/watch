@@ -42,7 +42,7 @@ void list(void)
   }
   else
   {
-    uart_send('0')
+    uart_send('0');
   }
   uart_send_array(space_2, 2);
   uart_send_array(tx_ds, 8);
@@ -52,7 +52,7 @@ void list(void)
   }
   else
   {
-    uart_send('0')
+    uart_send('0');
   }
   uart_send_array(space_2, 2);
   uart_send_array(max_rt, 8);
@@ -62,7 +62,7 @@ void list(void)
   }
   else
   {
-    uart_send('0')
+    uart_send('0');
   }
   uart_send_array(space_2, 2);
   
@@ -77,7 +77,7 @@ void list(void)
   }
   else
   {
-    uart_send('0')
+    uart_send('0');
   }
   uart_send('\r');
   uart_send('\n');
