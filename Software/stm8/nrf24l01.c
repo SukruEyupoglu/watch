@@ -30,6 +30,31 @@ void nrf_csn_high(void)
 	}
 }
 
+void nrf_ce_low(void)
+{
+	if(multi_nrf_select == 1)
+	{
+		PA_ODR &= ~(1 << 3); // MAKE A3 LOW
+	}
+	else
+	{
+		PD_ODR &= ~(1 << 3); // MAKE D3 LOW
+	}
+}
+
+void nrf_ce_high(void)
+{
+	if(multi_nrf_select == 1)
+	{
+		PA_ODR |= (1 << 3); // MAKE A3 HIGH
+	}
+	else
+	{
+		PD_ODR |= (1 << 3); // MAKE D3 HIGH
+	}
+}
+
+
 void nrf_send(unsigned char * data , unsigned char size)
 {
     nrf_write_buf(data , size);
