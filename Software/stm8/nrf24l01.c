@@ -242,7 +242,7 @@ void make_tx(void)
 
 void make_rx(void)
 {
-	nrf_write_reg(W_REGISTER | CONFIG , (CONFIG_PWR_UP | PRIM_RX) );
+	nrf_write_reg(W_REGISTER | CONFIG , (CONFIG_PWR_UP | CONFIG_PRIM_RX) );
         delay_us(130);
         NRF_CE_HIGH;
 }
