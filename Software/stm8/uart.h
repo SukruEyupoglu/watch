@@ -8,7 +8,7 @@
 
 // 8N1,FLOW CONTROL NONE
 
-#define UART1_CR2_RIEN (1 << 5)
+#define UART1_CR2_RIEN 5
 
 void uart_init(void);
 void uart_send(unsigned char data);
