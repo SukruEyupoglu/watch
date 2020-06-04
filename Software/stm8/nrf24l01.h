@@ -3,6 +3,8 @@
 #define NRF_CSN_LOW nrf_csn_low()
 #define NRF_CSN_HIGH nrf_csn_high()
 
+#define NRF_CE_LOW nrf_ce_low()
+#define NRF_CE_HIGH nrf_ce_high()
 
 // commands
 #define R_REGISTER                  0x00 // 000A AAAA ---> AAAAA = 5 bit Register Map Address
@@ -171,6 +173,10 @@ void set_rx_addr_p_0_1(unsigned char x_0_1,unsigned char addr[5]);
 void set_rx_addr_p_2_3_4_5(unsigned char x_2_3_4_5,unsigned char addr);
 void set_tx_addr(unsigned char addr[5]);
 void set_rx_pw_px(unsigned char pipe,unsigned char x_1_32); // x_1_32 = Number of bytes in RX payload in data pipe
+
+void get_rx_addr_p_0_1(unsigned char x_0_1,unsigned char * addr); // 5 byte total
+unsigned char get_rx_addr_p_2_3_4_5(unsigned char x_2_3_4_5);
+void get_tx_addr(unsigned char * addr);
 
 void nrf_write_buf(unsigned char * data,unsigned char size);
 void nrf_read_buf(unsigned char * data,unsigned char size);
