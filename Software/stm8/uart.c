@@ -26,7 +26,7 @@ void uart_init(void)
   // UART1_BRR1 = (div >> 4);
   
   // no need calculating look at user manual for other bauds
-  UART_DIV    = 0x008B // F_MASTER = 16MHZ
+  // UART_DIV    = 0x008B // F_MASTER = 16MHZ
   UART1_BRR1  = 0x08;
   UART1_BRR2  = 0x0B;
   // ENABLE TRANSMITTER AND RECEIVER
@@ -57,7 +57,7 @@ void uart_isr() __interrupt(UART1_RXC_ISR) // uart rx interrupt function
     uart_rx_buffer_size = 0;
   }
 }
-
+/*
 void comminicating_sender(void)
 {
   unsigned char x;
@@ -140,6 +140,6 @@ void payload(void)
     nrf_request();
   }
 }
-  
+  */
   
   
