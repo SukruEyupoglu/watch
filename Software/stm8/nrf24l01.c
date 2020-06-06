@@ -2,7 +2,7 @@
 #include "delay.h"
 #include "stm8s.h"
 #include "spi.h"
-#include "eeprom.h"
+// #include "eeprom.h"
 
 volatile unsigned char multi_nrf_select = 1;
 
@@ -149,7 +149,7 @@ void nrf24l01_init(void)
 	// delay_us(130);							// wait for convert to tx or rx from datasheet
 	// no need to hange comminication address for now
 }
-
+/*
 void nrf24l01_init_from_eeprom(void)
 {
 	unsigned char data;
@@ -232,7 +232,7 @@ void nrf24l01_init_from_eeprom(void)
 	// wait for convert to tx or rx from datasheet
 	// delay_us(130);
 }
-
+*/
 void make_tx(void)
 {
         NRF_CE_LOW;
