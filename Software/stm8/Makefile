@@ -1,6 +1,6 @@
 #!/bin/sh
 #export PATH := $(PATH):$(HOME)/local/sdcc/bin
-VPATH =/home/qwe/stm8/sdcc-3.6.0/bin
+VPATH =/home/qwe/soft/stm8/sdcc-3.6.0/bin
 MCU  = stm8s103f3
 ARCH = stm8
 
