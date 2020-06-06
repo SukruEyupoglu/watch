@@ -5,6 +5,7 @@
 
 int main(void)
 {
+	unsigned char x,y;
 	// SET CLK TO FULL SPEED (16MHZ)
 	CLK_CKDIVR = 0;
 	
@@ -38,17 +39,30 @@ int main(void)
 	
 	nrf_write_reg(W_REGISTER | DYNPD , DYNPD_DPL_P0);		// must be tryed dynamic payload lengh MUST! 
 	nrf_write_reg(W_REGISTER | FEATURE , FEATURE_EN_ACK_PAY);	// Enables Payload with ACK
-	make_tx();							// default is tx at config register
+	// make_tx();							// default is tx at config register
 	// make_rx();
 	// delay_us(130);							// wait for convert to tx or rx from datasheet
 	// no need to hange comminication address for now
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	
-while(1)
-{
-	
-}
-
+  while(1)
+  {
+    make_tx();
+    if(UART1_SR & (1 << UART1_SR_RXNE) )
+    {
+      x = UART1_DR;
+    }
+    else
+    {
+      x = 0;
+    }
+    UART1_DR = y;
+    nrf_write_buf(&x,1);
+    nrf_send();				  // without ack
+    make_rx();                            // receiver mode enable
+    wait_for_int();			  // wait for data from air
+    nrf_read_buf(&y,1);                   // get data from device
+  }
 
 
 
