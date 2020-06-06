@@ -31,3 +31,12 @@ void nrf_gpio_init(void)
   // For double device 
         
 }
+
+void wait_irq(void)
+{
+	// NRF1 IRQ PIN IS PC3 ---- READ PC3 PIN UNTIL BE LOW
+	while( !(PC_IDR & (1 << 3) ) );
+}
+
+
+
