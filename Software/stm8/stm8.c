@@ -60,9 +60,9 @@ int main(void)
 		UART1_DR = y;
 		nrf_write_buf(&x,1);
 		nrf_send();
-		WAIT_IRQ;
+		wait_irq();
 		make_rx();
-		WAIT_IRQ;
+		wait_irq();
 		nrf_read_buf(&y,1);
 	}
 	
@@ -71,7 +71,7 @@ int main(void)
 	while(1)
 	{
 		make_rx();
-		WAIT_IRQ;
+		wait_irq();
 		nrf_read_buf(&y,1);
 		make_tx();
 		if(UART1_SR & (1 << UART1_SR_RXNE) )
@@ -85,7 +85,7 @@ int main(void)
 		UART1_DR = y;
 		nrf_write_buf(&x,1);
 		nrf_send();
-		WAIT_IRQ;
+		wait_irq();
 	}
 	*/
 
