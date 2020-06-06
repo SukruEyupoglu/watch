@@ -2,6 +2,7 @@
 #include "nrf24l01.h"
 #include "uart.h"
 #include "nrf_gpio_init.h"
+#include "delay.h"
 
 int main(void)
 {
