@@ -3,6 +3,7 @@
 #include "uart.h"
 #include "nrf_gpio_init.h"
 #include "delay.h"
+#include "spi.h"
 
 int main(void)
 {
