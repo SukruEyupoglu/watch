@@ -236,13 +236,15 @@ void nrf24l01_init_from_eeprom(void)
 void make_tx(void)
 {
         NRF_CE_LOW;
-	nrf_write_reg(W_REGISTER | CONFIG , CONFIG_PWR_UP);
+	nrf_write_reg(W_REGISTER | CONFIG , CONFIG_PWR_UP | CONFIG_MASK_TX_DS);
         delay_us(130);
+	NRF_CE_HIGH;
 }
 
 void make_rx(void)
 {
-	nrf_write_reg(W_REGISTER | CONFIG , (CONFIG_PWR_UP | CONFIG_PRIM_RX) );
+	NRF_CE_LOW;
+	nrf_write_reg(W_REGISTER | CONFIG , (CONFIG_PWR_UP | CONFIG_PRIM_RX | CONFIG_MASK_RX_DR) );
         delay_us(130);
         NRF_CE_HIGH;
 }
