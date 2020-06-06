@@ -1,13 +1,21 @@
 #include "stm8s.h"
 #include "nrf24l01.h"
 #include "uart.h"
+#include "nrf_gpio_init.h"
 
 int main(void)
 {
-  
+	// SET CLK TO FULL SPEED (16MHZ)
+	CLK_CKDIVR = 0;
+	
+	spi_init();
+	uart_init();
+	
+	// SET GPIOs FOR NRF
+	nrf_gpio_init();
 
-
-
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	// nrf init section
 	delay_ms(100);							// wait until it happens to power down mode 100ms
 	nrf_write_reg(W_REGISTER | CONFIG , CONFIG_PWR_UP);		// only start up for make standby-1
 	delay_ms(2);							// wait 1.5ms for power up
@@ -33,5 +41,18 @@ int main(void)
 	make_tx();							// default is tx at config register
 	// make_rx();
 	// delay_us(130);							// wait for convert to tx or rx from datasheet
-// no need to hange comminication address for now
+	// no need to hange comminication address for now
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+while(1)
+{
+	
+}
+
+
+
+
+
+
+
 }
