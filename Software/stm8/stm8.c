@@ -45,28 +45,49 @@ int main(void)
 	// no need to hange comminication address for now
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	
-  while(1)
-  {
-    make_tx();
-    if(UART1_SR & (1 << UART1_SR_RXNE) )
-    {
-      x = UART1_DR;
-    }
-    else
-    {
-      x = 0;
-    }
-    UART1_DR = y;
-    nrf_write_buf(&x,1);
-    nrf_send();				  // without ack
-	  WAIT_IRQ;
-	  while(nrf_read_reg(STATUS_REG) & (STATUS_TX_DS | STATUS_MAX_RT) );
-    make_rx();                            // receiver mode enable
-	  while(nrf_read_reg(STATUS_REG) & STATUS_RX_DR);// wait for data from air
-    nrf_read_buf(&y,1);                   // get data from device
-  }
-
-
+	// SENDER SIDE
+	while(1)
+	{
+		make_tx();
+		if(UART1_SR & (1 << UART1_SR_RXNE) )
+		{
+			x = UART1_DR;
+		}
+		else
+		{
+			x = 0;
+		}
+		UART1_DR = y;
+		nrf_write_buf(&x,1);
+		nrf_send();
+		WAIT_IRQ;
+		make_rx();
+		WAIT_IRQ;
+		nrf_read_buf(&y,1);
+	}
+	
+	// RECEIVER SIDE
+	/*
+	while(1)
+	{
+		make_rx();
+		WAIT_IRQ;
+		nrf_read_buf(&y,1);
+		make_tx();
+		if(UART1_SR & (1 << UART1_SR_RXNE) )
+		{
+			x = UART1_DR;
+		}
+		else
+		{
+			x = 0;
+		}
+		UART1_DR = y;
+		nrf_write_buf(&x,1);
+		nrf_send();
+		WAIT_IRQ;
+	}
+	*/
 
 
 
