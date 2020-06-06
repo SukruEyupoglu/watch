@@ -59,8 +59,10 @@ int main(void)
     UART1_DR = y;
     nrf_write_buf(&x,1);
     nrf_send();				  // without ack
+	  WAIT_IRQ;
+	  while(nrf_read_reg(STATUS_REG) & (STATUS_TX_DS | STATUS_MAX_RT) );
     make_rx();                            // receiver mode enable
-    wait_for_int();			  // wait for data from air
+	  while(nrf_read_reg(STATUS_REG) & STATUS_RX_DR);// wait for data from air
     nrf_read_buf(&y,1);                   // get data from device
   }
 
