@@ -1,6 +1,9 @@
 #include "stm8s.h"
 #include "nrf_gpio.h"
 
+
+
+// RENEW CONNECTIONS FROM STM8
 void nrf_gpio_init(void)
 {
   //	NRF IRQ SETTINGS
@@ -11,8 +14,9 @@ void nrf_gpio_init(void)
 	//	RX MODE CE MUST BE HIGH 
 	//	TX MODE CE MUST BE A PULSE MORE THAN 10us -- 4ms DEADLINE FOR CE HIGH TIME
 	//	YOU CAN USE 15us FOR COMMINICATION BEWARE FOR TX MODE DEADLINE
-	PA_DDR |= (1 << 3); // NRF1
-	PD_DDR |= (1 << 3); // NRF2
+	/* OLD
+	PA_DDR |= (1 << 3); // NRF1 CE
+	PD_DDR |= (1 << 3); // NRF2 CE
 	PA_CR1 |= (1 << 3); // PUSH-PULL,DEFAULT OPEN DRAIN // NRF1
 	PD_CR1 |= (1 << 3); // PUSH-PULL,DEFAULT OPEN DRAIN // NRF2
 	PA_ODR &= ~(1 << 3); // OUTPUT LOW
@@ -25,11 +29,25 @@ void nrf_gpio_init(void)
 	PD_CR1 |= (1 << 2); // PUSH-PULL,DEFAULT OPEN DRAIN // NRF2
 	PA_ODR |= (1 << 2); // OUTPUT HIGH
 	PD_ODR |= (1 << 2); // OUTPUT HIGH
+	*/
 	
  	//	100ms delay for nrf24l01 wakeup ---  FROM DATASHEET
 	// delay(100000);
   // For double device 
-        
+	PA_DDR |= (1 << 3); // NRF1 CE
+	PA_DDR |= (1 << 2); // NRF2 CE
+	PA_CR1 |= (1 << 3); // PUSH-PULL,DEFAULT OPEN DRAIN // NRF1 CE
+	PA_CR1 |= (1 << 2); // PUSH-PULL,DEFAULT OPEN DRAIN // NRF2 CE
+	PA_ODR &= ~(1 << 3); // OUTPUT LOW NRF1 CE
+	PA_ODR &= ~(1 << 2); // OUTPUT LOW NRF2 CE
+	
+	//	NRF CSN SETTINGS SPI CHIP SELECT ACTIVE LOW
+	PD_DDR |= (1 << 3); // NRF1 CSN
+	PD_DDR |= (1 << 2); // NRF2 CSN
+	PD_CR1 |= (1 << 3); // PUSH-PULL,DEFAULT OPEN DRAIN // NRF1 CSN
+	PD_CR1 |= (1 << 2); // PUSH-PULL,DEFAULT OPEN DRAIN // NRF2 CSN
+	PD_ODR |= (1 << 3); // OUTPUT HIGH NRF1 CSN
+	PD_ODR |= (1 << 2); // OUTPUT HIGH NRF2 CSN
 }
 
 void wait_irq(void)
