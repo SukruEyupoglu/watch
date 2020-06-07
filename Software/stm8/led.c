@@ -9,7 +9,7 @@ void led_init(void)
 
 void led_open(void)
 {
-  PD_ODR &= ~(1 << 5); // OUTPUT LOW AND OPEN DRAIN AND LED SHINING
+  PB_ODR &= ~(1 << 5); // OUTPUT LOW AND OPEN DRAIN AND LED SHINING
 }
 
 void led_close(void)
