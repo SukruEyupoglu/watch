@@ -1,10 +1,7 @@
 
 
-#define NRF_CSN_LOW nrf_csn_low()
-#define NRF_CSN_HIGH nrf_csn_high()
-
-#define NRF_CE_LOW nrf_ce_low()
-#define NRF_CE_HIGH nrf_ce_high()
+#define NRF1 3
+#define NRF2 2
 
 // commands
 #define R_REGISTER                  0x00 // 000A AAAA ---> AAAAA = 5 bit Register Map Address
