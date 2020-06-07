@@ -34,7 +34,7 @@ void nrf24l01_init(unsigned char which_nrf)
 }
 void make_tx(unsigned char which_nrf)
 {
-        NRF_CE_LOW;
+        PA_ODR &= ~(1 << which_nrf);// NRF CE LOW 
 	nrf_write_reg(W_REGISTER | CONFIG , CONFIG_PWR_UP | CONFIG_MASK_TX_DS,which_nrf);
         delay_us(130);
 }
@@ -43,7 +43,7 @@ void make_rx(unsigned char which_nrf)
 {
 	nrf_write_reg(W_REGISTER | CONFIG , (CONFIG_PWR_UP | CONFIG_PRIM_RX | CONFIG_MASK_RX_DR,which_nrf) );
         delay_us(130);
-        NRF_CE_HIGH;
+        PA_ODR |= (1 << which_nrf);// NRF CE HIGH
 }
 
 // set nrf rx comminication addr
@@ -51,13 +51,13 @@ void set_rx_addr_p_0_1(unsigned char x_0_1,unsigned char addr[5],unsigned char w
 {
 
     unsigned char f;
-    NRF_CSN_LOW;
+    PD_ODR &= ~(1 << which_nrf); // NRF CSN LOW
     spi(W_REGISTER | (RX_ADDR_PX + x_0_1));
     for (f = 0 ; f < 5 ; f++)
     {
     	spi(addr[f]); // LSByte is written first
     }
-    NRF_CSN_HIGH;
+    PD_ODR |= (1 << which_nrf);//NRF CSN HIGH
 }
 
 // MSB 4 BYTE SAME AS P1 ONLY LAST BYTE WRITE THIS REG (FROM DATASHEET)
@@ -71,13 +71,13 @@ void set_tx_addr(unsigned char addr[5],unsigned char which_nrf)
 {
 
     unsigned char f;
-    NRF_CSN_LOW;
+    PD_ODR &= ~(1 << which_nrf);// NRF CSN LOW
     spi(W_REGISTER | TX_ADDR);
     for (f = 0 ; f < 5 ; f++)
     {
     	spi(addr[f]); // LSByte is written first
     }
-    NRF_CSN_HIGH;
+    PD_ODR |= (1 << which_nrf);//NRF CSN HIGH
 }
 
 
@@ -92,13 +92,13 @@ void nrf_write_buf(unsigned char * data,unsigned char size,unsigned char which_n
     unsigned char f;
     if(size < 32)
     {
-    	NRF_CSN_LOW;
+    	PD_ODR &= ~(1 << which_nrf);// NRF CSN LOW
     	spi(W_TX_PAYLOAD);
     	for (f = 0; f < size; f++)
     	{
     		spi( *(data + f) );
     	}
-    	NRF_CSN_HIGH;
+    	PD_ODR |= (1 << which_nrf);//NRF CSN HIGH
     }
     else
     {
@@ -108,36 +108,36 @@ void nrf_write_buf(unsigned char * data,unsigned char size,unsigned char which_n
 }
 void nrf_read_buf(unsigned char * data,unsigned char size,unsigned char which_nrf) {
     unsigned char f;
-    NRF_CSN_LOW;
+    PD_ODR &= ~(1 << which_nrf);// NRF CSN LOW
     spi(R_RX_PAYLOAD);
     for (f = 0; f < size; f++)
     {
     	*(data + f) = spi(NOP);
     }
-    NRF_CSN_HIGH;
+    PD_ODR |= (1 << which_nrf);//NRF CSN HIGH
 }
 
 void nrf_write_reg(unsigned char reg,unsigned char data,unsigned char which_nrf) {
-    NRF_CSN_LOW;
+    PD_ODR &= ~(1 << which_nrf);// NRF CSN LOW
     spi(reg);
     spi(data);
-    NRF_CSN_HIGH;
+    PD_ODR |= (1 << which_nrf);//NRF CSN HIGH
 }
 unsigned char nrf_read_reg(unsigned char reg,unsigned char which_nrf) {
     unsigned char sonuc;
-    NRF_CSN_LOW;
+    PD_ODR &= ~(1 << which_nrf);// NRF CSN LOW
     spi(reg);
     sonuc = spi(NOP);
-    NRF_CSN_HIGH;
+    PD_ODR |= (1 << which_nrf);//NRF CSN HIGH
     return sonuc;
 }
 void nrf_flush_tx(unsigned char which_nrf) {
-    NRF_CSN_LOW;
+    PD_ODR &= ~(1 << which_nrf);// NRF CSN LOW
     spi(FLUSH_TX);
-    NRF_CSN_HIGH;
+    PD_ODR |= (1 << which_nrf);//NRF CSN HIGH
 }
 void nrf_flush_rx(unsigned char which_nrf) {
-    NRF_CSN_LOW;
+    PD_ODR &= ~(1 << which_nrf);// NRF CSN LOW
     spi(FLUSH_RX);
-    NRF_CSN_HIGH;
+    PD_ODR |= (1 << which_nrf);//NRF CSN HIGH
 }
