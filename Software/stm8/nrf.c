@@ -49,7 +49,7 @@ void make_rx(unsigned char which_nrf)
 }
 
 // set nrf rx comminication addr
-void set_rx_addr_p_0_1(unsigned char x_0_1,unsigned char addr[5])
+void set_rx_addr_p_0_1(unsigned char x_0_1,unsigned char addr[5],unsigned char which_nrf)
 {
 
     unsigned char f;
@@ -63,13 +63,13 @@ void set_rx_addr_p_0_1(unsigned char x_0_1,unsigned char addr[5])
 }
 
 // MSB 4 BYTE SAME AS P1 ONLY LAST BYTE WRITE THIS REG (FROM DATASHEET)
-void set_rx_addr_p_2_3_4_5(unsigned char x_2_3_4_5,unsigned char addr)
+void set_rx_addr_p_2_3_4_5(unsigned char x_2_3_4_5,unsigned char addr,unsigned char which_nrf)
 {
 	nrf_write_reg(W_REGISTER | (RX_ADDR_PX + x_2_3_4_5) , addr);
 }
 
 // set nrf tx comminication addr
-void set_tx_addr(unsigned char addr[5])
+void set_tx_addr(unsigned char addr[5],unsigned char which_nrf)
 {
 
     unsigned char f;
@@ -84,12 +84,12 @@ void set_tx_addr(unsigned char addr[5])
 
 
 // pipe number and how many byte watiting at this pipe
-void set_rx_pw_px(unsigned char pipe,unsigned char x_1_32) // x_1_32 = Number of bytes in RX payload in data pipe
+void set_rx_pw_px(unsigned char pipe,unsigned char x_1_32,unsigned char which_nrf) // x_1_32 = Number of bytes in RX payload
 {
 	nrf_write_reg(W_REGISTER | (RX_PW_PX + pipe) , x_1_32);
 }
 
-void nrf_write_buf(unsigned char * data,unsigned char size)
+void nrf_write_buf(unsigned char * data,unsigned char size,unsigned char which_nrf)
 {
     unsigned char f;
     if(size < 32)
@@ -108,7 +108,7 @@ void nrf_write_buf(unsigned char * data,unsigned char size)
     }
 	
 }
-void nrf_read_buf(unsigned char * data,unsigned char size) {
+void nrf_read_buf(unsigned char * data,unsigned char size,unsigned char which_nrf) {
     unsigned char f;
     NRF_CSN_LOW;
     spi(R_RX_PAYLOAD);
@@ -119,13 +119,13 @@ void nrf_read_buf(unsigned char * data,unsigned char size) {
     NRF_CSN_HIGH;
 }
 
-void nrf_write_reg(unsigned char reg,unsigned char data) {
+void nrf_write_reg(unsigned char reg,unsigned char data,unsigned char which_nrf) {
     NRF_CSN_LOW;
     spi(reg);
     spi(data);
     NRF_CSN_HIGH;
 }
-unsigned char nrf_read_reg(unsigned char reg) {
+unsigned char nrf_read_reg(unsigned char reg,unsigned char which_nrf) {
     unsigned char sonuc;
     NRF_CSN_LOW;
     spi(reg);
@@ -133,12 +133,12 @@ unsigned char nrf_read_reg(unsigned char reg) {
     NRF_CSN_HIGH;
     return sonuc;
 }
-void nrf_flush_tx(void) {
+void nrf_flush_tx(unsigned char which_nrf) {
     NRF_CSN_LOW;
     spi(FLUSH_TX);
     NRF_CSN_HIGH;
 }
-void nrf_flush_rx(void) {
+void nrf_flush_rx(unsigned char which_nrf) {
     NRF_CSN_LOW;
     spi(FLUSH_RX);
     NRF_CSN_HIGH;
