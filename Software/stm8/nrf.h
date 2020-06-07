@@ -162,33 +162,20 @@
 
 
 
-void nrf24l01_init(void);
-void nrf24l01_init_from_eeprom(void);
-void make_tx(void);
-void make_rx(void);
-void set_rx_addr_p_0_1(unsigned char x_0_1,unsigned char addr[5]);
-void set_rx_addr_p_2_3_4_5(unsigned char x_2_3_4_5,unsigned char addr);
-void set_tx_addr(unsigned char addr[5]);
-void set_rx_pw_px(unsigned char pipe,unsigned char x_1_32); // x_1_32 = Number of bytes in RX payload in data pipe
+void nrf24l01_init(unsigned char which_nrf);
+void make_tx(unsigned char which_nrf);
+void make_rx(unsigned char which_nrf);
+void set_rx_addr_p_0_1(unsigned char x_0_1,unsigned char addr[5],unsigned char which_nrf);
+void set_rx_addr_p_2_3_4_5(unsigned char x_2_3_4_5,unsigned char addr,unsigned char which_nrf);
+void set_tx_addr(unsigned char addr[5],unsigned char which_nrf);
+void set_rx_pw_px(unsigned char pipe,unsigned char x_1_32,unsigned char which_nrf); // x_1_32 = Number of bytes in RX payload
 
-void get_rx_addr_p_0_1(unsigned char x_0_1,unsigned char * addr); // 5 byte total
-unsigned char get_rx_addr_p_2_3_4_5(unsigned char x_2_3_4_5);
-void get_tx_addr(unsigned char * addr);
-
-void nrf_write_buf(unsigned char * data,unsigned char size);
-void nrf_read_buf(unsigned char * data,unsigned char size);
-void nrf_write_reg(unsigned char reg,unsigned char data);
-unsigned char nrf_read_reg(unsigned char reg);
-void nrf_flush_tx(void);
-void nrf_flush_rx(void);
-
-void nrf_csn_low(void);
-void nrf_csn_high(void);
-void nrf_send(unsigned char * data , unsigned char size);
-void nrf_get(unsigned char * data , unsigned char size);
-unsigned char check_irq_status(void);
-void second_nrf24l01_init(void);
-void wait_for_second_nrf(void);
+void nrf_write_buf(unsigned char * data,unsigned char size,unsigned char which_nrf);
+void nrf_read_buf(unsigned char * data,unsigned char size,unsigned char which_nrf);
+void nrf_write_reg(unsigned char reg,unsigned char data,unsigned char which_nrf);
+unsigned char nrf_read_reg(unsigned char reg,unsigned char which_nrf);
+void nrf_flush_tx(unsigned char which_nrf);
+void nrf_flush_rx(unsigned char which_nrf);
 
 
 
