@@ -1,5 +1,5 @@
 #include "stm8s.h"
-#include "nrf24l01.h"
+#include "nrf.h"
 #include "uart.h"
 #include "nrf_gpio_init.h"
 #include "delay.h"
