@@ -179,6 +179,7 @@ void nrf_flush_rx(unsigned char which_nrf);
 
 void nrf_send(unsigned char which_nrf);
 void clear_irq(unsigned char which_nrf);
-
+void nrf_gpio_init(void);
+void wait_irq(unsigned char which_nrf);
 
 
