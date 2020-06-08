@@ -4,10 +4,12 @@
 #include "nrf_gpio_init.h"
 #include "delay.h"
 #include "spi.h"
+#include "led.h"
+
 
 int main(void)
 {
-	unsigned char x,y;
+	unsigned char x1 = 0,x2 = 0,y1 = 0,y2 = 0;
 	// SET CLK TO FULL SPEED (16MHZ)
 	CLK_CKDIVR = 0;
 	
@@ -24,21 +26,42 @@ int main(void)
 	while(1)
 	{
 		make_tx(NRF1);
+		make_rx(NRF2);
 		if(UART1_SR & (1 << UART1_SR_RXNE) )
 		{
-			x = UART1_DR;
+			x1 = UART1_DR;
 		}
 		else
 		{
-			x = 0;
+			x1 = 0;
 		}
-		UART1_DR = y;
-		nrf_write_buf(&x,1);
-		nrf_send();
-		wait_irq();
-		make_rx();
-		wait_irq();
-		nrf_read_buf(&y,1);
+		UART1_DR = y1;
+		nrf_write_buf(&x1,1,NRF1);
+		nrf_send(NRF1);
+		wait_irq(NRF1);
+		clear_irq(NRF1);
+		
+		make_rx(NRF1);
+		
+		wait_irq(NRF2);
+		nrf_read_buf(&y2,1,NRF2);
+		clear_irq(NRF2);
+		
+		if(y2 == x1)
+		{
+			led_open();
+		}
+		x2 = y2 + 1;
+		
+		make_tx(NRF2);
+		nrf_write_buf(&x2,1,NRF2);
+		nrf_send(NRF2);
+		wait_irq(NRF2);
+		clear_irq(NRF2);
+		
+		wait_irq(NRF1);
+		nrf_read_buf(&y1,1,NRF1);
+		clear_irq(NRF1);
 	}
 	
 	// RECEIVER SIDE
