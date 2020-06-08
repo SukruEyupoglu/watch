@@ -14,6 +14,7 @@ int main(void)
 	
 	spi_init();
 	uart_init();
+	led_init();
 	
 	// SET GPIOs FOR NRF
 	nrf_gpio_init();
