@@ -177,7 +177,8 @@ unsigned char nrf_read_reg(unsigned char reg,unsigned char which_nrf);
 void nrf_flush_tx(unsigned char which_nrf);
 void nrf_flush_rx(unsigned char which_nrf);
 
-
+void nrf_send(unsigned char which_nrf);
+void clear_irq(unsigned char which_nrf);
 
 
 
