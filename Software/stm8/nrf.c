@@ -76,7 +76,7 @@ void make_tx(unsigned char which_nrf)
 
 void make_rx(unsigned char which_nrf)
 {
-	nrf_write_reg(W_REGISTER | CONFIG , (CONFIG_PWR_UP | CONFIG_PRIM_RX | CONFIG_MASK_RX_DR,which_nrf) );
+	nrf_write_reg(W_REGISTER | CONFIG , (CONFIG_PWR_UP | CONFIG_PRIM_RX | CONFIG_MASK_RX_DR),which_nrf);
         delay_us(130);
         PA_ODR |= (1 << which_nrf);// NRF CE HIGH
 }
