@@ -45,6 +45,7 @@ unsigned char uart_get(void)
   while( ! (UART1_SR & (1 << UART1_SR_RXNE) ) );
   return UART1_DR;
 }
+/*
 void uart_isr() __interrupt(UART1_RXC_ISR) // uart rx interrupt function
 {
   uart_rx_buffer[uart_rx_buffer_size] = UART1_DR;
@@ -57,6 +58,7 @@ void uart_isr() __interrupt(UART1_RXC_ISR) // uart rx interrupt function
     uart_rx_buffer_size = 0;
   }
 }
+*/
 /*
 void comminicating_sender(void)
 {
