@@ -46,6 +46,14 @@ void make_rx(unsigned char which_nrf)
         PA_ODR |= (1 << which_nrf);// NRF CE HIGH
 }
 
+
+void nrf_send(unsigned char which_nrf)
+{
+    PA_ODR |= (1 << which_nrf);// NRF CE HIGH
+    delay_10us;
+    PA_ODR &= ~(1 << which_nrf);// NRF CE LOW 
+}
+
 // set nrf rx comminication addr
 void set_rx_addr_p_0_1(unsigned char x_0_1,unsigned char addr[5],unsigned char which_nrf)
 {
@@ -115,6 +123,11 @@ void nrf_read_buf(unsigned char * data,unsigned char size,unsigned char which_nr
     	*(data + f) = spi(NOP);
     }
     PD_ODR |= (1 << which_nrf);//NRF CSN HIGH
+}
+
+void clear_irq(unsigned char which_nrf)
+{
+	nrf_write_reg(STATUS_REG,( STATUS_RX_DR | STATUS_TX_DS | STATUS_MAX_RT ),which_nrf);
 }
 
 void nrf_write_reg(unsigned char reg,unsigned char data,unsigned char which_nrf) {
