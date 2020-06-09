@@ -19,9 +19,9 @@ void spi_init(void)
 
 unsigned char spi(unsigned char data)
 {
-  while( ! (SPI_SR & (1 << SPI_SR_TXE) ) );
+  while( (SPI_SR & ( (1 << SPI_SR_TXE) | (1 << SPI_SR_BSY) ) ) != (1 << SPI_SR_TXE) );
   SPI_DR = data;
-  while( ! (SPI_SR & (1 << SPI_SR_RXNE) ) );
+  while( (SPI_SR & ( (1 << SPI_SR_RXNE) | (1 << SPI_SR_BSY) ) ) != (1 << SPI_SR_RXNE) );
   return SPI_DR;
 }
 
