@@ -22,6 +22,13 @@ int main(void)
 	nrf24l01_init(NRF1);
 	nrf24l01_init(NRF2);
 	
+	led_open();
+	
+	x1 = uart_get();
+	x2 = uart_get();
+	
+	led_close();
+	
 	// SENDER SIDE
 	while(1)
 	{
@@ -51,8 +58,6 @@ int main(void)
 		{
 			led_open();
 		}
-		x2 = y2 + 1;
-		
 		make_tx(NRF2);
 		nrf_write_buf(&x2,1,NRF2);
 		nrf_send(NRF2);
