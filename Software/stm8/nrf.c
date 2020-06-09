@@ -47,7 +47,7 @@ void nrf24l01_init(unsigned char which_nrf)
 	nrf_write_reg(W_REGISTER | EN_RXADDR , EN_RXADDR_ERX_P0,which_nrf);	// ONLY ACTIVE PIPE0
 	
 	// communication addr byte size (3,4,5 byte)  RESET_VALUE = 5(GOOD NOT CHANGED) 
-	// NRF_write_reg(W_REGISTER | SETUP_AW , 0x3,which_nrf);
+	// NRF_write_reg(W_REGISTER | SETUP_AW , 0x5,which_nrf);
 	
 	nrf_write_reg(W_REGISTER | SETUP_RETR , 0x01,which_nrf);			// TRANSFER RETRY COUNT 250us ONLY "1" 
 	
@@ -57,8 +57,8 @@ void nrf24l01_init(unsigned char which_nrf)
 	nrf_write_reg(W_REGISTER | RF_SETUP , RF_SETUP_250K_BPS_18_DBM,which_nrf); // 250kbps , -18dbm setting
 	
 	// Number of bytes in RX payload in data pipe
-	// from pipe 0 wait 5 byte data
-	set_rx_pw_px(0,5,which_nrf);
+	// from pipe 0 wait 1 byte data
+	set_rx_pw_px(0,1,which_nrf);
 	
 	nrf_write_reg(W_REGISTER | DYNPD , DYNPD_DPL_P0,which_nrf);		// must be tryed dynamic payload lengh MUST! 
 	nrf_write_reg(W_REGISTER | FEATURE , FEATURE_EN_ACK_PAY,which_nrf);	// Enables Payload with ACK
