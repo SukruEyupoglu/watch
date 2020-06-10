@@ -20,7 +20,7 @@ void spi_init(void)
 unsigned char spi(unsigned char data)
 {
   while (SPI_SR & (1 << SPI_SR_BSY) );
-	SPI_DR = data;
+  SPI_DR = data;
   while (!(SPI_SR & (1 << SPI_SR_TXE)));
   return SPI_DR;
 }
