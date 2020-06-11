@@ -27,11 +27,11 @@ void uart_init(void)
   
   // no need calculating look at user manual for other bauds
   // UART_DIV    = 0x008B // F_MASTER = 16MHZ
-  UART1_BRR1  = 0x08;
-  UART1_BRR2  = 0x0B;
+  UART1_BRR2 = 0x0B;
+  UART1_BRR1 = 0x08;
   // ENABLE TRANSMITTER AND RECEIVER
   UART1_CR2 = ( (1 << UART1_CR2_TEN) | (1 << UART1_CR2_REN) );
-  UART1_CR2 |= (1 << UART1_CR2_RIEN); // if you need rx interrupt enable this
+  // UART1_CR2 |= (1 << UART1_CR2_RIEN); // if you need rx interrupt enable this
 }
 
 void uart_send(unsigned char data)
