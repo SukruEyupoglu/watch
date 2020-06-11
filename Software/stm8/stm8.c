@@ -8,7 +8,7 @@
 
 int main(void)
 {
-	unsigned char x1 = 0,x2 = 0,y1 = 0,y2 = 0;
+	unsigned char x1 = 0,x2 = 2,y1 = 3,y2 = 4;
 	// SET CLK TO FULL SPEED (16MHZ)
 	CLK_CKDIVR = 0;
 	
@@ -25,7 +25,9 @@ int main(void)
 	led_open();
 	
 	x1 = uart_get();
+	uart_send(x1);
 	x2 = uart_get();
+	uart_send(x2);
 	
 	led_close();
 	
@@ -68,8 +70,6 @@ int main(void)
 		nrf_read_buf(&y1,1,NRF1);
 		clear_irq(NRF1);
 	}
-
-
 }
 
 
