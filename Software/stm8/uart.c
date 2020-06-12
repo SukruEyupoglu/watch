@@ -45,6 +45,18 @@ unsigned char uart_get(void)
   while( ! (UART1_SR & (1 << UART1_SR_RXNE) ) );
   return UART1_DR;
 }
+
+void Char_To_Bit(unsigned char bit)
+{
+	unsigned int turn;
+	for(turn = 8;turn > 0;turn--)
+	{
+		if((bit & (1 << (turn - 1))) == 0)uart_send('0');
+		else uart_send('1');
+	}
+	uart_send('\r');uart_send('\n');
+}
+
 /*
 void uart_isr() __interrupt(UART1_RXC_ISR) // uart rx interrupt function
 {
