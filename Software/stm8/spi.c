@@ -14,12 +14,11 @@ void spi_init(void)
   // 8MHZ spi clk
   SPI_CR1 = (1 << SPI_CR1_MSTR) | (1 << SPI_CR1_SPE);
   // NOT CHANGE THIS READ DATASHEET
-  SPI_CR2 = (1 << SPI_CR2_SSM) | (1 << SPI_CR2_SSI) | (1 << SPI_CR2_BDM) | (1 << SPI_CR2_BDOE);
+  //SPI_CR2 = (1 << SPI_CR2_SSM) | (1 << SPI_CR2_SSI) | (1 << SPI_CR2_BDM) | (1 << SPI_CR2_BDOE);
 }
 
 unsigned char spi(unsigned char data)
 {
-  while (SPI_SR & (1 << SPI_SR_BSY) );
   SPI_DR = data;
   while (!(SPI_SR & (1 << SPI_SR_TXE)));
   return SPI_DR;
