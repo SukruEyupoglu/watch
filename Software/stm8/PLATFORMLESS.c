@@ -1,4 +1,17 @@
 #include "PLATFORMLESS.h"
+
+void Char_To_Bit(unsigned char bit)
+{
+	unsigned int turn;
+	for(turn = 8;turn > 0;turn--)
+	{
+		if((bit & (1 << (turn - 1))) == 0)uart_send('0');
+		else uart_send('1');
+	}
+	uart_send('\r');uart_send('\n');
+}
+
+
 // part0 lsb // for 32 bit mcu
 void int_to_char(unsigned int data,unsigned char * part0,unsigned char * part1,unsigned char * part2,unsigned char * part3)
 {
