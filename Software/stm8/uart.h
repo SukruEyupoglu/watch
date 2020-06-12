@@ -14,6 +14,8 @@ void uart_init(void);
 void uart_send(unsigned char data);
 unsigned char uart_get(void);
 
+void Char_To_Bit(unsigned char bit);
+
 //void uart_isr() __interrupt(UART1_RXC_ISR);
 
 #endif // UART_H
