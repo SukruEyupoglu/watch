@@ -4,6 +4,7 @@
 
 void delay_us(volatile unsigned char bekle);
 void delay_ms(volatile unsigned char bekle);
+void delay_s(volatile unsigned char bekle);
 
 ////////////////////////////////////////////////////////////////
 // THIS TESTED WITH OSCILOSKOP
