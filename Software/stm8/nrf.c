@@ -41,7 +41,7 @@ void wait_irq(unsigned char which_nrf)
 void nrf24l01_init(unsigned char which_nrf)
 {
 	delay_ms(100);							// wait until it happens to power down mode 100ms
-	nrf_write_reg(W_REGISTER | CONFIG , CONFIG_PWR_UP,which_nrf);		// only start up for make standby-1
+	nrf_write_reg(W_REGISTER | CONFIG , (CONFIG_PWR_UP | CONFIG_EN_CRC),which_nrf);		// only start up for make standby-1
 	delay_ms(2);							// wait 1.5ms for power up
 	nrf_write_reg(W_REGISTER | EN_AA , EN_AA_ENAA_P0,which_nrf);		// FOR PIPE0 SET OUTO ACK
 	nrf_write_reg(W_REGISTER | EN_RXADDR , EN_RXADDR_ERX_P0,which_nrf);	// ONLY ACTIVE PIPE0
@@ -70,13 +70,13 @@ void nrf24l01_init(unsigned char which_nrf)
 void make_tx(unsigned char which_nrf)
 {
         PA_ODR &= ~(1 << which_nrf);// NRF CE LOW 
-	nrf_write_reg(W_REGISTER | CONFIG , CONFIG_PWR_UP | CONFIG_MASK_TX_DS,which_nrf);
+	nrf_write_reg(W_REGISTER | CONFIG , (CONFIG_PWR_UP | CONFIG_EN_CRC | CONFIG_MASK_TX_DS),which_nrf);
         delay_us(130);
 }
 
 void make_rx(unsigned char which_nrf)
 {
-	nrf_write_reg(W_REGISTER | CONFIG , (CONFIG_PWR_UP | CONFIG_PRIM_RX | CONFIG_MASK_RX_DR),which_nrf);
+	nrf_write_reg(W_REGISTER | CONFIG , (CONFIG_PWR_UP | CONFIG_EN_CRC | CONFIG_PRIM_RX | CONFIG_MASK_RX_DR),which_nrf);
         delay_us(130);
         PA_ODR |= (1 << which_nrf);// NRF CE HIGH
 }
