@@ -71,13 +71,21 @@ void make_tx(unsigned char which_nrf)
 {
         PA_ODR &= ~(1 << which_nrf);// NRF CE LOW 
 	nrf_write_reg(W_REGISTER | CONFIG , (CONFIG_PWR_UP | CONFIG_EN_CRC | CONFIG_MASK_TX_DS),which_nrf);
-        delay_130us;
+	// 100.1us + 9.99us + 9.99us + 9.99us
+	delay(224);
+	delay(19);
+	delay(19);
+	delay(19);
 }
 
 void make_rx(unsigned char which_nrf)
 {
 	nrf_write_reg(W_REGISTER | CONFIG , (CONFIG_PWR_UP | CONFIG_EN_CRC | CONFIG_PRIM_RX | CONFIG_MASK_RX_DR),which_nrf);
-        delay_130us;
+	// 100.1us + 9.99us + 9.99us + 9.99us
+	delay(224);
+	delay(19);
+	delay(19);
+	delay(19);
         PA_ODR |= (1 << which_nrf);// NRF CE HIGH
 }
 
