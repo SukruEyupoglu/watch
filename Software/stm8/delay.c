@@ -39,6 +39,7 @@ void delay_s(volatile unsigned char bekle)
 {
 	while(bekle)
 	{
+		bekle--;
 		delay_ms(200);
 		delay_ms(200);
 		delay_ms(200);
