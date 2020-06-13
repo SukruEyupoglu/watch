@@ -1,6 +1,8 @@
 
 
 #define delay_10us delay_us(20)
+// 100.1us + 9.99us + 9.99us + 9.99us
+#define delay_130us delay(224);delay(19);delay(19);delay(19)
 
 void delay_us(volatile unsigned char bekle);
 void delay_ms(volatile unsigned char bekle);
