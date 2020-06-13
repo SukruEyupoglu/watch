@@ -35,4 +35,15 @@ void delay_ms(volatile unsigned char bekle)
 	}
 }
 
+void delay_s(volatile unsigned char bekle)
+{
+	while(bekle)
+	{
+		delay_ms(200);
+		delay_ms(200);
+		delay_ms(200);
+		delay_ms(200);
+		delay_ms(200);
+	}
+}
 
