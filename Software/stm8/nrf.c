@@ -91,6 +91,41 @@ void nrf_send(unsigned char which_nrf)
     PA_ODR &= ~(1 << which_nrf);// NRF CE LOW 
 }
 
+/*
+void get_rx_addr_p_0_1(unsigned char x_0_1,unsigned char * addr,unsigned char which_nrf) // 5 byte total
+{
+
+    unsigned char f;
+    PD_ODR &= ~(1 << which_nrf); // NRF CSN LOW
+    spi(R_REGISTER | (RX_ADDR_PX + x_0_1));
+    for (f = 0 ; f < 5 ; f++)
+    {
+    	* (addr + f) = spi(NOP); // LSByte is read first
+    }
+    PD_ODR |= (1 << which_nrf);//NRF CSN HIGH
+}
+
+// MSB 4 BYTE SAME AS P1 ONLY LAST BYTE WRITE THIS REG (FROM DATASHEET)
+unsigned char get_rx_addr_p_2_3_4_5(unsigned char x_2_3_4_5,unsigned char which_nrf)
+{
+	return nrf_read_reg(R_REGISTER | (RX_ADDR_PX + x_2_3_4_5) ,which_nrf);
+}
+
+void get_tx_addr(unsigned char * addr,unsigned char which_nrf)
+{
+
+    unsigned char f;
+    PD_ODR &= ~(1 << which_nrf); // NRF CSN LOW
+    spi(R_REGISTER | TX_ADDR);
+    for (f = 0 ; f < 5 ; f++)
+    {
+    	*( addr + f) = spi(NOP); // LSByte is read first
+    }
+    PD_ODR |= (1 << which_nrf);//NRF CSN HIGH
+}
+
+*/
+
 // set nrf rx comminication addr
 void set_rx_addr_p_0_1(unsigned char x_0_1,unsigned char addr[5],unsigned char which_nrf)
 {
