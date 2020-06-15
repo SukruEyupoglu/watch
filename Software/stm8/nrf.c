@@ -61,7 +61,10 @@ void nrf24l01_init(unsigned char which_nrf)
 	set_rx_pw_px(0,1,which_nrf);
 	
 	nrf_write_reg(W_REGISTER | DYNPD , DYNPD_DPL_P0,which_nrf);		// must be tryed dynamic payload lengh MUST! 
-	nrf_write_reg(W_REGISTER | FEATURE , FEATURE_EN_ACK_PAY,which_nrf);	// Enables Payload with ACK
+	// enable with ack
+	// nrf_write_reg(W_REGISTER | FEATURE , FEATURE_EN_ACK_PAY,which_nrf);	// Enables Payload with ACK
+	// enable without ack
+	 nrf_write_reg(W_REGISTER | FEATURE , FEATURE_EN_DYN_ACK,which_nrf);	// Enables Payload without ACK
 	make_tx(which_nrf);							// default is tx at config register
 	// make_rx(which_nrf);
 	// delay_us(130);							// wait for convert to tx or rx from datasheet
