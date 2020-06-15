@@ -1,1 +1,6 @@
 sudo usermod -a -G plugdev USERNAME
+miniterm --raw /dev/ttyUSB0 74880
+
+
+
+
