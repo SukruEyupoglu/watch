@@ -181,5 +181,5 @@ void nrf_send(unsigned char which_nrf);
 void clear_irq(unsigned char which_nrf);
 void nrf_gpio_init(void);
 void wait_irq(unsigned char which_nrf);
-
+void wait_status_irq(unsigned char irq_type,unsigned char which_nrf);
 
