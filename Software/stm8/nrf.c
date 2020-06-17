@@ -72,20 +72,21 @@ void nrf24l01_init(unsigned char which_nrf)
 }
 void make_tx(unsigned char which_nrf)
 {
-        PA_ODR &= ~(1 << which_nrf);// NRF CE LOW 
-	nrf_write_reg(W_REGISTER | CONFIG , (CONFIG_PWR_UP | CONFIG_EN_CRC | CONFIG_MASK_TX_DS),which_nrf);
+	PA_ODR &= ~(1 << which_nrf);// NRF CE LOW
+	// close MAX_RT interrupt and RX_DR interrupt
+	nrf_write_reg(W_REGISTER | CONFIG , (CONFIG_PWR_UP | CONFIG_EN_CRC | CONFIG_MASK_MAX_RT | CONFIG_MASK_RX_DR),which_nrf);
 	// 100.1us + 9.99us + 9.99us + 9.99us
 	delay_130us;
 }
 
 void make_rx(unsigned char which_nrf)
 {
-	nrf_write_reg(W_REGISTER | CONFIG , (CONFIG_PWR_UP | CONFIG_EN_CRC | CONFIG_PRIM_RX | CONFIG_MASK_RX_DR),which_nrf);
+	// close MAX_RT interrupt and TX_DS interrupt
+	nrf_write_reg(W_REGISTER | CONFIG , (CONFIG_PWR_UP | CONFIG_EN_CRC | CONFIG_PRIM_RX | CONFIG_MASK_TX_DS | CONFIG_MASK_MAX_RT),which_nrf);
 	// 100.1us + 9.99us + 9.99us + 9.99us
 	delay_130us;
-        PA_ODR |= (1 << which_nrf);// NRF CE HIGH
+	PA_ODR |= (1 << which_nrf);// NRF CE HIGH
 }
-
 
 void nrf_send(unsigned char which_nrf)
 {
