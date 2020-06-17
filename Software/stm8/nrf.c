@@ -25,6 +25,12 @@ void nrf_gpio_init(void)
 	PD_ODR |= (1 << 2); // OUTPUT HIGH NRF2 CSN
 }
 
+void wait_status_irq(unsigned char irq_type,unsigned char which_nrf)
+{
+		while( (nrf_read_reg(STATUS_REG,which_nrf) & (1 << irq_type) ) != (1 << irq_type) );
+}
+
+
 void wait_irq(unsigned char which_nrf)
 {
 	// NRF1 IRQ PIN IS PC3 ---- READ PC3 PIN UNTIL BE LOW
