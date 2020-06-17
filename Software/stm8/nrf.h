@@ -81,6 +81,10 @@
 #define STATUS_RX_P_NO              ( (1 << 3) | (1 << 2) | (1 << 1) )
 #define STATUS_TX_FULL              (1 << 0)
 
+#define RX_DR                6
+#define TX_DS                5
+#define MAX_RT               4
+
 #define VOID_INT                    0
 #define RX_DR_INT                   1
 #define TX_DS_INT                   2
