@@ -11,6 +11,8 @@ int main(void)
 	unsigned char x1 = 9,x2 = 2,y1 = '3',y2 = 'a';
 	// SET CLK TO FULL SPEED (16MHZ)
 	CLK_CKDIVR = 0;
+	// if u using interrupt make this ; but only here working not other files
+	// enable_interrupts();
 	
 	spi_init();
 	uart_init();
