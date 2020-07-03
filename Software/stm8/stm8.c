@@ -34,6 +34,10 @@ int main(void)
 	// SENDER SIDE
 	while(1)
 	{
+		nrf_flush_tx(NRF1);
+		nrf_flush_rx(NRF1);
+		nrf_flush_tx(NRF2);
+		nrf_flush_rx(NRF2);
 		make_tx(NRF1);
 		make_rx(NRF2);
 		if(UART1_SR & (1 << UART1_SR_RXNE) )
