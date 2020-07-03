@@ -49,6 +49,7 @@ unsigned char uart_get(void)
 void Char_To_Bit(unsigned char bit)
 {
 	unsigned int turn;
+	uart_send('\r');uart_send('\n');
 	for(turn = 8;turn > 0;turn--)
 	{
 		if((bit & (1 << (turn - 1))) == 0)uart_send('0');
