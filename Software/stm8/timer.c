@@ -23,6 +23,7 @@ void timer4_on_off(unsigned char on_off)
 {
   if(on_off == 1)
   {
+    TIM4_EGR = 1; // prescaler and counter register clear command
     TIM4_CR1      |= (1 << TIM4_CR1_CEN); // Enable TIM4
   }
   else
