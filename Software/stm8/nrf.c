@@ -47,6 +47,8 @@ void wait_irq(unsigned char which_nrf)
 void nrf24l01_init(unsigned char which_nrf)
 {
 	delay_ms(100);							// wait until it happens to power down mode 100ms
+	nrf_write_reg(W_REGISTER | CONFIG , CONFIG_POWER_DOWN,which_nrf);
+	delay_ms(2);
 	nrf_write_reg(W_REGISTER | CONFIG , (CONFIG_PWR_UP | CONFIG_EN_CRC),which_nrf);		// only start up for make standby-1
 	delay_ms(2);							// wait 1.5ms for power up
 	nrf_write_reg(W_REGISTER | EN_AA , EN_AA_ENAA_P0,which_nrf);		// FOR PIPE0 SET OUTO ACK
