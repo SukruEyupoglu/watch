@@ -25,6 +25,7 @@
 #define CONFIG_CRCO                 (1 << 2)
 #define CONFIG_PWR_UP               (1 << 1)
 #define CONFIG_PRIM_RX              (1 << 0)
+#define CONFIG_POWER_DOWN           0
 
 #define EN_AA 0x01
 #define EN_AA_ENAA_P5               (1 << 5)
