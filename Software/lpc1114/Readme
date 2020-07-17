@@ -11,10 +11,19 @@ Setting system must be easy for all
 Assembly a cheap character lcd to board for setting
 Assembly capacitive touch pad num keyboard to board
 
+kicad rules
+minimum track = 6mil = 0,1524mm
+minimum via diameter = 0,6mm
+minimum via drill = 0,3mm
+minimum uvia diameter = 0,6mm
+minimum uvia drill 0,3mm
+clearance = 0,6mil = 0,1524mm
+track width = 6mil =0,1524mm
+dpair width = 6mil = 0,1524mm
+dpair gap = 6mil = 0,1524mm
 
-
-
-
+placement grid size
+25mil = 0,6350mm
 
 
 
