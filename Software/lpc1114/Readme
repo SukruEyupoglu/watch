@@ -25,7 +25,8 @@ dpair gap = 6mil = 0,1524mm
 placement grid size
 25mil = 0,6350mm
 
-
+via minimum placement grid size = 0,7524
+0,6 + 0,1524 = 0,7524
 
 
 
