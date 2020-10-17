@@ -1,3 +1,9 @@
+#include "stm8s.h"
+#include "board_init.h"
+
+
+void board_init(void)
+{
 	// SET CLK TO FULL SPEED (16MHZ)
 	CLK_CKDIVR = 0;
 
@@ -35,3 +41,17 @@
 	//  LEFT AIGN SETTING DEFAULT
 	//  WAKE UP ADC FROM POWER DOWN
 	ADC1_CR1 |= (1 << ADC1_CR1_ADON);
+
+
+	// MAKE PD4 BEEP
+
+
+
+	// MAKE UART INIT
+
+
+
+	// MAKE SPI INIT
+
+
+}
