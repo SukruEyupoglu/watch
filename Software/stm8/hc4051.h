@@ -1,16 +1,14 @@
 
 
-#define MOTOR_1 0
-#define MOTOR_2 1
-#define MOTOR_3 2
-#define MOTOR_4 3
-#define OUT_SCK 4
-#define FLASH_SCK 5
-#define IN_SCK 6
-#define RF_SCK 7
+#define ACTIVE_MOTOR_1_CLK PA_ODR = 0
+#define ACTIVE_MOTOR_2_CLK PA_ODR = 1
+#define ACTIVE_MOTOR_3_CLK PA_ODR = 2
+#define ACTIVE_MOTOR_4_CLK PA_ODR = 3
+#define ACTIVE_OUT_SCK_CLK PA_ODR = 4
+#define ACTIVE_FLASH_SCK_CLK PA_ODR = 5
+#define ACTIVE_IN_SCK_CLK PA_ODR = 6
+#define ACTIVE_RF_SCK_CLK PA_ODR = 7
 
-
-void select_out(unsigned char channel);
 
 
 
