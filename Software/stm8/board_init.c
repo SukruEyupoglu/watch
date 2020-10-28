@@ -29,6 +29,11 @@ void board_init(void)
 	// PC4 STANDBY OUTPUT CCO Fmaster OUTPUT
 	// CONFIGURE PC4 AS OUTPUT
 	PC_DDR |= (1 << 4);
+	
+	// DIRECT CONNECT CLOSE STANDBY
+	// PC_CR1 |= (1 << 4);
+	// PC_ODR |= (1 << 4);
+	
 	// PUSH PULL MODE
 	PC_CR1 |= (1 << 4);
 	// FAST MODE ENABLE
