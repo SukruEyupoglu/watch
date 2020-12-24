@@ -14,6 +14,7 @@ unsigned char adc_read(unsigned char channel,unsigned char clk_div)
 	ADC1_CSR |= channel;
 	// set frequency and start conversion
 	ADC1_CR1 |= ( (1 << ADC1_CR1_ADON) | (clk_div << 5) );
+	ADC1_CR1 |= (1 << ADC1_CR1_ADON);
 	// wait end of conversion
 	while (!(ADC1_CSR & (1 << ADC1_CSR_EOC)));
 	// return only MSB
