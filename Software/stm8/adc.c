@@ -11,8 +11,7 @@ unsigned char adc_read(unsigned char channel,unsigned char clk_div)
 	//  CLEAR EOC FLAG
 	ADC1_CSR &= ~(1 << ADC1_CSR_EOC);
 	// write channel
-	//ADC1_CSR |= channel;
-	ADC1_CSR |= (1 << (channel - 2) );
+	ADC1_CSR |= channel;
 	// set frequency and start conversion
 	ADC1_CR1 |= ( (1 << ADC1_CR1_ADON) | (clk_div << 5) );
 	ADC1_CR1 |= (1 << ADC1_CR1_ADON);
