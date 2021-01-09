@@ -95,6 +95,80 @@ unsigned char motor_move(unsigned char step_count,unsigned char speed);
 unsigned char move_to_find_limit_switch(unsigned char next_or_back);
 
 
+/* example of motor movement
+
+#include "stm8s.h"
+#include "uart.h"
+#include "delay.h"
+#include "spi.h"
+#include "led.h"
+#include "timer.h"
+#include "board_init.h"
+#include "adc.h"
+
+
+#define SB        0x55
+
+#define FCF       0x5C
+#define SCF       0xC5
+#define TCF       0xCC
+#define FCB       0x53
+#define SCB       0x35
+#define TCB       0x33
+#define FCFSCB    0x3C
+#define SCFFCB	  0xC3
+
+#define latch PB_ODR |= (1 << 5);PB_ODR &= ~(1 << 5) // latch assert(LOW) // latch deassert(HIGH)
+
+int main(void)
+{
+	unsigned char motor[8] = {FCF,TCF,SCF,SCFFCB,FCB,TCB,SCB,FCFSCB};
+	unsigned char f = 0;
+	// SET CLK TO FULL SPEED (16MHZ)
+	// CLK_CKDIVR = 0;
+	board_init();
+
+	spi_init();
+	ACTIVE_MOTOR_4_CLK;
+	spi(SB);	// standby
+	latch;
+	delay_ms(1);
+
+	// STANDBY SECURE MODE (this must be later from spi(SB);
+	{
+	// PUSH PULL MODE
+	 PC_CR1 |= (1 << 4);
+	// FAST MODE ENABLE
+	 PC_CR2 |= (1 << 4);
+	// CLOCK OUTPUT ON PC4
+	// (0xC << 1) = Fmaster
+	 CLK_CCOR |= ( (1 << 0) | (0xC << 1) );
+	}
+
+	// DIRECT CONNECT CLOSE STANDBY
+	 //PC_CR1 |= (1 << 4);
+	 //PC_ODR |= (1 << 4);
+	 //PC_ODR &= ~(1 << 4); // close all motors
+
+	while(1)
+	{
+
+		spi(motor[f]);
+		latch;
+		delay_ms(1);
+
+		f = f + 2;
+		if(f == 8)
+		{
+			f = 0;
+		}
+
+	}
+}
+
+*/
+
+
 
 
 
