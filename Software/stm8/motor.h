@@ -5,13 +5,13 @@ stepper motor has two coil and four bidirectional pin
 
 A1 A2   B1 B2
 10 10   10 10 
-10101010 = 8 bit,8 mosfet, 4 N-CHANNEL, 4 P-CHANNEL
-NPNPNPNP
+01010101 = 8 bit,8 mosfet, 4 N-CHANNEL, 4 P-CHANNEL
+PNPNPNPN
 Transistors used driving mosfets negatives bits
-normally 01010101
-negative 10101010
-1 channels to close P-CHANNEL mosfets
-0 channels to close N-CHANNEL mosfets
+normally 10101010
+negative 01010101
+0 channels to close P-CHANNEL mosfets
+1 channels to close N-CHANNEL mosfets
 
 0101 0101 standby
 0011 0101 first step with only one coil
@@ -19,7 +19,7 @@ negative 10101010
 1010 0011 second weak full step release other coil
 
 0011 0011 second strong half step with two coil
-1010 0011 second step half to full completing strongly
+0101 0011 second step half to full completing strongly
 
 if you want to hold strongly step motor use timer and pwm
 and refresh same coil pulse with close and open if motor is
@@ -41,8 +41,8 @@ if stop moving start timer for hold motor without heating
 #define second_coil_forward_first_coil_backward     1100_0011       0xC3  SCFFCB
 
 5 = idle
-3 = forward
-C = backward
+C = forward
+3 = backward
 
 use standby to protecting mosfet short circuit
 
@@ -66,14 +66,15 @@ unsigned char motor[8] = {FCF,TCF,SCF,SCFFCB,FCB,TCB,SCB,FCFSCB};
 
 #define SB        0x55 // edited at 2021
 
-#define FCF       0x3A
-#define SCF       0xA3
-#define TCF       0x33
-#define FCB       0xCA
-#define SCB       0xAC
-#define TCB       0xCC
+#define FCF       0x5C
+#define SCF       0xC5
+#define TCF       0xCC
+#define FCB       0x53
+#define SCB       0x35
+#define TCB       0x33
 #define FCFSCB    0x3C
-#define SCFFCB    0x3C
+#define SCFFCB	  0xC3
+
 
 #define WAIT_FOR_INTERRUPT 100
 
