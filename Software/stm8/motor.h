@@ -64,7 +64,7 @@ unsigned char motor[8] = {FCF,TCF,SCF,SCFFCB,FCB,TCB,SCB,FCFSCB};
 
 */
 
-#define SB        0xAA
+#define SB        0x55 // edited at 2021
 
 #define FCF       0x3A
 #define SCF       0xA3
