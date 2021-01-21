@@ -8,6 +8,7 @@
 #define I2C_WRITE           0x00
 
 /**
+ * newly 400khz added to init
  * Initialize I2C at 100kHz, 7-bit addressing mode.
  *
  * SDA -> PB5
