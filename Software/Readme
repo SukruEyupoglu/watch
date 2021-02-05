@@ -255,7 +255,7 @@ AT+COPS? [ To check the current network ]
 AT+CGATT=1    [ to attach the terminal to GPRS service ] 
 AT+CGATT?    [ To return the current state of GPRS service : Attach/Detach ]
 AT+CGDCONT?	[ to list PDP context ]
-AT+CGDCONT=1,"IP","www.mtbilgiteknolojileri.com.tr"    [ To define PDP Context ]
+AT+CGDCONT=1,"IP","www.google.com"    [ To define PDP Context ]
 WAIT=1
 AT+CGDCONT=2,"IP","www.google.com"    [ To define PDP Context ]
 WAIT=1
