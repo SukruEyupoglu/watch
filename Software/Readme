@@ -33,6 +33,650 @@ python esptool.py --port COM8 --baud 1000000 \
 
 
 
+sudo ifconfig ens34u1 add 10.1.1.99 netmask 255.255.255.0
+sudo ifconfig ens34u1 down
+sudo ifconfig ens34u1 up
+
+
+
+
+# /etc/inittab
+#
+# Copyright (C) 2001 Erik Andersen <andersen@codepoet.org>
+#
+# Note: BusyBox init doesn't support runlevels.  The runlevels field is
+# completely ignored by BusyBox init. If you want runlevels, use
+# sysvinit.
+#
+# Format for each entry: <id>:<runlevels>:<action>:<process>
+#
+# id        == tty to run on, or empty for /dev/console
+# runlevels == ignored
+# action    == one of sysinit, respawn, askfirst, wait, and once
+# process   == program to run
+
+# Startup the system
+null::sysinit:/bin/mount -t proc proc /proc
+null::sysinit:/bin/mount -o remount,rw / # REMOUNT_ROOTFS_RW
+null::sysinit:/bin/mkdir -p /dev/pts
+null::sysinit:/bin/mkdir -p /dev/shm
+null::sysinit:/bin/mount -a
+null::sysinit:/bin/hostname -F /etc/hostname
+
+# now run any rc scripts
+::sysinit:/etc/init.d/rcS
+#::sysinit:/etc/init.d/S40network start
+
+## initialize mdev
+::sysinit:/sbin/mdev -s
+::sysinit:echo 0 > /proc/sys/kernel/hung_task_timeout_secs
+# Put a getty on the serial port
+ttyS0::respawn:/sbin/getty -l /usr/bin/autologin -n -L ttyS0 115200 vt100 # GENERIC_SERIAL
+ttyUSB0::respawn:/sbin/getty -n -L ttyUSB0 115200 vt100
+#::respawn:/sbin/getty -l /usr/bin/autologin -n -L serialUsb 115200 vt100
+
+# Stuff to do for the 3-finger salute
+::ctrlaltdel:/sbin/reboot
+
+# Stuff to do before rebooting
+null::shutdown:/etc/init.d/rcK
+null::shutdown:/bin/umount -a -r
+null::shutdown:/sbin/swapoff -a
+
+
+
+
+
+cd /sys/power/
+echo mem > state
+
+cd /sys/power/
+echo standby > state
+
+
+cd /sys/class/gpio
+echo 1 > export
+cd gpio1
+echo out > direction
+echo 0 > value
+echo 1 > value
+
+su root -c "getty -n -L /dev/ttyUSB0 115200 vt100"
+
+
+./Bootman -platform linuxfb -plugin tslib
+
+date -s 2020.12.25-09:06
+hwclock -w
+hwclock --show
+
+
+Favipiravir (Avigan)
+
+dd if=/tmp/fit-image.itb of=/dev/mtdblock8;
+sleep 1;
+dd if=/tmp/u-boot-dtb.img of=/dev/mtdblock5;
+sleep 1;
+dd if=/tmp/fitdt-image.itb of=/dev/mtdblock7;
+
+dd if=/tmp/u-boot-env of=/dev/mtdblock6;
+
+
+
+setenv flashdevice nand;saveenv;
+
+setenv ldk_nand_bootcmd 'mtdparts setenv kernel; nand read ${zimage_loadaddr} ${mtdparts_addr} 800000;
+run get_dtblob; run mtd_set_rootdev; setenv setbootargs ${setbootargs} crash_ramdump=1
+${mtd_bootargs}; run setbootargs; bootm ${zimage_loadaddr}#cygnus - ${dtb_loadaddr}#cygnus';
+
+setenv mtdparts_name gpt;setenv nand_oobsize 80;setenv nand_writesize 1000;setenv mtdparts_addr 200000;setenv mtdparts_netsize 100000;setenv DIAGS_BOARD BCM958302K;setenv mtdparts_entry 2;
+
+setenv nand_erasesize 40000;setenv mtdparts_size 100000;setenv maxdtsize 100000;setenv bootcmd 'run ldk_nand_bootcmd';setenv esw_bypass 1;setenv ethlaneswap 0;
+
+setenv setbootargs 'setenv bootargs ${console_args} ${extra_args} ${reset_args} ethaddr=${ethaddr} lswap=${ethlaneswap} ip=${ipaddr}::${gatewayip}:${netmask}::${ethif}:off crash_ramdump=1 
+${mtdparts} ubi.mtd=${rootpartidx} root=ubi0:rootfs rootfstype=ubifs rw crash_ramdump=1';
+
+setenv bootargs 'console=ttyS0,115200n8 vt.global_cursor_default=0 consoleblank=0 earlyprintk reset_reason=4 ethaddr= lswap=1 ip=:::::eth0:off crash_ramdump=1 
+mtdparts=brcmnand.0:1m(boot1),1m(m0patch),1m(gpt),2m(ssb),2m(keystore),2m(u-boot),2m(u-boot-env),1m(dt-blob),12m(kernel1';
+
+saveenv
+
+
+
+
+askenv optargs
+init=/bin/sh
+boot
+
+
+5 mayıs kernel command
+loadb ${loadaddr};nand erase 0x280000 0x2c4a68;nand write ${loadaddr} 0x280000 0x2c4a68;
+
+u-boot ve MLO command
+loadb 0x80200000;loadb 0x803C0000;nand erase 0x0 0x20000;nand write 0x803C0000 0x0 0x20000;nand erase 0x80000 0x1C0000;nand write 0x80200000 0x80000 0x1C0000;
+
+alsa test:
+speaker-test -r 22050 -t wav -w /crpos/test/3.WAV -c 2
+speaker-test -r 22050 -t wav -w /crpos/test/beep-03.wav -c 2
+speaker-test -r 44100 -t wav -w /crpos/test/error.wav -c 2
+
+
+Vera-Boot> askenv extra_args
+Please enter 'extra_args': init=/bin/sh
+
+/crpos/app/gsmmuxd -w -s /dev/mux /dev/ptmx /dev/ptm
+
+ethtool -s eth0 speed 10 duplex full autoneg off
+
+/////// id high , vbus high ///////
+root@vera:/lib/modules/3.10.100/kernel/drivers/usb/gadget# modprobe g_serial.ko
+modprobe /lib/modules/3.10.100/kernel/drivers/usb/gadget/g_serial.ko
+cd /lib/modules/3.10.100/kernel/drivers/usb/gadget;modprobe g_serial.ko;
+echo -ne "AT+CGSN\r\n" | microcom -t 1000 -s 115200 -X /dev/ttyGS0
+
+
+
+echo -ne "AT+QGPSGNMEA:\r\n" | microcom -t 1000 -s 115200 -X /dev/ttyUSB1;
+
+// start continious gps eg91
+rm /var/lock/LCK..ttyUSB1;echo -ne "AT+QGPS=1,30,50,0,1\r\n" | microcom -t 5000 -s 115200 -X /dev/ttyUSB1;
+
+AT+QGPS=1,30,50,0,1
+
+
+
+
+
+
+
+
+
+
+
+
+
+echo "28 27 0" | /crpos/test/ios_api;
+
+microcom -t 5000 -s 115200 -X /dev/ttyO5;
+
+echo -ne "AT+CGSN\r\n" | microcom -t 1000 -s 115200 -X /dev/ttyUSB4
+
+
+kall;kall;echo "28 27 0" | /crpos/test/ios_api;echo MODEM_TESTING;echo -ne "AT+CGSN\r\n" | microcom -t 1000 -s 115200 -X /dev/ttyO5;
+
+modem cekim kuvveti
+echo -ne "AT+CSQ\r\n" | microcom -t 5000 -s 115200 -X /dev/ttyO5;
+
+
+
+#echo "14 1 $1 3 15" | ./test_fiscal;
+echo "28 0" | /crpos/test/ios_api;
+
+get imei:
+AT+CGSN
+
+dual sim card available?
+AT+QDSIM=?
+dual sim which active
+AT+QDSIM?
+dual sim card switch
+AT+QDSIM=0
+dual sim card switch
+AT+QDSIM=1
+
+powerdown:
+AT+QPOWD
+NOTE:after sending this command do not enter AT command
+wait 1s after STATUS pin as low
+
+show iccid
+AT+QCCID
+
+sim card insertion status report
+AT+QSIMSTAT
+
+measure signal quality
+AT+CSQ
+network registration status
+AT+CGREG?
+AT+CGREG=2
+
+
+
+
+
+AT command sequence for proper network connection:
+AT+CSQ     [ To measure the signal quality ]
+AT+CREG=1    [ To enable network registration ]
+AT+CREG?    [ To return the current state of the network registration : Attach/Detach ]
+AT+COPS=? [ To return the list of available operators ]
+AT+COPS= [ To manually select an available operator ]
+AT+COPS? [ To check the current network ]
+AT+CGATT=1    [ to attach the terminal to GPRS service ] 
+AT+CGATT?    [ To return the current state of GPRS service : Attach/Detach ]
+AT+CGDCONT?	[ to list PDP context ]
+AT+CGDCONT=1,"IP","www.mtbilgiteknolojileri.com.tr"    [ To define PDP Context ]
+WAIT=1
+AT+CGDCONT=2,"IP","www.google.com"    [ To define PDP Context ]
+WAIT=1
+AT+CGATT=1	[ to Perform a GPRS Attach ]
+AT+CGATT?	[ to Check the status of attach ]
+WAIT=3
+AT+CGACT=1,2	[ Activate the PDP context ]
+WAIT=3
+AT+CGPADDR=2
+AT+CSQ    [ to measure signal quality ]  
+AT+CGACT=1    [ To activate a PDP context ]  
+AT+CGDCONT?    [ To return the current state of the PDP context]
+AT+CGACT=0    [ To deactivate a PDP context ] 
+
+
+
+
+
+
+
+
+
+
+
+
+range of supported <cid>,<PDP_type>,<APN>,<PDP_addr>
+AT+CGDCONT=?
+
+
+########################################################################################################
+########################################################################################################
+EXAMPLE OF CONNECTION
+########################################################################################################
+
+
+
+
+Once the device us powered up, check whether SIM card is present. If the SIM is not inserted properly or if the SIM card is locked, please correct those issues.
+AT+CPIN?
++CPIN: READY
+OK
+The device above returns that the SIM is ready to use.
+
+Then check the registration status of the device.
+If the regisration status is “Searching” or “Not Registered”, that means that the device is not able to acquire the signal from the base station. The device should usually find the nearest base station within few minutes (max 15min). If you dont get “Registered” response for the AT+CGREG command,
+– Verify that the antenna is properly connected on the device
+– Verify that the bands supported by the device match the bands of the network provider
+
+AT+CGREG?
++CGREG: 0,1
+OK
+In the above case, the device returns that it is registred in the home network.
+
+After verifying the network registration status, you can get the network information. If teh device is registered on the home network, the network info on the SIM card used should match the network info returned by the AT+COPS command,
+AT+COPS?
++COPS: 0,0,”T-Mobile”
+OK
+
+Now check the signal quality.
+AT+CSQ
++CSQ: 10,0
+OK
+That return corresponds to a RSSI value of -93 dBm. This is only slightly better than marginal coverage. We should still be able to make a data call on this signal condition, but the throughput may not be that good.
+
+Once the registration is sucessful, GPRS Attach is performed.
+AT+cgatt=1
+OK
+
+Even if the GPRS Attach is sucessful, it doesn’t mean that the data call has been established.In GPRS, a Packet Data Protocol (PDP) defines the data session. The PDP context establishes the data path between the device and the GGSN (Gateway GPRS Support Node). GGSN acts like a gateway between the device and rest of the world. So the should establish a PDP context before it can send/receive data on the internet.
+
+The GGSN is identified through Access Point Name (APN). Each carrier will have their own APNs and are usually available on the internet. The device can define multiple PDP contexts that are uniquely stored in context ids.
+
+For examples,
+AT+CGDCONT=1,”IP”,”epc.tmobile.com”
+OK
+
+Above defines a PDP context for T-Mobile. The context ID is 1, it will use a IP connection and the APN is set as
+
+AT+CGDCONT=1,”IP”,”epc.tmobile.com”
+OK
+
+AT+CGDCONT=2,”IP”,”isp.cingular”
+OK
+
+Above defines another PDP context with a different APN. To list all the PDP contexts that are defined,
+at+cgdcont?
++CGDCONT: 1,”IP”,”epc.tmobile.com”,”0.0.0.0¨,0,0
++CGDCONT: 2,”IP”,”isp.cingular”,”0.0.0.0¨,0,0
++CGDCONT: 3,”IP”,””,”0.0.0.0¨,0,0
+
+OK
+
+Now that the PDP contexts are defined, please use the correct PDP context that matches the SIM card. For example, if we’re using the T-Mobile SIM card, the PDP context that has the corresponding APN should be used to connect.
+
+Now to set up the session, the appropriate PDP context needs to be activated.
+AT+CGACT=1,1
+OK
+The first parameter(1) is to activate the context and the second parameter is teh context ID. Once the PDP Context is activated sucessfully, the device can send/receive data on the internet. To check if there were any issues with teh PDP activation, send the AT+CEER command. Check the error code and take next steps.
+
+To deactivate the PDP context,
+AT+CGACT=0,1
+OK
+
+Deactivating the PDP context would ensure that no additional data is sent or received by the device.
+
+To detach from the GPRS network,
+AT+CGATT=0
+OK
+Detaching from the GPRS network will conserve network resources.
+
+Try this script included in AT Command Tester Tool.
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//Script-initiate_data_call.at
+
+//Procedure to setup data call
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+ 
+
+//First check SIM is not locked and it is ready
+
+AT+CPIN?
+
+ 
+
+//Wait
+
+WAIT=1
+
+ 
+
+//Check the signal strength. In weak signal conditions, data throughput will be low
+
+AT+CSQ
+
+ 
+
+//Check what network is the device on
+
+AT+COPS?
+
+ 
+
+//Wait for few seconds as AT+COPS command can take time
+
+WAIT=3
+
+ 
+
+//Get the registration status of the device. If the status is ‘1’, the device is registered and in home network
+
+AT+CGREG?
+
+ 
+
+//Wait
+
+WAIT=3
+
+ 
+
+//Set up PDP context. Refer to the service provider for APN info
+
+AT+CGDCONT=1,”IP”,”epc.tmobile.com”
+
+ 
+
+//Wait
+
+WAIT=1
+
+ 
+
+//Confirm setting by reading PDP profile
+
+AT+CGDCONT?
+
+ 
+
+//Perform a GPRS Attach
+
+AT+CGATT=1
+
+ 
+
+//Wait
+
+WAIT=3
+
+ 
+
+//Check the status of attach
+
+AT+CGATT?
+
+ 
+
+//Activate the PDP context
+
+AT+CGACT=1,1
+
+ 
+
+//Wait
+
+WAIT=3
+
+ 
+
+//Get the assigned IP Address
+
+AT+CGPADDR=1
+
+ 
+
+//Wait
+
+WAIT=3
+
+ 
+
+//Check PDP profile.
+
+AT+CGDCONT?
+
+ 
+
+//Deactivate PDP Context
+
+AT+CGACT=0,1
+
+ 
+
+//Wait
+
+WAIT=3
+
+ 
+
+//Detach from network
+
+AT+CGATT=0
+
+Response to above output script in AT Command Tester Tool.
+
+AT+CPIN?
+
++CPIN: READY
+
+ 
+
+OK
+
+SIM is ready.
+
+ 
+
+AT+CSQ
+
++CSQ: 18,0
+
+ 
+
+OK
+
+Signal level is -77 dbm. Signal condition is good.The signal strength range is -53 dbm (Excellent) to -109 dbm (Marginal).
+
+ 
+
+AT+COPS?
+
++COPS: 0,0,”T-Mobile USA”
+
+ 
+
+OK
+
+Device is currently on “T-Mobile USA” network.
+
+ 
+
+AT+CGREG?
+
++CGREG: 0,1
+
+ 
+
+OK
+
+AT+CGDCONT=1,”IP”,”epc.tmobile.com”
+
+OK
+
+PDP Context list updated sucessfully
+
+ 
+
+AT+CGDCONT?
+
++CGDCONT: 1,”IP”,”epc.tmobile.com”,”0.0.0.0¨,0,0
+
+ 
+
+OK
+
+Following connection profiles are available,
+
+ 
+
+CID-> 1
+
+PDP Type->IP
+
+APN->epc.tmobile.com
+
+PDP Address->0.0.0.0
+
+Data Compression->0
+
+Header Compression->0
+
+AT+CGDCONT?
+
++CGDCONT: 1,”IP”,”epc.tmobile.com”,”0.0.0.0¨,0,0
+
+ 
+
+OK
+
+Following connection profiles are available,
+
+ 
+
+CID-> 1
+
+PDP Type->IP
+
+APN->epc.tmobile.com
+
+PDP Address->0.0.0.0
+
+Data Compression->0
+
+Header Compression->0
+
+AT+CGATT=1
+
+OK
+
+ 
+
+AT+CGATT?
+
++CGATT: 1
+
+ 
+
+OK
+
+Device is attached to the network
+
+ 
+
+AT+CGACT=1,1
+
+OK
+
+Dis-connect is successful
+
+AT+CGPADDR=1
+
++CGPADDR: 1,”30.38.217.74¨
+
+ 
+
+OK
+
+IP Address of the connected profile is “30.38.217.74”
+
+ 
+
+AT+CGDCONT?
+
++CGDCONT: 1,”IP”,”epc.tmobile.com”,”30.38.217.74¨,0,0
+
+ 
+
+OK
+
+Following connection profiles are available,
+
+ 
+
+CID-> 1
+
+PDP Type->IP
+
+APN->epc.tmobile.com
+
+PDP Address->30.38.217.74
+
+Data Compression->0
+
+Header Compression->0
+
+AT+CGACT=0,1
+
+OK
+
+Dis-connect is successful
+
+AT+CGATT=0
+
+OK
+
+
+
+
 
 
 
