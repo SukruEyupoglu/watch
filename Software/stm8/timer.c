@@ -53,17 +53,30 @@ void timer1_PWM_init(unsigned char us)
   // TIM1_IER |= (1 << TIM1_IER_UIE); // Enable Update Interrupt
   // TIM1_CR1      |= (1 << TIM1_CR1_CEN); // Enable TIM4
   
+  TIM1_CCR4H = 0; 
+  TIM1_CCR4L = 25; // 25% duty cycle (25 / (99 + 1)) 
+  TIM1_CCMR4 = 0x60; // PWM mode 1 
+  TIM1_CCER4|= (1 << 0); // Enable OC1 
+  
+  TIM1_CR1|= (1 << 0); // Enable TIM1 
+  TIM1_BKR|= (1 << 7); // ban brakes 
+  /*  
   TIM1_CCR1H = 0; 
   TIM1_CCR1L = 25; // 25% duty cycle (25 / (99 + 1)) 
   TIM1_CCMR1 = 0x60; // PWM mode 1 
   TIM1_CCER1|=BIT(0); // Enable OC1 
+  
   TIM1_CCR3H = 0; 
   TIM1_CCR3L = 75; // duty cycle of 75% (75 / (99 + 1)) 
   TIM1_CCMR3 = 0x60; // PWM mode 1 
   TIM1_CCER2|=BIT(0); // enable OC3 
+  
   TIM1_CR1|=BIT(0); // Enable TIM1 
   TIM1_BKR|=BIT(7); // ban brakes 
-  /*
+  */
+  
+  
+  /* if you want to use [TIM1_CH1],[TIM1_CH2],[TIM2_CH1] or vb. on STM8S003 look this lines
   This option flags reside in flash at address 0x4803 and 0x4804 and values should be 0x01 and 0xFE (the complement). In debugger open a memory window and inspect content:
 
 004800  00 00 FF 01 FE 00 FF 00 ........  <- should look like this
