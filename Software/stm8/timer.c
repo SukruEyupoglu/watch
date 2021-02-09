@@ -52,7 +52,7 @@ void timer1_PWM_init(unsigned char us)
   TIM1_CR1      |= (1 << TIM1_CR1_OPM); // stop at max value from ARR
   // TIM1_IER |= (1 << TIM1_IER_UIE); // Enable Update Interrupt
   // TIM1_CR1      |= (1 << TIM1_CR1_CEN); // Enable TIM4
-  
+  // edit this lines
   TIM1_CCR4H = 0; 
   TIM1_CCR4L = 25; // 25% duty cycle (25 / (99 + 1)) 
   TIM1_CCMR4 = 0x60; // PWM mode 1 
@@ -60,7 +60,13 @@ void timer1_PWM_init(unsigned char us)
   
   TIM1_CR1|= (1 << 0); // Enable TIM1 
   TIM1_BKR|= (1 << 7); // ban brakes 
-  /*  
+  /* 
+  TIM1_CR1&=~BIT(0); // Close TIM1
+  TIM1_PSCRH = 0; 
+  TIM1_PSCRL = 0; // undivided
+  TIM1_ARRH = 0; 
+  TIM1_ARRL = 99; 
+
   TIM1_CCR1H = 0; 
   TIM1_CCR1L = 25; // 25% duty cycle (25 / (99 + 1)) 
   TIM1_CCMR1 = 0x60; // PWM mode 1 
