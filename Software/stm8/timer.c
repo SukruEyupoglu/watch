@@ -63,6 +63,16 @@ void timer1_PWM_init(unsigned char us)
   TIM1_CCER2|=BIT(0); // enable OC3 
   TIM1_CR1|=BIT(0); // Enable TIM1 
   TIM1_BKR|=BIT(7); // ban brakes 
+  /*
+  This option flags reside in flash at address 0x4803 and 0x4804 and values should be 0x01 and 0xFE (the complement). In debugger open a memory window and inspect content:
+
+004800  00 00 FF 01 FE 00 FF 00 ........  <- should look like this
+
+004800  00 00 FF 00 FF 00 FF 00 ........  <- this is default with AFR1 reset (SPI instead of TIMER channels)
+
+You cannot change these at runtime (easily) but have to set the options bits correctly in the IDE.
+
+*/
 }
 
 
