@@ -33,9 +33,30 @@ void timer4_on_off(unsigned char on_off)
     TIM4_CR1      &= ~(1 << TIM4_CR1_CEN); // Disable TIM4
   }
 }
-
-void timer1_PWM_init(unsigned char us)
+// 16 bit timer pwm 
+// PSCR = prescaler
+// ARR = total low and high signal
+// CCR4 = how many high at total
+void T1_CH4_PWM_init(unsigned char PSCR_H,unsigned char PSCR_L,unsigned char ARR_H,unsigned char ARR_L,unsigned char CCR4_H,unsigned char CCR4_L)
 {
+  TIM1_CR1    = 0;            // Disable TIM1
+  
+  TIM1_PSCRH  = PSCR_H;       // prescaler
+  TIM1_PSCRL  = PSCR_L;       // prescaler
+  TIM1_ARRH   = ARR_H;        // Total time
+  TIM1_ARRL   = ARR_L;        // Total time
+  TIM1_CCR4H  = CCR4_H;       // high time
+  TIM1_CCR4L  = CCR4_L;       // high time
+  
+  TIM1_CCMR4  = 0x60;         // PWM mode 1
+  TIM1_CCER4  |= (1 << 0);    // Enable OC1
+  TIM1_CR1    |= (1 << 0);    // Enable TIM1
+  TIM1_BKR    |= (1 << 7);    // OC and OCN outputs are enabled
+}
+  
+  
+  /*
+  
   // F_CLK = 16.000.000
   // frequency = F_CLK / ( ( (TIM1_PSCRH << 8) + TIM1_PSCRL) * (1 + ( (TIM1_ARRH << 8) + TIM1_ARRL) ) )
   //  4.294.836.225hz = 16.000.000 / (0xFFFF * (1 + 0xFFFE) // max value for counter frequency
@@ -49,17 +70,21 @@ void timer1_PWM_init(unsigned char us)
   // TIM4_ARR      = 0x0B; // 10 us for delay
   TIM1_ARRH      = us -1; // wrong update this line
   TIM1_ARRL      = us -1; // wrong update this line
-  TIM1_CR1      |= (1 << TIM1_CR1_OPM); // stop at max value from ARR
+  // TIM1_CR1      |= (1 << TIM1_CR1_OPM); // stop at max value from ARR
   // TIM1_IER |= (1 << TIM1_IER_UIE); // Enable Update Interrupt
   // TIM1_CR1      |= (1 << TIM1_CR1_CEN); // Enable TIM4
   // edit this lines
   TIM1_CCR4H = 0; 
   TIM1_CCR4L = 25; // 25% duty cycle (25 / (99 + 1)) 
-  TIM1_CCMR4 = 0x60; // PWM mode 1 
+  // there is 2 mode on pwm --> 1 = first high ,on matching make low , 2 = first low , on matching make high 
+  // down counting and up counting is reverse we are using up counting
+  TIM1_CCMR4 = 0x60; // PWM mode 1 (1 << 5) | (1 << 6)
+  // TIM1_CCMR4 = (1 << 4) | (1 << 5) | (1 << 6); // PWM mode 2
   TIM1_CCER4|= (1 << 0); // Enable OC1 
   
   TIM1_CR1|= (1 << 0); // Enable TIM1 
   TIM1_BKR|= (1 << 7); // ban brakes 
+  */
   /* 
   TIM1_CR1&=~BIT(0); // Close TIM1
   TIM1_PSCRH = 0; 
@@ -92,7 +117,7 @@ void timer1_PWM_init(unsigned char us)
 You cannot change these at runtime (easily) but have to set the options bits correctly in the IDE.
 
 */
-}
+
 
 
 
