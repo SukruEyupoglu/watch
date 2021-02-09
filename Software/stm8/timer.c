@@ -33,3 +33,38 @@ void timer4_on_off(unsigned char on_off)
     TIM4_CR1      &= ~(1 << TIM4_CR1_CEN); // Disable TIM4
   }
 }
+
+void timer1_PWM_init(unsigned char us)
+{
+  // F_CLK = 16.000.000
+  // frequency = F_CLK / ( ( (TIM1_PSCRH << 8) + TIM1_PSCRL) * (1 + ( (TIM1_ARRH << 8) + TIM1_ARRL) ) )
+  //  4.294.836.225hz = 16.000.000 / (0xFFFF * (1 + 0xFFFE) // max value for counter frequency
+  //  10us = 16.000.000 / (0x4 * 0x13) (1 step per 10us)
+  //  10us === TIM1_PSCRH = 0;TIM1_PSCRL = 0x4;TIM1_ARRH = 0;TIM1_ARRL = 0x13;
+  //  TIM1_PSCRL must be bigger than 2 if used
+  //  TIM1_PSCRH and TIM1_ARRH must be written first than TIM1_PSCRL and TIM1_ARRL
+  TIM1_PSCRH     = 0x00; // 8
+  TIM1_PSCRL     = 0x04; // 8
+  // TIM4_PSCR     = 0x07; // 128
+  // TIM4_ARR      = 0x0B; // 10 us for delay
+  TIM1_ARRH      = us -1; // wrong update this line
+  TIM1_ARRL      = us -1; // wrong update this line
+  TIM1_CR1      |= (1 << TIM1_CR1_OPM); // stop at max value from ARR
+  // TIM1_IER |= (1 << TIM1_IER_UIE); // Enable Update Interrupt
+  // TIM1_CR1      |= (1 << TIM1_CR1_CEN); // Enable TIM4
+  
+  TIM1_CCR1H = 0; 
+  TIM1_CCR1L = 25; // 25% duty cycle (25 / (99 + 1)) 
+  TIM1_CCMR1 = 0x60; // PWM mode 1 
+  TIM1_CCER1|=BIT(0); // Enable OC1 
+  TIM1_CCR3H = 0; 
+  TIM1_CCR3L = 75; // duty cycle of 75% (75 / (99 + 1)) 
+  TIM1_CCMR3 = 0x60; // PWM mode 1 
+  TIM1_CCER2|=BIT(0); // enable OC3 
+  TIM1_CR1|=BIT(0); // Enable TIM1 
+  TIM1_BKR|=BIT(7); // ban brakes 
+}
+
+
+
+
