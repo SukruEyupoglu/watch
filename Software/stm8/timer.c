@@ -49,7 +49,7 @@ void T1_CH4_PWM_init(unsigned char PSCR_H,unsigned char PSCR_L,unsigned char ARR
   TIM1_CCR4L  = CCR4_L;       // high time
   
   TIM1_CCMR4  = 0x60;         // PWM mode 1
-  TIM1_CCER4  |= (1 << 0);    // Enable OC1
+  TIM1_CCER1  |= (1 << 0);    // Enable OC1
   TIM1_CR1    |= (1 << 0);    // Enable TIM1
   TIM1_BKR    |= (1 << 7);    // OC and OCN outputs are enabled
 }
@@ -80,7 +80,7 @@ void T1_CH4_PWM_init(unsigned char PSCR_H,unsigned char PSCR_L,unsigned char ARR
   // down counting and up counting is reverse we are using up counting
   TIM1_CCMR4 = 0x60; // PWM mode 1 (1 << 5) | (1 << 6)
   // TIM1_CCMR4 = (1 << 4) | (1 << 5) | (1 << 6); // PWM mode 2
-  TIM1_CCER4|= (1 << 0); // Enable OC1 
+  TIM1_CCER1|= (1 << 0); // Enable OC1 
   
   TIM1_CR1|= (1 << 0); // Enable TIM1 
   TIM1_BKR|= (1 << 7); // ban brakes 
