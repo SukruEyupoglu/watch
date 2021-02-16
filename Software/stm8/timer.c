@@ -48,8 +48,10 @@ void T1_CH4_PWM_init(unsigned char PSCR_H,unsigned char PSCR_L,unsigned char ARR
   TIM1_CCR4H  = CCR4_H;       // high time
   TIM1_CCR4L  = CCR4_L;       // high time
   
-  TIM1_CCMR4  = 0x60;         // PWM mode 1
-  TIM1_CCER1  |= (1 << 0);    // Enable OC1
+  //TIM1_CCMR4  = 0x60;         // PWM mode 1
+  TIM1_CCMR4  = 0x78;         // PWM mode 2
+  TIM1_CCER2  = 0x00;         // DISABLE TIM1_CH3,CH4 CHANNEL
+  TIM1_CCER2  |= ( (1 << 4) | (1 << 5) );    // TIM1_CH4_ENABLE & MAKE LOW WHEN MATCHING
   
   TIM2_CR1    |= 0x80;        // AutoReload ON
   TIM1_CR1    |= (1 << 0);    // Enable TIM1
@@ -68,11 +70,11 @@ void T1_CH4_PWM_init(unsigned char PSCR_H,unsigned char PSCR_L,unsigned char ARR
    TIM2_ARRH =  
    TIM2_ARRL =  
  
-   TIM2_CCER1 = 0x00;  // Disable the Channels 1-2
-   TIM2_CCER1 = 0x33;  // Enable the Channel 1-2 & Low Polarity
+   TIM2_CCER1 = 0x00;  // DISABLE TIM2_CH1,CH2 CHANNEL
+   TIM2_CCER1 = 0x33;  // TIM2_CH1,CH2_ENABLE & MAKE LOW WHEN MATCHING
  
-   TIM2_CCER2 = 0x00;  // Disable the Channels 3
-   TIM2_CCER2 = 0x03;  // Enable the Channel 3 & Low Polarity
+   TIM2_CCER2 = 0x00;  // DISABLE TIM2_CH3,CH4 CHANNEL
+   TIM2_CCER2 = 0x33;  // TIM2_CH3,CH4_ENABLE & MAKE LOW WHEN MATCHING
  
    TIM2_CCMR1 = 0x78;  // PWM Mode2(CH1) - Preload  Enabled
    TIM2_CCMR2 = 0x78;  // PWM Mode2(CH2) - Preload  Enabled
