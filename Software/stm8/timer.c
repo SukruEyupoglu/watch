@@ -50,6 +50,8 @@ void T1_CH4_PWM_init(unsigned char PSCR_H,unsigned char PSCR_L,unsigned char ARR
   
   TIM1_CCMR4  = 0x60;         // PWM mode 1
   TIM1_CCER1  |= (1 << 0);    // Enable OC1
+  
+  TIM2_CR1    |= 0x80;        // AutoReload ON
   TIM1_CR1    |= (1 << 0);    // Enable TIM1
   TIM1_BKR    |= (1 << 7);    // OC and OCN outputs are enabled
 }
@@ -57,6 +59,38 @@ void T1_CH4_PWM_init(unsigned char PSCR_H,unsigned char PSCR_L,unsigned char ARR
   
   /*
   
+{
+   CLK_ICKR_HSIEN = 1;
+   while(!CLK_ICKR_HSIRDY);
+   CLK_CKDIVR = 0;
+}
+  TIM2_PSCR 
+   TIM2_ARRH =  
+   TIM2_ARRL =  
+ 
+   TIM2_CCER1 = 0x00;  // Disable the Channels 1-2
+   TIM2_CCER1 = 0x33;  // Enable the Channel 1-2 & Low Polarity
+ 
+   TIM2_CCER2 = 0x00;  // Disable the Channels 3
+   TIM2_CCER2 = 0x03;  // Enable the Channel 3 & Low Polarity
+ 
+   TIM2_CCMR1 = 0x78;  // PWM Mode2(CH1) - Preload  Enabled
+   TIM2_CCMR2 = 0x78;  // PWM Mode2(CH2) - Preload  Enabled
+   TIM2_CCMR3 = 0x78;  // PWM Mode2(CH3) - Preload  Enabled
+ 
+   TIM2_CCR1H = 
+   TIM2_CCR1L =  
+ 
+   TIM2_CCR2H =  
+   TIM2_CCR2L = 
+ 
+   TIM2_CCR3H =  
+   TIM2_CCR3L = 
+ 
+   TIM2_CR1  |= 0x80;  // AUTORELOAD
+   TIM2_CR1  |= 0x01;  
+   
+   
   // F_CLK = 16.000.000
   // frequency = F_CLK / ( ( (TIM1_PSCRH << 8) + TIM1_PSCRL) * (1 + ( (TIM1_ARRH << 8) + TIM1_ARRL) ) )
   //  4.294.836.225hz = 16.000.000 / (0xFFFF * (1 + 0xFFFE) // max value for counter frequency
