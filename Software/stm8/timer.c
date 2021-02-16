@@ -76,9 +76,9 @@ void T1_CH4_PWM_init(unsigned char PSCR_H,unsigned char PSCR_L,unsigned char ARR
    TIM2_CCER2 = 0x00;  // DISABLE TIM2_CH3,CH4 CHANNEL
    TIM2_CCER2 = 0x33;  // TIM2_CH3,CH4_ENABLE & MAKE LOW WHEN MATCHING
  
-   TIM2_CCMR1 = 0x78;  // PWM Mode2(CH1) - Preload  Enabled
-   TIM2_CCMR2 = 0x78;  // PWM Mode2(CH2) - Preload  Enabled
-   TIM2_CCMR3 = 0x78;  // PWM Mode2(CH3) - Preload  Enabled
+   TIM2_CCMR1 = 0x78;  // PWM MODE_2 ON CH1 AND PRELOAD ON
+   TIM2_CCMR2 = 0x78;  // PWM MODE_2 ON CH2 AND PRELOAD ON
+   TIM2_CCMR3 = 0x78;  // PWM MODE_2 ON CH3 AND PRELOAD ON
  
    TIM2_CCR1H = 
    TIM2_CCR1L =  
