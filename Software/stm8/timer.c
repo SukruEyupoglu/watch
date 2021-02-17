@@ -39,21 +39,22 @@ void timer4_on_off(unsigned char on_off)
 // CCR4 = how many high at total
 void T1_CH4_PWM_init(unsigned char PSCR_H,unsigned char PSCR_L,unsigned char ARR_H,unsigned char ARR_L,unsigned char CCR4_H,unsigned char CCR4_L)
 {
+  // CLK_CKDIVR = 0;  // 16MHZ cpu frequency
   TIM1_CR1    = 0;            // Disable TIM1
   
   TIM1_PSCRH  = PSCR_H;       // prescaler
   TIM1_PSCRL  = PSCR_L;       // prescaler
-  TIM1_ARRH   = ARR_H;        // Total time
-  TIM1_ARRL   = ARR_L;        // Total time
-  TIM1_CCR4H  = CCR4_H;       // high time
-  TIM1_CCR4L  = CCR4_L;       // high time
+  TIM1_ARRH   = ARR_H;        // frequency(total time)
+  TIM1_ARRL   = ARR_L;        // frequency(total time)
+  TIM1_CCR4H  = CCR4_H;       // duty cycle
+  TIM1_CCR4L  = CCR4_L;       // duty cycle
   
-  //TIM1_CCMR4  = 0x60;         // PWM mode 1
-  TIM1_CCMR4  = 0x78;         // PWM mode 2
+  // TIM1_CCMR4  = 0x60;         // PWM mode 1 , firstly start at low when matching make high
+  TIM1_CCMR4  = 0x78;         // PWM mode 2 , firstly start at high when matching make low
   TIM1_CCER2  = 0x00;         // DISABLE TIM1_CH3,CH4 CHANNEL
-  TIM1_CCER2  |= ( (1 << 4) | (1 << 5) );    // TIM1_CH4_ENABLE & MAKE LOW WHEN MATCHING
+  TIM1_CCER2  |= ( (1 << 4) | (1 << 5) );    // TIM1_CH4_ENABLE & MAKE reverse WHEN MATCHING
   
-  TIM2_CR1    |= 0x80;        // AutoReload ON
+  TIM2_CR1    |= 0x80;        // AutoReload ON , no effect on pwm
   TIM1_CR1    |= (1 << 0);    // Enable TIM1
   TIM1_BKR    |= (1 << 7);    // OC and OCN outputs are enabled
 }
