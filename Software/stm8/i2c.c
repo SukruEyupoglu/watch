@@ -2,7 +2,7 @@
 #include "stm8s.h"
 
 void i2c_init(void) {
-	I2C_CR1 = 0;
+    I2C_CR1 = 0;
     I2C_FREQR = 0x10; // 16MHZ peripheral clock (not master clock)
     I2C_CCRL = 0x1A; // 400kHz
     I2C_CCRH = ( 0x0D | (1 << 7) );
@@ -10,7 +10,17 @@ void i2c_init(void) {
     I2C_CR1 = (1 << I2C_CR1_PE);
 }
 /*
-void i2c_init() {
+void i2c_init() { // 100khz
+    I2C_CR1 = 0;
+    I2C_FREQR = 1;
+    I2C_CCRL = 0x32; // 100kHz
+    I2C_OARH = (1 << I2C_OARH_ADDMODE); // 7-bit addressing
+    I2C_CR1 = (1 << I2C_CR1_PE);
+}
+*/
+/*
+void i2c_init() { 
+    I2C_CR1 = 0;
     I2C_FREQR = (1 << I2C_FREQR_FREQ1);
     I2C_CCRL = 0x0A; // 100kHz
     I2C_OARH = (1 << I2C_OARH_ADDMODE); // 7-bit addressing
