@@ -1,6 +1,11 @@
 
 #include "stm8s.h"
 #include "i2c.h"
+#include "spi.h"
+#include "beep.h"
+#include "gpio.h"
+
+unsigned char num_to_dig(unsigned char num);
 
 
 int main(void)
@@ -8,6 +13,8 @@ int main(void)
 	// CLK_CKDIVR = 0; // 16mhz
 	// default 2mhz
 	i2c_init();
+	spi_init();
+	
 	unsigned char d[0x13];
 
 	while(1)
@@ -20,17 +27,21 @@ int main(void)
 		i2c_start();
 		i2c_write_addr(0xD1); // read
 		i2c_read_arr(d,0x13);
+		i2c_stop();
+		
+		spi(num_to_dig(d[hour])); //first hour
+		spi(num_to_dig(d[minute])); //second minute
+		
+		idle_mode();  //  1 minute wait when check mode button
 	}
-
 }
 
-
-unsigned char number_to_digit(unsigned char num)
+unsigned char num_to_dig(unsigned char num)
 {
 	switch(num)
 	{
 		case 0:
-		{
+		{		     // .GFE DCBA 7 segment display
 			return 0x3F; // 0011 1111 
 		}
 		break;
