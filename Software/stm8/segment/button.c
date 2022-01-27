@@ -36,13 +36,13 @@ void boot_button_first_pressed_function(void)
     }
     if(UP_BUTTON_PRESS)
     {
-      while(UP_BUTTON_PRESS);
       increase_minute();
+      while(UP_BUTTON_PRESS);
     }
     if(DOWN_BUTTON_PRESS)
     {
-      while(DOWN_BUTTON_PRESS);
       decrease_minute();
+      while(DOWN_BUTTON_PRESS);
     }
   }
 }
@@ -57,13 +57,13 @@ void boot_button_second_pressed_function(void)
     }
     if(UP_BUTTON_PRESS)
     {
-      while(UP_BUTTON_PRESS);
       increase_hour();
+      while(UP_BUTTON_PRESS);
     }
     if(DOWN_BUTTON_PRESS)
     {
-      while(DOWN_BUTTON_PRESS);
       decrease_hour();
+      while(DOWN_BUTTON_PRESS);
     }
   }
 }
