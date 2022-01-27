@@ -1,7 +1,18 @@
+
+#include "stm8s.h"
+#include "i2c.h"
+#include "spi.h"
+#include "beep.h"
+#include "gpio.h"
+
+
 int main(void)
 {
 	// CLK_CKDIVR = 0; // 16mhz
 	// default 2mhz
+	
+	// if u want close clocks for lower energy CLK_CKDIVR
+	
 	i2c_init();
 	spi_init();
 	
@@ -22,8 +33,8 @@ int main(void)
 		// WRITE HOUR AND MINUTE
 		spi(num_to_dig(d[hour])); //first hour
 		spi(num_to_dig(d[minute])); //second minute
-    // CHECK ALERT FLAG
-    check_alert();
+		// CHECK ALERT FLAG
+		check_alert();
 		// WHILE IDLE MODE CHECK BOOT BUTTON EVERYTIME
 		idle_mode();  //  1 minute wait when check mode button
 	}
