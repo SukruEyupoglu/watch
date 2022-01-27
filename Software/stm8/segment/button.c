@@ -33,6 +33,7 @@ void boot_button_first_pressed_function(void)
       while(BOOT_BUTTON_PRESS);
       turn_on_hour_dot_light();
       boot_button_second_pressed_function();
+      break;
     }
     if(UP_BUTTON_PRESS)
     {
@@ -54,6 +55,7 @@ void boot_button_second_pressed_function(void)
     {
       while(BOOT_BUTTON_PRESS);
       boot_button_third_pressed_function();
+      break;
     }
     if(UP_BUTTON_PRESS)
     {
