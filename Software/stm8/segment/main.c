@@ -8,6 +8,7 @@
 
 int main(void)
 {
+	unsigned char d[0x13];
 	// CLK_CKDIVR = 0; // 16mhz
 	// default 2mhz
 	
@@ -16,7 +17,7 @@ int main(void)
 	i2c_init();
 	spi_init();
 	
-	unsigned char d[0x13];
+
 
 	while(1)
 	{
