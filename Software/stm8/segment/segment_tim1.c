@@ -26,7 +26,25 @@ void tim1_init(unsigned short sec)
 }
 
 void timer_isr() __interrupt(TIM1_ISR) {
-    // code here
+  
+  
+		// I2C TAKE THE CURSOR TO START
+		i2c_start();
+		i2c_write_addr(0xD0); // write
+		i2c_write(0x0); // cursor setting
+		i2c_stop();
+		// GET ALL DATA FROM DS3231 TO d[0x13]
+		i2c_start();
+		i2c_write_addr(0xD1); // read
+		i2c_read_arr(d,0x13);
+		i2c_stop();
+		// WRITE HOUR AND MINUTE
+		spi(num_to_dig(d[hour])); //first hour
+		spi(num_to_dig(d[minute])); //second minute
+		// CHECK ALERT FLAG
+		check_alert();
+  
+  
     TIM1_SR &= ~(1 << TIM1_SR_UIF);
 }
 
