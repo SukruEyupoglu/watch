@@ -14,6 +14,9 @@ void tim1_init(unsigned short sec)
   // a = 20.000 -1 = 19.999 = 4E1F = 4E , 1F
   TIM1->ARRH = 0x4E;
   TIM1->ARRL = 0x1F;
+  
+  TIM1_CR1      |= (1 << TIM1_CR1_OPM); // stop at max value from ARR
+  TIM1_IER      |= (1 << TIM1_IER_UIE); // Enable Update Interrupt
   /*
   const uint16_t tim1_compare_reg1 = 4000; // 25% duty cycle
   TIM1->CCR1H = (tim1_compare_reg1 >> 8);
@@ -21,6 +24,13 @@ void tim1_init(unsigned short sec)
   */
   TIM1->CR1 = TIM1_CR1_CEN; // Enable the counter
 }
+
+void timer_isr() __interrupt(TIM1_ISR) {
+    // code here
+    TIM1_SR &= ~(1 << TIM1_SR_UIF);
+}
+
+
 
   /*
   const uint16_t tim1_compare_reg1 = 4000; // 25% duty cycle
