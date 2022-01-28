@@ -9,7 +9,7 @@
 unsigned char tim1_interrupt_flag = 1;
 
 // can be unused ignore this
-void timer_isr() __interrupt(TIM1_ISR) {
+void timer_isr() __interrupt(TIM1_OVF_ISR) {
   tim1_interrupt_flag = 1;
   TIM1_SR1 &= ~(1 << TIM1_SR_UIF);
 }
@@ -62,11 +62,11 @@ void beep_init(unsigned char beep_freq);
 
 int main(void)
 {
-	unsigned char hour;
-	unsigned char minute;
-	unsigned char second;
-	unsigned char alarm_hour;
-	unsigned char alarm_minute;
+	//unsigned char hour;
+	//unsigned char minute;
+	//unsigned char second;
+	//unsigned char alarm_hour;
+	//unsigned char alarm_minute;
 	unsigned char d[0x13];
 	// CLK_CKDIVR = 0; // 16mhz
 	// default 2mhz
@@ -100,7 +100,7 @@ int main(void)
 			    
 			tim1_interrupt_flag = 0;
 			
-			tim1_init( 240 + ( 60 - second ) );
+			tim1_init( 240 + ( 60 - reg2time( d[DS3231_HOUR_ADDR] ) ) );
 		}
 		check_boot_button();
 	}
