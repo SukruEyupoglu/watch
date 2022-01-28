@@ -3,13 +3,22 @@
 #include "i2c.h"
 #include "spi.h"
 #include "beep.h"
-#include "button.h"
 
 void timer_isr() __interrupt(TIM1_ISR);
 void tim1_init(unsigned short sec);
 unsigned char time2reg(unsigned char time);
 unsigned char reg2time(unsigned char reg);
 void place_ds3231_cursor(unsigned char x);
+void write_ds3231_minute(unsigned char minute);
+void write_ds3231_hour(unsigned char hour);
+void button_init(void);
+void check_boot_button(void);
+void boot_button_first_pressed_function(void);
+void boot_button_second_pressed_function(void);
+void boot_button_third_pressed_function(void);
+unsigned char num2dig(unsigned char num);
+
+
 
 #define DS3231_SECOND_ADDR 0x00
 #define DS3231_MINUTE_ADDR 0x01
@@ -61,11 +70,12 @@ int main(void)
 			i2c_read_arr(d,0x13);
 			i2c_stop();
 			// WRITE HOUR AND MINUTE
-			spi(num2dig( reg2time( d[DS3231_HOUR_ADDR]) ); //first hour
-			spi(num2dig( reg2time( d[DS3231_MINUTE_ADDR]) ); //second minute
+			spi(num2dig(reg2time(d[DS3231_HOUR_ADDR]) ) ); //first hour
+			spi(num2dig(reg2time(d[DS3231_MINUTE_ADDR]) / 5 ) ); //second minute
 			LATCH;
 			// CHECK ALERT FLAG
-			check_alert( alarm _minute );
+			// check_alert( alarm _minute );
+			    
 			tim1_interrupt_flag = 0;
 			
 			tim1_init( 240 + ( 60 - second ) );
@@ -153,7 +163,7 @@ void check_boot_button(void)
   if(BOOT_BUTTON_PRESS)
   {
     while(BOOT_BUTTON_PRESS);
-    turn_on_minute_dot_light();
+    // alarm stop
     boot_button_first_pressed_function();
   }
 }
