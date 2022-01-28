@@ -118,6 +118,7 @@ void tim1_init(unsigned short sec)
   TIM1_ARRL = 0x50;
   
   TIM1_CR1      |= (1 << TIM1_CR1_OPM); // stop at max value from ARR
+  TIM4_EGR 	= 1;
   TIM1_IER      |= (1 << TIM1_IER_UIE); // Enable Update Interrupt
   TIM1_CR1 = TIM1_CR1_CEN; // Enable the counter
 }
