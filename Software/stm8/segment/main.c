@@ -147,7 +147,7 @@ void write_ds3231_hour(unsigned char hour)
 	    i2c_start();
 	    i2c_write_addr(0xD0);
 	    i2c_write_addr(DS3231_HOUR_ADDR);
-	    i2c_write(time2reg(hour) )
+	    i2c_write( (time2reg(hour) | (1 << 6) ) ) // ds3231 12 hour select make high 6. bit
 	    i2c_stop();
     }
 }
