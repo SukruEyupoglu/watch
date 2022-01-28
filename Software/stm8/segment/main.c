@@ -1,23 +1,37 @@
 
 #include "stm8s.h"
-#include "i2c.h"
-#include "spi.h"
 #include "beep.h"
 
 void timer_isr() __interrupt(TIM1_ISR);
 void tim1_init(unsigned short sec);
+
 unsigned char time2reg(unsigned char time);
 unsigned char reg2time(unsigned char reg);
+
 void place_ds3231_cursor(unsigned char x);
 void write_ds3231_minute(unsigned char minute);
 void write_ds3231_hour(unsigned char hour);
+
 void button_init(void);
 void check_boot_button(void);
 void boot_button_first_pressed_function(void);
 void boot_button_second_pressed_function(void);
 void boot_button_third_pressed_function(void);
+
 unsigned char num2dig(unsigned char num);
 
+void spi_init(void);
+unsigned char spi(unsigned char data);
+
+void i2c_init(void);
+void i2c_start(void);
+void i2c_stop(void);
+void i2c_write(uint8_t data);
+void i2c_write_addr(uint8_t addr);
+uint8_t i2c_read();
+void i2c_read_arr(uint8_t *buf, int len);
+
+void beep_init(unsigned char beep_freq);
 
 
 #define DS3231_SECOND_ADDR 0x00
@@ -292,7 +306,101 @@ unsigned char num2dig(unsigned char num)
 	return 0x0;
 }
 			    
-			    
+void spi_init(void)
+{
+  // 500KHZ spi clk
+  // SPI_CR1_MSTR  = spi master bit
+  // SPI_CR1_SPE = spi enable bit
+  // SPI_CR1_BR = baud rate bits[3,4,5] divider 
+  // SPI_CR1_BR = 000; --> FMASTER / 2 --> 16 / 2 = 8 mhz
+  // SPI_CR1_BR = 100; --> FMASTER / 32 --> 16 / 32 = 500 khz
+  // SPI_CR1 = (1 << SPI_CR1_MSTR) | (1 << SPI_CR1_SPE) | (1 << SPI_CR1_BR1);
+  
+  // 8MHZ spi clk
+  SPI_CR1 = (1 << SPI_CR1_MSTR) | (1 << SPI_CR1_SPE);
+  // NOT CHANGE THIS READ DATASHEET
+  //SPI_CR2 = (1 << SPI_CR2_SSM) | (1 << SPI_CR2_SSI) | (1 << SPI_CR2_BDM) | (1 << SPI_CR2_BDOE);
+}
+
+unsigned char spi(unsigned char data)
+{
+  while ( (SPI_SR & (1 << SPI_SR_TXE) ) != (1 << SPI_SR_TXE) );
+  SPI_DR = data;
+  while ( (SPI_SR & (1 << SPI_SR_RXNE) ) != (1 << SPI_SR_RXNE) );
+  return SPI_DR;
+}
+
+void i2c_init(void) {
+    I2C_CR1 = 0;
+    I2C_FREQR = 0x10; // 16MHZ peripheral clock (not master clock)
+    I2C_CCRL = 0x1A; // 400kHz
+    I2C_CCRH = ( 0x0D | (1 << 7) );
+    I2C_OARH = (1 << I2C_OARH_ADDMODE); // 7-bit addressing
+    I2C_CR1 = (1 << I2C_CR1_PE);
+}
+/*
+void i2c_init() { // 100khz
+    I2C_CR1 = 0;
+    I2C_FREQR = 1;
+    I2C_CCRL = 0x32; // 100kHz
+    I2C_OARH = (1 << I2C_OARH_ADDMODE); // 7-bit addressing
+    I2C_CR1 = (1 << I2C_CR1_PE);
+}
+*/
+/*
+void i2c_init() { 
+    I2C_CR1 = 0;
+    I2C_FREQR = (1 << I2C_FREQR_FREQ1);
+    I2C_CCRL = 0x0A; // 100kHz
+    I2C_OARH = (1 << I2C_OARH_ADDMODE); // 7-bit addressing
+    I2C_CR1 = (1 << I2C_CR1_PE);
+}
+*/
+void i2c_start(void) {
+    I2C_CR2 |= (1 << I2C_CR2_START);
+    while (!(I2C_SR1 & (1 << I2C_SR1_SB)));
+}
+
+void i2c_stop(void) {
+    I2C_CR2 |= (1 << I2C_CR2_STOP);
+    while (I2C_SR3 & (1 << I2C_SR3_MSL));
+}
+
+void i2c_write(uint8_t data) {
+    I2C_DR = data;
+    while (!(I2C_SR1 & (1 << I2C_SR1_TXE)));
+}
+
+void i2c_write_addr(uint8_t addr) {
+    I2C_DR = addr;
+    while (!(I2C_SR1 & (1 << I2C_SR1_ADDR)));
+    (void) I2C_SR3; // check BUS_BUSY
+    I2C_CR2 |= (1 << I2C_CR2_ACK);
+}
+
+uint8_t i2c_read() {
+    I2C_CR2 &= ~(1 << I2C_CR2_ACK);
+    i2c_stop();
+    while (!(I2C_SR1 & (1 << I2C_SR1_RXNE)));
+    return I2C_DR;
+}
+
+void i2c_read_arr(uint8_t *buf, int len) {
+    while (len-- > 1) {
+        I2C_CR2 |= (1 << I2C_CR2_ACK);
+        while (!(I2C_SR1 & (1 << I2C_SR1_RXNE)));
+        *(buf++) = I2C_DR;
+    }
+    *buf = i2c_read();
+}
+
+// beep frequency 500hz,1Khz,2Khz,4Khz
+// 0 = 500hz , 1 = 1Khz , 2 = 2Khz , 4 = 4Khz
+void beep_init(unsigned char beep_freq)
+{
+  BEEP_CSR = ( (1 << 5) | (32 / (2 * beep_freq) ) );
+}
+
 			    
 			    
 			    
