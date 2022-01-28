@@ -46,8 +46,8 @@ int main(void)
 			i2c_read_arr(d,0x13);
 			i2c_stop();
 			// WRITE HOUR AND MINUTE
-			spi(num2dig(d[hour])); //first hour
-			spi(num2dig(d[minute])); //second minute
+			spi(num2dig( reg2time( d[DS3231_HOUR_ADDR]) ); //first hour
+			spi(num2dig( reg2time( d[DS3231_MINUTE_ADDR]) ); //second minute
 			latch();
 			// CHECK ALERT FLAG
 			check_alert( alarm _minute );
