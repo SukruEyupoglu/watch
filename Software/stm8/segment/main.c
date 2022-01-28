@@ -268,12 +268,12 @@ unsigned char num2dig(unsigned char num)
 		break;
 		case 5:
 		{
-			return 0x6C; // 0110 1101 
+			return 0x6D; // 0110 1101 
 		}
 		break;
 		case 6:
 		{
-			return 0x7C; // 0111 1101 
+			return 0x7D; // 0111 1101 
 		}
 		break;
 		case 7:
