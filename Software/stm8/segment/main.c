@@ -1,6 +1,5 @@
 
 #include "stm8s.h"
-#include "beep.h"
 
 void timer_isr() __interrupt(TIM1_ISR);
 void tim1_init(unsigned short sec);
