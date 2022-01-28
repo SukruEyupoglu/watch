@@ -33,7 +33,6 @@ int main(void)
 	
 	i2c_init();
 	spi_init();
-	tim1_init(1);
 
 
 	while(1)
