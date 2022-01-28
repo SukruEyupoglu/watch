@@ -100,7 +100,7 @@ int main(void)
 			    
 			tim1_interrupt_flag = 0;
 			
-			tim1_init( 240 + ( 60 - reg2time( d[DS3231_HOUR_ADDR] ) ) );
+			tim1_init( 240 + ( 60 - reg2time( d[DS3231_SECOND_ADDR] ) ) );
 		}
 		check_boot_button();
 	}
