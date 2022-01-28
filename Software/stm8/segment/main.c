@@ -1,7 +1,16 @@
 
 #include "stm8s.h"
 
-void timer_isr() __interrupt(TIM1_ISR);
+#define TIM1_SR_UIF 0
+#define TIM1_IER_UIE 0
+#define TIM1_CR1_OPM 3
+#define TIM1_CR1_CEN 0
+unsigned char tim1_interrupt_flag = 1;
+
+void timer_isr() __interrupt(TIM1_ISR) {
+  tim1_interrupt_flag = 1;
+  TIM1_SR1 &= ~(1 << TIM1_SR_UIF);
+}
 void tim1_init(unsigned short sec);
 
 unsigned char time2reg(unsigned char time);
@@ -47,9 +56,6 @@ void beep_init(unsigned char beep_freq);
 
 // active high
 #define LATCH PC_ODR |= (1 << 4);PC_ODR &= ~(1 << 4)
-
-unsigned char tim1_interrupt_flag = 1;
-
 
 int main(void)
 {
@@ -97,25 +103,20 @@ int main(void)
 	}
 }
 
-void timer_isr() __interrupt(TIM1_ISR) {
-  tim1_interrupt_flag = 1;
-  TIM1_SR &= ~(1 << TIM1_SR_UIF);
-}
-
 void tim1_init(unsigned short sec)
 {
   // THIS TIMER MAKED FOR LONG TIMING , ONLY SECOND
   // max second = 1638sec , min second = 1sec
   // frequency = F_CLK / ( ( (TIM1_PSCRH << 8) + TIM1_PSCRL) * (1 + ( (TIM1_ARRH << 8) + TIM1_ARRL) ) )
   TIM1_CR1    = 0;            // Disable TIM1
-  TIM1->PSCRH = ( ( sec * 40 ) >> 8);
-  TIM1->PSCRL = ( ( sec * 40 ) & 0xFF);
-  TIM1->ARRH = 0xC3;
-  TIM1->ARRL = 0x50;
+  TIM1_PSCRH = ( ( sec * 40 ) >> 8);
+  TIM1_PSCRL = ( ( sec * 40 ) & 0xFF);
+  TIM1_ARRH = 0xC3;
+  TIM1_ARRL = 0x50;
   
   TIM1_CR1      |= (1 << TIM1_CR1_OPM); // stop at max value from ARR
   TIM1_IER      |= (1 << TIM1_IER_UIE); // Enable Update Interrupt
-  TIM1->CR1 = TIM1_CR1_CEN; // Enable the counter
+  TIM1_CR1 = TIM1_CR1_CEN; // Enable the counter
 }
 
 unsigned char time2reg(unsigned char time)
@@ -135,7 +136,7 @@ void write_ds3231_minute(unsigned char minute)
 	    i2c_start();
 	    i2c_write_addr(0xD0);
 	    i2c_write_addr(DS3231_MINUTE_ADDR);
-	    i2c_write(time2reg(minute) )
+	    i2c_write(time2reg(minute) );
 	    i2c_stop();
     }
 }
@@ -147,7 +148,7 @@ void write_ds3231_hour(unsigned char hour)
 	    i2c_start();
 	    i2c_write_addr(0xD0);
 	    i2c_write_addr(DS3231_HOUR_ADDR);
-	    i2c_write( (time2reg(hour) | (1 << 6) ) ) // ds3231 12 hour select make high 6. bit
+	    i2c_write( (time2reg(hour) | (1 << 6) ) ); // ds3231 12 hour select make high 6. bit
 	    i2c_stop();
     }
 }
