@@ -5,12 +5,15 @@
 #define TIM1_IER_UIE 0
 #define TIM1_CR1_OPM 3
 #define TIM1_CR1_CEN 0
+
 unsigned char tim1_interrupt_flag = 1;
 
+// can be unused ignore this
 void timer_isr() __interrupt(TIM1_ISR) {
   tim1_interrupt_flag = 1;
   TIM1_SR1 &= ~(1 << TIM1_SR_UIF);
 }
+
 void tim1_init(unsigned short sec);
 
 unsigned char time2reg(unsigned char time);
