@@ -9,6 +9,13 @@ void timer_isr() __interrupt(TIM1_ISR);
 void tim1_init(unsigned short sec);
 unsigned char time2reg(unsigned char time);
 unsigned char reg2time(unsigned char reg);
+void place_ds3231_cursor(unsigned char x);
+
+#define DS3231_SECOND_ADDR 0x00
+#define DS3231_MINUTE_ADDR 0x01
+#define DS3231_HOUR_ADDR 0x02
+#define DS3231_ALARM_MINUTE_ADDR 0x08
+#define DS3231_ALARM_HOUR_ADDR 0x09
 
 unsigned char tim1_interrupt_flag = 1;
 
@@ -33,11 +40,7 @@ int main(void)
 	{
 		if(tim1_interrupt_flag == 1)
 		{
-			// I2C TAKE THE CURSOR TO START
-			i2c_start();
-			i2c_write_addr(0xD0); // write
-			i2c_write(0x0); // cursor setting
-			i2c_stop();
+			place_ds3231_cursor(0x00);
 			// GET ALL DATA FROM DS3231 TO d[0x13]
 			i2c_start();
 			i2c_write_addr(0xD1); // read
@@ -87,6 +90,42 @@ unsigned char reg2time(unsigned char reg)
 {
     return (((reg >> 4) * 10) + (reg % 16));
 }
+
+void write_ds3231_minute(unsigned char minute)
+{
+    if(minute < 60)
+    {
+	    i2c_start();
+	    i2c_write_addr(0xD0);
+	    i2c_write_addr(DS3231_MINUTE_ADDR);
+	    i2c_write(time2reg(minute) )
+	    i2c_stop();
+    }
+}
+void write_ds3231_hour(unsigned char hour)
+{
+    if(hour < 12)
+    {
+	    i2c_start();
+	    i2c_write_addr(0xD0);
+	    i2c_write_addr(DS3231_HOUR_ADDR);
+	    i2c_write(time2reg(hour) )
+	    i2c_stop();
+    }
+}
+
+void place_ds3231_cursor(unsigned char x)
+{
+			// I2C TAKE THE CURSOR TO START
+			i2c_start();
+			i2c_write_addr(0xD0); // write
+			i2c_write(x); // cursor setting
+			i2c_stop();
+}
+
+
+
+
 
 
 
