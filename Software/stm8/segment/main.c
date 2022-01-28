@@ -17,6 +17,10 @@ void place_ds3231_cursor(unsigned char x);
 #define DS3231_ALARM_MINUTE_ADDR 0x08
 #define DS3231_ALARM_HOUR_ADDR 0x09
 
+
+// active high
+#define LATCH PC_ODR |= (1 << 4);PC_ODR &= ~(1 << 4)
+
 unsigned char tim1_interrupt_flag = 1;
 
 
@@ -33,8 +37,14 @@ int main(void)
 	
 	i2c_init();
 	spi_init();
-
-
+	
+	// latch init
+	PC_DDR |= (1 << 4); // direction output
+	PC_CR1 |= (1 << 4); // make push-pull
+	PC_ODR &= ~(1 << 4);// make low first
+		
+		
+		
 	while(1)
 	{
 		if(tim1_interrupt_flag == 1)
@@ -48,7 +58,7 @@ int main(void)
 			// WRITE HOUR AND MINUTE
 			spi(num2dig( reg2time( d[DS3231_HOUR_ADDR]) ); //first hour
 			spi(num2dig( reg2time( d[DS3231_MINUTE_ADDR]) ); //second minute
-			latch();
+			LATCH;
 			// CHECK ALERT FLAG
 			check_alert( alarm _minute );
 			tim1_interrupt_flag = 0;
