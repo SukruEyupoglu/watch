@@ -67,7 +67,7 @@ int main(void)
 	//unsigned char second;
 	//unsigned char alarm_hour;
 	//unsigned char alarm_minute;
-	unsigned char d[0x13] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+	unsigned char d[0x13];
 	// CLK_CKDIVR = 0; // 16mhz
 	// default 2mhz
 	
