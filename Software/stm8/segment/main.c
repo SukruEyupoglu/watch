@@ -7,12 +7,19 @@
 
 void timer_isr() __interrupt(TIM1_ISR);
 void tim1_init(unsigned short sec);
+unsigned char time2reg(unsigned char time);
+unsigned char reg2time(unsigned char reg);
 
 unsigned char tim1_interrupt_flag = 1;
 
 
 int main(void)
 {
+	unsigned char hour;
+	unsigned char minute;
+	unsigned char second;
+	unsigned char alarm_hour;
+	unsigned char alarm_minute;
 	unsigned char d[0x13];
 	// CLK_CKDIVR = 0; // 16mhz
 	// default 2mhz
@@ -37,11 +44,14 @@ int main(void)
 			i2c_read_arr(d,0x13);
 			i2c_stop();
 			// WRITE HOUR AND MINUTE
-			spi(num_to_dig(d[hour])); //first hour
-			spi(num_to_dig(d[minute])); //second minute
+			spi(num2dig(d[hour])); //first hour
+			spi(num2dig(d[minute])); //second minute
+			latch();
 			// CHECK ALERT FLAG
-			check_alert();
+			check_alert( alarm _minute );
 			tim1_interrupt_flag = 0;
+			
+			tim1_init( 240 + ( 60 - second ) );
 		}
 		check_boot_button();
 	}
@@ -66,6 +76,16 @@ void tim1_init(unsigned short sec)
   TIM1_CR1      |= (1 << TIM1_CR1_OPM); // stop at max value from ARR
   TIM1_IER      |= (1 << TIM1_IER_UIE); // Enable Update Interrupt
   TIM1->CR1 = TIM1_CR1_CEN; // Enable the counter
+}
+
+unsigned char time2reg(unsigned char time)
+{
+    return (((time / 10) << 4) + (time % 10));
+}
+
+unsigned char reg2time(unsigned char reg)
+{
+    return (((reg >> 4) * 10) + (reg % 16));
 }
 
 
