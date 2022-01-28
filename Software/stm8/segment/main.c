@@ -67,7 +67,7 @@ int main(void)
 	//unsigned char second;
 	//unsigned char alarm_hour;
 	//unsigned char alarm_minute;
-	unsigned char d[0x13];
+	unsigned char d[0x13] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 	// CLK_CKDIVR = 0; // 16mhz
 	// default 2mhz
 	
@@ -304,9 +304,10 @@ unsigned char num2dig(unsigned char num)
 		default:
 		{
 			return 0x0;
-		}	
+		}
+		break;
 	}
-	return 0x0;
+	//return 0x0;
 }
 			    
 void spi_init(void)
