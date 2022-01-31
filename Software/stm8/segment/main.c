@@ -6,34 +6,20 @@
 #define TIM1_CR1_OPM 3
 #define TIM1_CR1_CEN 0
 
-unsigned char tim1_interrupt_flag = 1;
-
-// can be unused ignore this
-void timer_isr() __interrupt(TIM1_OVF_ISR) {
-  tim1_interrupt_flag = 1;
-  TIM1_SR1 &= ~(1 << TIM1_SR_UIF);
-}
-
 void tim1_init(unsigned short sec);
-
 unsigned char time2reg(unsigned char time);
 unsigned char reg2time(unsigned char reg);
-
 void place_ds3231_cursor(unsigned char x);
 void write_ds3231_minute(unsigned char minute);
 void write_ds3231_hour(unsigned char hour);
-
 void button_init(void);
 void check_boot_button(void);
 void boot_button_first_pressed_function(void);
 void boot_button_second_pressed_function(void);
 void boot_button_third_pressed_function(void);
-
 unsigned char num2dig(unsigned char num);
-
 void spi_init(void);
 unsigned char spi(unsigned char data);
-
 void i2c_init(void);
 void i2c_start(void);
 void i2c_stop(void);
@@ -41,7 +27,6 @@ void i2c_write(uint8_t data);
 void i2c_write_addr(uint8_t addr);
 uint8_t i2c_read();
 void i2c_read_arr(uint8_t *buf, int len);
-
 void beep_init(unsigned char beep_freq);
 
 
@@ -60,10 +45,21 @@ void beep_init(unsigned char beep_freq);
 // active high
 #define LATCH PC_ODR |= (1 << 4);PC_ODR &= ~(1 << 4)
 
+unsigned char tim1_interrupt_flag = 0;
+unsigned char blink_flag = 0;
+
+void timer_isr() __interrupt(TIM1_OVF_ISR) {
+  tim1_interrupt_flag++;
+  blink_flag++;
+  TIM1_SR1 &= ~(1 << TIM1_SR_UIF);
+}
+
+
+
 int main(void)
 {
-	//unsigned char hour;
-	//unsigned char minute;
+	unsigned char hour = 0;
+	unsigned char minute = 0;
 	//unsigned char second;
 	//unsigned char alarm_hour;
 	//unsigned char alarm_minute;
@@ -79,29 +75,52 @@ int main(void)
 	PC_CR1 |= (1 << 4); // make push-pull
 	PC_ODR &= ~(1 << 4);// make low first
 		
-		
+	tim1_init(1);	// nearly 100ms 
 		
 	while(1)
 	{
-		if(tim1_interrupt_flag == 1)
+		if(tim1_interrupt_flag <= 1)
 		{
+			disable_interrupts();
 			place_ds3231_cursor(0x00);
 			// GET ALL DATA FROM DS3231 TO d[0x13]
 			i2c_start();
 			i2c_write_addr(0xD1); // read
-			i2c_read_arr(d,0x13);
-			i2c_stop();
-			// WRITE HOUR AND MINUTE
-			spi(num2dig(reg2time(d[DS3231_HOUR_ADDR]) ) ); //first hour
-			spi(num2dig(reg2time(d[DS3231_MINUTE_ADDR]) / 5 ) ); //second minute
-			LATCH;
-			// CHECK ALERT FLAG
-			// check_alert( alarm _minute );
-			    
-			tim1_interrupt_flag = 0;
+			i2c_read_arr(d,0x13); // inside i2c_stop(); there are 
 			
-			tim1_init( 240 + ( 60 - reg2time( d[DS3231_SECOND_ADDR] ) ) );
+			hour = num2dig(reg2time(d[DS3231_HOUR_ADDR]) );
+			minute = num2dig(reg2time(d[DS3231_MINUTE_ADDR]) / 5 );
+			
+			// WRITE HOUR AND MINUTE
+			spi(hour); //first hour
+			spi(minute); //second minute
+			LATCH;
+			
+			enable_interrupts();
 		}
+		if(tim1_interrupt_flag >= 100)
+		{
+			tim1_interrupt_flag = 0;
+		}
+		if(blink_flag <= 5)
+		{
+			spi(hour | 0x80);
+			spi(minute);
+			LATCH;
+		}
+		else
+		{
+			spi(hour);
+			spi(minute);
+			LATCH;
+			
+			if(blink_flag >= 11)
+			{
+				blink_flag = 0;
+			}
+			
+		}
+		
 		check_boot_button();
 	}
 }
@@ -109,16 +128,17 @@ int main(void)
 void tim1_init(unsigned short sec)
 {
   // THIS TIMER MAKED FOR LONG TIMING , ONLY SECOND
-  // max second = 1638sec , min second = 1sec
   // frequency = F_CLK / ( ( (TIM1_PSCRH << 8) + TIM1_PSCRL) * (1 + ( (TIM1_ARRH << 8) + TIM1_ARRL) ) )
   TIM1_CR1    = 0;            // Disable TIM1
-  TIM1_PSCRH = ( ( sec * 40 ) >> 8);
-  TIM1_PSCRL = ( ( sec * 40 ) & 0xFF);
+  TIM1_PSCRH = ( ( sec * 2 ) >> 8);
+  TIM1_PSCRL = ( ( sec * 2 ) & 0xFF);
   TIM1_ARRH = 0xC3;
   TIM1_ARRL = 0x50;
+  TIM1_CNTRH = 0;	
+  TIM1_CNTRL = 0; // start from zero
   
-  TIM1_CR1      |= (1 << TIM1_CR1_OPM); // stop at max value from ARR
-  TIM4_EGR 	= 1;
+  //TIM1_CR1      |= (1 << TIM1_CR1_OPM); // stop at max value from ARR
+  //TIM4_EGR 	= 1;
   TIM1_IER      |= (1 << TIM1_IER_UIE); // Enable Update Interrupt
   TIM1_CR1 = TIM1_CR1_CEN; // Enable the counter
 }
