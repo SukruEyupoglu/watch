@@ -98,7 +98,7 @@ int main(void)
 			
 			enable_interrupts();
 		}
-		if(tim1_interrupt_flag >= 100)
+		if(tim1_interrupt_flag >= 1000)
 		{
 			tim1_interrupt_flag = 0;
 		}
@@ -159,7 +159,7 @@ void write_ds3231_minute(unsigned char minute)
     {
 	    i2c_start();
 	    i2c_write_addr(0xD0);
-	    i2c_write_addr(DS3231_MINUTE_ADDR);
+	    i2c_write(DS3231_MINUTE_ADDR);
 	    i2c_write(time2reg(minute) );
 	    i2c_stop();
     }
@@ -171,7 +171,7 @@ void write_ds3231_hour(unsigned char hour)
     {
 	    i2c_start();
 	    i2c_write_addr(0xD0);
-	    i2c_write_addr(DS3231_HOUR_ADDR);
+	    i2c_write(DS3231_HOUR_ADDR);
 	    i2c_write( (time2reg(hour) | (1 << 6) ) ); // ds3231 12 hour select make high 6. bit
 	    i2c_stop();
     }
