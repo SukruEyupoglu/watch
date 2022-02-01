@@ -70,6 +70,8 @@ int main(void)
 	i2c_init();
 	spi_init();
 	
+	button_init();
+	
 	// latch init
 	PC_DDR |= (1 << 4); // direction output
 	PC_CR1 |= (1 << 4); // make push-pull
