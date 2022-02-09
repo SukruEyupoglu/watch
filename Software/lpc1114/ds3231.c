@@ -7,6 +7,30 @@
 static unsigned char time2reg(unsigned char time);
 static unsigned char reg2time(unsigned char reg);
 
+
+// DS3231 EN SON FONKSIYON PROTOTIP DIGERLERI SACMA
+void ds3231_write(unsigned char data , unsigned char addr)
+{
+	switch(addr)
+	{
+		case DS3231_SECOND_REG:
+			{
+				
+			}
+			break;
+		case DS3231_MINUTE_REG:
+			{
+				
+			}
+			break;
+		default:
+			{
+			}
+	}
+	i2c_write(data,addr);
+}
+
+
 // EVERY MINUTE WAKE-UP LPC1114
 unsigned char ds3231_every_minute_alarm_init(void)
 {
