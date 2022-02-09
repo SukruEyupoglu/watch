@@ -208,12 +208,28 @@ void write_ds3231_hour(unsigned char ho_ur)
 
 void write_ds3231(unsigned char data ,unsigned char addr)
 {
-    if(ho_ur < 12)
-    {
+	unsigned char edit;
+ 	switch(addr)
+	{
+		case DS3231_MINUTE_ADDR:
+			{
+				
+			}
+			break;
+		case DS3231_HOUR_ADDR:
+			{
+				
+			}
+			break;
+		default:
+			{
+				return;
+			}
+	}
 	    i2c_start();
 	    i2c_write_addr(0xD0);
 	    i2c_write(addr);
-	    i2c_write( (time2reg(data) );
+	    i2c_write( (time2reg(edit) );
 	    i2c_stop();
 	    // RESET FLAGS FOR CONTINUE
 	    i2c_start();
@@ -223,7 +239,6 @@ void write_ds3231(unsigned char data ,unsigned char addr)
 	    //i2c_write(0x0F);
 	    i2c_write(0x00);
 	    i2c_stop();
-    }
 }
 
 void place_ds3231_cursor(unsigned char x)
