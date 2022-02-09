@@ -10,8 +10,11 @@ void tim1_init(unsigned short sec);
 unsigned char time2reg(unsigned char time);
 unsigned char reg2time(unsigned char reg);
 void place_ds3231_cursor(unsigned char x);
+
 void write_ds3231_minute(unsigned char minute);
 void write_ds3231_hour(unsigned char hour);
+void write_ds3231(unsigned char data ,unsigned char addr);
+
 void button_init(void);
 void check_boot_button(void);
 void boot_button_first_pressed_function(void);
@@ -28,6 +31,11 @@ void i2c_write_addr(uint8_t addr);
 uint8_t i2c_read();
 void i2c_read_arr(uint8_t *buf, int len);
 void beep_init(unsigned char beep_freq);
+
+void increase_minute(void);
+void decrease_minute(void);
+void increase_hour(void);
+void decrease_hour(void);
 
 
 #define DS3231_SECOND_ADDR 0x00
@@ -48,6 +56,11 @@ void beep_init(unsigned char beep_freq);
 unsigned char tim1_interrupt_flag = 0;
 unsigned char blink_flag = 0;
 
+unsigned char hour = 0;
+unsigned char minute = 0;
+
+unsigned char d[0x13];
+
 void timer_isr() __interrupt(TIM1_OVF_ISR) {
   tim1_interrupt_flag++;
   blink_flag++;
@@ -58,12 +71,10 @@ void timer_isr() __interrupt(TIM1_OVF_ISR) {
 
 int main(void)
 {
-	unsigned char hour = 0;
-	unsigned char minute = 0;
+
 	//unsigned char second;
 	//unsigned char alarm_hour;
 	//unsigned char alarm_minute;
-	unsigned char d[0x13];
 	// CLK_CKDIVR = 0; // 16mhz
 	// default 2mhz
 	
@@ -90,12 +101,12 @@ int main(void)
 			i2c_write_addr(0xD1); // read
 			i2c_read_arr(d,0x13); // inside i2c_stop(); there are 
 			
-			hour = num2dig(reg2time(d[DS3231_HOUR_ADDR]) );
-			minute = num2dig(reg2time(d[DS3231_MINUTE_ADDR]) / 5 );
+			hour = reg2time(d[DS3231_HOUR_ADDR] & 0xBF );
+			minute = reg2time(d[DS3231_MINUTE_ADDR]) / 5;
 			
 			// WRITE HOUR AND MINUTE
-			spi(hour); //first hour
-			spi(minute); //second minute
+			spi( num2dig(hour) ); //first hour
+			spi( num2dig(minute) ); //second minute
 			LATCH;
 			
 			enable_interrupts();
@@ -106,14 +117,14 @@ int main(void)
 		}
 		if(blink_flag <= 5)
 		{
-			spi(hour | 0x80);
-			spi(minute);
+			spi( num2dig(hour) | 0x80);
+			spi( num2dig(minute) );
 			LATCH;
 		}
 		else
 		{
-			spi(hour);
-			spi(minute);
+			spi( num2dig(hour) );
+			spi( num2dig(minute) );
 			LATCH;
 			
 			if(blink_flag >= 11)
@@ -155,14 +166,14 @@ unsigned char reg2time(unsigned char reg)
     return (((reg >> 4) * 10) + (reg % 16));
 }
 
-void write_ds3231_minute(unsigned char minute)
+void write_ds3231_minute(unsigned char min_ute)
 {
-    if(minute < 60)
+    if(min_ute < 60)
     {
 	    i2c_start();
 	    i2c_write_addr(0xD0);
 	    i2c_write(DS3231_MINUTE_ADDR);
-	    i2c_write(time2reg(minute) );
+	    i2c_write(time2reg(min_ute) );
 	    i2c_stop();
 	    // RESET FLAGS FOR CONTINUE
 	    i2c_start();
@@ -175,14 +186,34 @@ void write_ds3231_minute(unsigned char minute)
     }
 }
 			    
-void write_ds3231_hour(unsigned char hour)
+void write_ds3231_hour(unsigned char ho_ur)
 {
-    if(hour < 12)
+    if(ho_ur < 12)
     {
 	    i2c_start();
 	    i2c_write_addr(0xD0);
 	    i2c_write(DS3231_HOUR_ADDR);
-	    i2c_write( (time2reg(hour) | (1 << 6) ) ); // ds3231 12 hour select make high 6. bit
+	    i2c_write( (time2reg(ho_ur) | (1 << 6) ) ); // ds3231 12 hour select make high 6. bit
+	    i2c_stop();
+	    // RESET FLAGS FOR CONTINUE
+	    i2c_start();
+	    i2c_write_addr(0xD0);
+	    i2c_write(0x0E);
+	    i2c_write(0x00);
+	    //i2c_write(0x0F);
+	    i2c_write(0x00);
+	    i2c_stop();
+    }
+}
+
+void write_ds3231(unsigned char data ,unsigned char addr)
+{
+    if(ho_ur < 12)
+    {
+	    i2c_start();
+	    i2c_write_addr(0xD0);
+	    i2c_write(addr);
+	    i2c_write( (time2reg(data) );
 	    i2c_stop();
 	    // RESET FLAGS FOR CONTINUE
 	    i2c_start();
@@ -218,9 +249,11 @@ void check_boot_button(void)
 {
   if(BOOT_BUTTON_PRESS)
   {
+    disable_interrupts();
     while(BOOT_BUTTON_PRESS);
     // alarm stop
     boot_button_first_pressed_function();
+    enable_interrupts();
   }
 }
 
@@ -231,7 +264,6 @@ void boot_button_first_pressed_function(void)
     if(BOOT_BUTTON_PRESS)
     {
       while(BOOT_BUTTON_PRESS);
-      turn_on_hour_dot_light();
       boot_button_second_pressed_function();
       break;
     }
@@ -247,7 +279,7 @@ void boot_button_first_pressed_function(void)
     }
   }
 }
-			    
+
 void boot_button_second_pressed_function(void)
 {
   while(1)
@@ -444,14 +476,95 @@ void beep_init(unsigned char beep_freq)
   BEEP_CSR = ( (1 << 5) | (32 / (2 * beep_freq) ) );
 }
 
+void increase_minute(void)
+{
+	if( minunte < 12 )
+	{
+		minute++;
+	}
+	else
+	{
+		minute = 0;
+	}
+		
+	// WRITE HOUR AND MINUTE
+	spi(0x00); //first hour
+	spi( num2dig(minute) | 0x80); //second minute
+	LATCH;
+}
+
+void decrease_minute(void)
+{
+	if( minunte == 0 )
+	{
+		minute = 11;
+	}
+	else
+	{
+		minute--;
+	}
+		
+	// WRITE HOUR AND MINUTE
+	spi(0x00); //first hour
+	spi( num2dig(minute) | 0x80); //second minute
+	LATCH;
+}
+
+void increase_hour(void)
+{
+	if( hour < 12 )
+	{
+		hour++;
+	}
+	else
+	{
+		hour = 0;
+	}
+		
+	// WRITE HOUR AND MINUTE
+	spi( num2dig(hour) | 0x80); //first hour
+	spi(0x00); //second minute
+	LATCH;
+}
+
+void decrease_hour(void)
+{
+	if( hour == 0 )
+	{
+		hour = 11;
+	}
+	else
+	{
+		hour--;
+	}
+		
+	// WRITE HOUR AND MINUTE
+	spi( num2dig(hour) | 0x80); //first hour
+	spi(0x00); //second minute
+	LATCH;
+}
 			    
+void save_changes(void)
+{
+	write_ds3231_hour(hour);
+	write_ds3231_minute(minute);
+}
 			    
-			    
-			    
-			    
-			    
-			    
-			    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 			    
 			    
 			    
