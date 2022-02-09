@@ -11,8 +11,8 @@ unsigned char time2reg(unsigned char time);
 unsigned char reg2time(unsigned char reg);
 void place_ds3231_cursor(unsigned char x);
 
-void write_ds3231_minute(unsigned char minute);
-void write_ds3231_hour(unsigned char hour);
+void write_ds3231_minute(unsigned char min_ute);
+void write_ds3231_hour(unsigned char ho_ur);
 void write_ds3231(unsigned char data ,unsigned char addr);
 
 void button_init(void);
