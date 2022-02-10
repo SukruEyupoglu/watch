@@ -20,6 +20,7 @@ void ds3231_time_write(unsigned char min_ute ,unsigned char ho_ur);
 
 #define A1M4 0x80
 void ds3231_alarm_write(unsigned char min_ute ,unsigned char ho_ur);
+void alarm setting(void);
 
 void button_init(void);
 void check_boot_button(void);
@@ -553,7 +554,11 @@ void save_changes(void)
 	ds3231_time_write(minute,hour);
 }
 			    
-
+void alarm setting(void)
+	{
+		while(BOOT_BUTTON_PRESS);
+		boot_button_first_pressed_for_alarm_function();
+	}
 
 
 
