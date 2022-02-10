@@ -6,6 +6,9 @@
 #define TIM1_CR1_OPM 3
 #define TIM1_CR1_CEN 0
 
+// * #define DS3231_ALARM_TYPE_MINUTE 0x08
+// * #define DS3231_ALARM_TYPE_HOUR 0x09
+
 void tim1_init(unsigned short sec);
 unsigned char time2reg(unsigned char time);
 unsigned char reg2time(unsigned char reg);
@@ -13,7 +16,8 @@ void place_ds3231_cursor(unsigned char x);
 
 void write_ds3231_minute(unsigned char min_ute);
 void write_ds3231_hour(unsigned char ho_ur);
-void write_ds3231(unsigned char data ,unsigned char addr);
+void ds3231_time_write(unsigned char data ,unsigned char addr);
+// * void ds3231_alarm_write(unsigned char data ,unsigned char type);
 
 void button_init(void);
 void check_boot_button(void);
@@ -38,11 +42,10 @@ void increase_hour(void);
 void decrease_hour(void);
 
 
-#define DS3231_SECOND_ADDR 0x00
+// #define DS3231_SECOND_ADDR 0x00
 #define DS3231_MINUTE_ADDR 0x01
 #define DS3231_HOUR_ADDR 0x02
-#define DS3231_ALARM_MINUTE_ADDR 0x08
-#define DS3231_ALARM_HOUR_ADDR 0x09
+
 
 #define BOOT_BUTTON_PRESS ( !( PA_IDR & (1 << 3) ) )
 #define UP_BUTTON_PRESS ( !( PC_IDR & (1 << 3) ) )
@@ -101,9 +104,13 @@ int main(void)
 			i2c_write_addr(0xD1); // read
 			i2c_read_arr(d,0x13); // inside i2c_stop(); there are 
 			
-			hour = reg2time(d[DS3231_HOUR_ADDR] & 0xBF );
+			hour = reg2time(d[DS3231_HOUR_ADDR]);
 			minute = reg2time(d[DS3231_MINUTE_ADDR]) / 5;
-			
+			// DS3231 default 24 hour
+			if(hour > 11)
+			{
+				hour = hour - 12 ;
+			}
 			// WRITE HOUR AND MINUTE
 			spi( num2dig(hour) ); //first hour
 			spi( num2dig(minute) ); //second minute
@@ -188,12 +195,12 @@ void write_ds3231_minute(unsigned char min_ute)
 			    
 void write_ds3231_hour(unsigned char ho_ur)
 {
-    if(ho_ur < 12)
+    if(ho_ur < 24)
     {
 	    i2c_start();
 	    i2c_write_addr(0xD0);
 	    i2c_write(DS3231_HOUR_ADDR);
-	    i2c_write( (time2reg(ho_ur) | (1 << 6) ) ); // ds3231 12 hour select make high 6. bit
+	    i2c_write( (time2reg(ho_ur) );
 	    i2c_stop();
 	    // RESET FLAGS FOR CONTINUE
 	    i2c_start();
@@ -206,7 +213,56 @@ void write_ds3231_hour(unsigned char ho_ur)
     }
 }
 
-void write_ds3231(unsigned char data ,unsigned char addr)
+void ds3231_alarm_write(unsigned char ho_ur ,unsigned char min_ute)
+{
+	unsigned char edit;
+ 	switch(type)
+	{
+		case DS3231_ALARM_MINUTE_TYPE:
+			{
+				if(data < 60)
+				{
+					edit = data;
+				}
+				else
+				{
+					return;
+				}
+			}
+			break;
+		case DS3231_ALARM_HOUR_TYPE:
+			{
+				if(data < 24)
+				{
+					edit = data;
+				}
+				else
+				{
+					return;
+				}
+			}
+			break;
+		default:
+			{
+				return;
+			}
+	}
+	i2c_start();
+	i2c_write_addr(0xD0);
+	i2c_write(addr);
+	i2c_write( (time2reg(edit) );
+	i2c_stop();
+	// RESET FLAGS FOR CONTINUE
+	i2c_start();
+	i2c_write_addr(0xD0);
+	i2c_write(0x0E);
+	i2c_write(0x00);
+	//i2c_write(0x0F);
+	i2c_write(0x00);
+	i2c_stop();
+}
+		      
+void ds3231_time_write(unsigned char data ,unsigned char addr)
 {
 	unsigned char edit;
  	switch(addr)
@@ -224,30 +280,6 @@ void write_ds3231(unsigned char data ,unsigned char addr)
 			}
 			break;
 		case DS3231_HOUR_ADDR:
-			{
-				if(data < 24)
-				{
-					edit = data;
-				}
-				else
-				{
-					return;
-				}
-			}
-			break;
-		case DS3231_ALARM_MINUTE_ADDR:
-			{
-				if(data < 60)
-				{
-					edit = data;
-				}
-				else
-				{
-					return;
-				}
-			}
-			break;
-		case DS3231_ALARM_HOUR_ADDR:
 			{
 				if(data < 24)
 				{
