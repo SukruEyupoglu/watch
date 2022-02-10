@@ -241,7 +241,6 @@ void button_init(void)
 
 void check_boot_button(void)
 {
-	unsigned char check_flag = 0;
   if(BOOT_BUTTON_PRESS)
   {
     disable_interrupts();
@@ -250,15 +249,33 @@ void check_boot_button(void)
 	if(UP_BUTTON_PRESS)
     	{
       		while(UP_BUTTON_PRESS);
-		alarm setting();
-		check_flag = 1;
+		time_or_alarm_flag = 1;
+    	}
+	if(DOWN_BUTTON_PRESS)
+    	{
+      		while(UP_BUTTON_PRESS);
+		time_or_alarm_flag = 0;
     	}
     }
-    if(check_flag == 0)
-    {
-    	boot_button_first_pressed_function();
-    }
-    enable_interrupts();
+	boot_button_first_pressed_function();
+	  
+	i2c_start();
+	i2c_write_addr(0xD0);
+	if(time_or_alarm_flag == 1)
+	{
+		i2c_write(0x08); // ds3231 alarm minute addr
+		i2c_write( (time2reg(min_ute) );
+		i2c_write( (time2reg(ho_ur) );
+		i2c_write( A1M4 );
+	}
+	else
+			  {
+				  
+			  }
+	
+	  
+	enable_interrupts();
+    	// close_alarm();
   }
 }
 
@@ -554,11 +571,17 @@ void save_changes(void)
 	ds3231_time_write(minute,hour);
 }
 			    
-void alarm setting(void)
+void alarm_setting(void)
 	{
 		while(BOOT_BUTTON_PRESS);
 		boot_button_first_pressed_for_alarm_function();
 	}
+void time_setting(void)
+	{
+		while(BOOT_BUTTON_PRESS);
+		boot_button_first_pressed_function();
+	}
+
 
 
 
