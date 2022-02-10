@@ -38,7 +38,9 @@ void i2c_write(uint8_t data);
 void i2c_write_addr(uint8_t addr);
 uint8_t i2c_read();
 void i2c_read_arr(uint8_t *buf, int len);
+
 void beep_init(unsigned char beep_freq);
+void beep_deinit(void);
 
 void increase_minute(void);
 void decrease_minute(void);
@@ -49,7 +51,7 @@ void decrease_hour(void);
 // #define DS3231_SECOND_ADDR 0x00
 #define DS3231_MINUTE_ADDR 0x01
 #define DS3231_HOUR_ADDR 0x02
-
+#define DS3231_STATUS_ADDR 0x0F
 
 #define BOOT_BUTTON_PRESS ( !( PA_IDR & (1 << 3) ) )
 #define UP_BUTTON_PRESS ( !( PC_IDR & (1 << 3) ) )
@@ -85,6 +87,8 @@ int main(void)
 	//unsigned char alarm_minute;
 	// CLK_CKDIVR = 0; // 16mhz
 	// default 2mhz
+	
+	BEEP_CSR = 0; // close beep look at datasheet
 	
 	i2c_init();
 	spi_init();
@@ -123,6 +127,18 @@ int main(void)
 			}
 			spi( num2dig(minute / 5) ); //second minute
 			LATCH;
+			if(d[DS3231_STATUS_ADDR] & (1 << 0) )
+			{
+				beep_init(2);
+			}
+			else
+			{
+				if(BEEP_CSR & (1 << 5) ) // close alarm if alarm warning nearly 1 minute later
+				{
+					beep_deinit();
+				}
+			}
+			
 			
 			enable_interrupts();
 		}
@@ -256,13 +272,12 @@ void check_boot_button(void)
 		i2c_start();
 		i2c_write_addr(0xD0);
 		i2c_write(0x0E);
-		i2c_write(0x00);
-		//i2c_write(0x0F);
-		i2c_write(0x00);
+		i2c_write(0x00); 
+		i2c_write(0x00); //i2c_write(0x0F);
 		i2c_stop();
 	}
+	beep_deinit(); // close alarm
 	enable_interrupts();
-    	// close_alarm();
 	setting_flag = 0;
   }
 }
@@ -478,6 +493,18 @@ void i2c_read_arr(uint8_t *buf, int len) {
 void beep_init(unsigned char beep_freq)
 {
   BEEP_CSR = ( (1 << 5) | (32 / (2 * beep_freq) ) );
+}
+
+void beep_deinit(void)
+{
+  	BEEP_CSR = 0;
+	// RESET FLAGS FOR CONTINUE
+	i2c_start();
+	i2c_write_addr(0xD0);
+	i2c_write(0x0E);
+	i2c_write(0x00); 
+	i2c_write(0x00); //i2c_write(0x0F);
+	i2c_stop();
 }
 
 void increase_minute(void)
