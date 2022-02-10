@@ -232,6 +232,7 @@ void button_init(void)
 
 void check_boot_button(void)
 {
+  unsigned char time_or_alarm_flag = 0;
   if(BOOT_BUTTON_PRESS)
   {
     disable_interrupts();
@@ -509,7 +510,7 @@ void beep_deinit(void)
 
 void increase_minute(void)
 {
-	if( minunte < 60 )
+	if( minute < 60 )
 	{
 		minute++;
 	}
@@ -526,7 +527,7 @@ void increase_minute(void)
 
 void decrease_minute(void)
 {
-	if( minunte == 0 )
+	if( minute == 0 )
 	{
 		minute = 59;
 	}
