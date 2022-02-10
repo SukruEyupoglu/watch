@@ -240,15 +240,23 @@ void button_init(void)
 
 void check_boot_button(void)
 {
+	unsigned char check_flag = 0;
   if(BOOT_BUTTON_PRESS)
   {
     disable_interrupts();
     while(BOOT_BUTTON_PRESS)
     {
-	    
+	if(UP_BUTTON_PRESS)
+    	{
+      		while(UP_BUTTON_PRESS);
+		alarm setting();
+		check_flag = 1;
+    	}
     }
-    // alarm stop
-    boot_button_first_pressed_function();
+    if(check_flag == 0)
+    {
+    	boot_button_first_pressed_function();
+    }
     enable_interrupts();
   }
 }
