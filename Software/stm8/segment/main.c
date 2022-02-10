@@ -264,15 +264,24 @@ void check_boot_button(void)
 	if(time_or_alarm_flag == 1)
 	{
 		i2c_write(0x08); // ds3231 alarm minute addr
-		i2c_write( (time2reg(min_ute) );
-		i2c_write( (time2reg(ho_ur) );
+		i2c_write( (time2reg(minute) );
+		i2c_write( (time2reg(hour) );
 		i2c_write( A1M4 );
 	}
 	else
-			  {
-				  
-			  }
-	
+	{
+		i2c_write( (time2reg(minute) );
+		i2c_write( (time2reg(hour) );
+	}
+	i2c_stop();
+	// RESET FLAGS FOR CONTINUE
+	i2c_start();
+	i2c_write_addr(0xD0);
+	i2c_write(0x0E);
+	i2c_write(0x00);
+	//i2c_write(0x0F);
+	i2c_write(0x00);
+	i2c_stop();
 	  
 	enable_interrupts();
     	// close_alarm();
