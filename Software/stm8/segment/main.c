@@ -254,7 +254,7 @@ void check_boot_button(void)
     	}
 	if(DOWN_BUTTON_PRESS)
     	{
-      		while(UP_BUTTON_PRESS);
+      		while(DOWN_BUTTON_PRESS);
 		time_or_alarm_flag = 0;
     	}
     }
