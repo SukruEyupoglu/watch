@@ -26,7 +26,7 @@ void button_init(void);
 
 void check_boot_button(void);
 void setting_minute(void); // first press boot button
-void setting_hour(void) // second press boot button
+void setting_hour(void); // second press boot button
 
 unsigned char num2dig(unsigned char num);
 void spi_init(void);
@@ -62,7 +62,7 @@ void decrease_hour(void);
 // active high
 #define LATCH PC_ODR |= (1 << 4);PC_ODR &= ~(1 << 4)
 
-unsigned char tim1_interrupt_flag = 0;
+unsigned short tim1_interrupt_flag = 0;
 unsigned char blink_flag = 0;
 unsigned char setting_flag = 0;
 
@@ -258,8 +258,8 @@ void check_boot_button(void)
 		if(time_or_alarm_flag == 1)
 		{
 			i2c_write(0x08); // ds3231 alarm minute addr
-			i2c_write( (time2reg(minute) );
-			i2c_write( (time2reg(hour) );
+			i2c_write( (time2reg(minute) ) );
+			i2c_write( (time2reg(hour) ) );
 			i2c_write( A1M4 );
 		}
 		else
