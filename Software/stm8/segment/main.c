@@ -553,7 +553,7 @@ void decrease_minute(void)
 
 void increase_hour(void)
 {
-	if( hour < 24 )
+	if( hour < 23 )
 	{
 		hour++;
 	}
