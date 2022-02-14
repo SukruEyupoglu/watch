@@ -199,7 +199,8 @@ void tim1_init(unsigned short sec)
   //TIM1_CR1      |= (1 << TIM1_CR1_OPM); // stop at max value from ARR
   //TIM4_EGR 	= 1;
   TIM1_IER      |= (1 << TIM1_IER_UIE); // Enable Update Interrupt
-  TIM1_CR1 = TIM1_CR1_CEN; // Enable the counter
+  //TIM1_CR1 |= TIM1_CR1_CEN; // Enable the counter
+	TIM1_CR1 |= (1 << 0);
 }
 
 unsigned char time2reg(unsigned char time)
