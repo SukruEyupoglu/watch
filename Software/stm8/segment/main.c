@@ -188,7 +188,7 @@ void tim1_init(unsigned short sec)
 {
   // THIS TIMER MAKED FOR LONG TIMING , ONLY SECOND
   // frequency = F_CLK / ( ( (TIM1_PSCRH << 8) + TIM1_PSCRL) * (1 + ( (TIM1_ARRH << 8) + TIM1_ARRL) ) )
-  TIM1_CR1    = 0;            // Disable TIM1
+  TIM1_CR1    &= ~(1 << 0);            // Disable TIM1
   TIM1_PSCRH = ( ( sec * 2 ) >> 8);
   TIM1_PSCRL = ( ( sec * 2 ) & 0xFF);
   TIM1_ARRH = 0xC3;
