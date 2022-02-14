@@ -151,11 +151,11 @@ int main(void)
 		{
 			if(hour > 11)
 			{
-				spi( num2dig(hour - 12) ); //first hour
+				spi( num2dig(hour - 12) | 0x80); //first hour
 			}
 			else
 			{
-				spi( num2dig(hour) ); //first hour
+				spi( num2dig(hour) | 0x80); //first hour
 			}
 			spi( num2dig(minute / 5) );
 			LATCH;
