@@ -13,11 +13,11 @@ void tim1_init(unsigned short sec);
 unsigned char time2reg(unsigned char time);
 unsigned char reg2time(unsigned char reg);
 void place_ds3231_cursor(unsigned char x);
-
+/*
 void write_ds3231_minute(unsigned char min_ute);
 void write_ds3231_hour(unsigned char ho_ur);
 void ds3231_time_write(unsigned char min_ute ,unsigned char ho_ur);
-
+*/
 #define A1M4 0x80
 void ds3231_alarm_write(unsigned char min_ute ,unsigned char ho_ur);
 void alarm setting(void);
