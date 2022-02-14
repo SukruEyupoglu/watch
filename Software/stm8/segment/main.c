@@ -17,10 +17,11 @@ void place_ds3231_cursor(unsigned char x);
 void write_ds3231_minute(unsigned char min_ute);
 void write_ds3231_hour(unsigned char ho_ur);
 void ds3231_time_write(unsigned char min_ute ,unsigned char ho_ur);
-*/
-#define A1M4 0x80
 void ds3231_alarm_write(unsigned char min_ute ,unsigned char ho_ur);
 void alarm setting(void);
+*/
+
+#define A1M4 0x80
 
 void button_init(void);
 
@@ -265,8 +266,8 @@ void check_boot_button(void)
 		else
 		{
 			i2c_write(0x01); // ds3231 alarm minute addr
-			i2c_write( (time2reg(minute) );
-			i2c_write( (time2reg(hour) );
+			i2c_write( (time2reg(minute) ) );
+			i2c_write( (time2reg(hour) ) );
 		}
 		i2c_stop();
 		// RESET FLAGS FOR CONTINUE
