@@ -512,7 +512,7 @@ void beep_deinit(void)
 
 void increase_minute(void)
 {
-	if( minute < 60 )
+	if( minute < 59 )
 	{
 		minute++;
 	}
