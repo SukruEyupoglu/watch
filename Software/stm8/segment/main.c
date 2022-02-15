@@ -6,20 +6,10 @@
 #define TIM1_CR1_OPM 3
 #define TIM1_CR1_CEN 0
 
-// * #define DS3231_ALARM_TYPE_MINUTE 0x08
-// * #define DS3231_ALARM_TYPE_HOUR 0x09
-
 void tim1_init(unsigned short sec);
 unsigned char time2reg(unsigned char time);
 unsigned char reg2time(unsigned char reg);
 void place_ds3231_cursor(unsigned char x);
-/*
-void write_ds3231_minute(unsigned char min_ute);
-void write_ds3231_hour(unsigned char ho_ur);
-void ds3231_time_write(unsigned char min_ute ,unsigned char ho_ur);
-void ds3231_alarm_write(unsigned char min_ute ,unsigned char ho_ur);
-void alarm setting(void);
-*/
 
 void button_init(void);
 
@@ -46,8 +36,6 @@ void decrease_minute(void);
 void increase_hour(void);
 void decrease_hour(void);
 
-
-// #define DS3231_SECOND_ADDR 0x00
 #define DS3231_MINUTE_ADDR 0x01
 #define DS3231_HOUR_ADDR 0x02
 #define DS3231_STATUS_ADDR 0x0F
@@ -84,10 +72,6 @@ void timer_isr() __interrupt(TIM1_OVF_ISR) {
 
 int main(void)
 {
-
-	//unsigned char second;
-	//unsigned char alarm_hour;
-	//unsigned char alarm_minute;
 	// CLK_CKDIVR = 0; // 16mhz
 	// default 2mhz
 	
