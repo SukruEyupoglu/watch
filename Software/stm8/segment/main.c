@@ -114,14 +114,18 @@ int main(void)
 			}
 			spi( num2dig(minute / 5) ); //second minute
 			LATCH;
-			if( (d[DS3231_MINUTE_ADDR] == d[DS3231_ALARM_MINUTE_ADDR] ) & (d[DS3231_HOUR_ADDR] == d[DS3231_ALARM_HOUR_ADDR] ) )
+			if( ( (minute == reg2time(d[DS3231_ALARM_MINUTE_ADDR]) ) |
+				  (minute == reg2time(d[DS3231_ALARM_MINUTE_ADDR]) + 1)
+				) &
+				(d[DS3231_HOUR_ADDR] == d[DS3231_ALARM_HOUR_ADDR] ) )
+			//if( (d[DS3231_MINUTE_ADDR] == d[DS3231_ALARM_MINUTE_ADDR] ) & (d[DS3231_HOUR_ADDR] == d[DS3231_ALARM_HOUR_ADDR] ) )
 			// if( (d[DS3231_STATUS_ADDR] & (1 << 0) ) == (1 << 0) )
 			{
-				beep_init(2);
+				beep_init(0);
 			}
 			else
 			{
-				if( (d[DS3231_MINUTE_ADDR] != d[DS3231_ALARM_MINUTE_ADDR] ) & ( (BEEP_CSR & (1 << 5) ) == (1 << 5) ) ) // close alarm if alarm warning nearly 1 minute later
+				if((BEEP_CSR & (1 << 5) ) == (1 << 5) ) // close alarm if alarm warning nearly 1 minute later
 				{
 					beep_deinit();
 				}
