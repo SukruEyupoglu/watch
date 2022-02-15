@@ -21,8 +21,6 @@ void ds3231_alarm_write(unsigned char min_ute ,unsigned char ho_ur);
 void alarm setting(void);
 */
 
-#define A1M4 0x80
-
 void button_init(void);
 
 void check_boot_button(void);
@@ -53,6 +51,10 @@ void decrease_hour(void);
 #define DS3231_MINUTE_ADDR 0x01
 #define DS3231_HOUR_ADDR 0x02
 #define DS3231_STATUS_ADDR 0x0F
+
+#define DS3231_ALARM_MINUTE_ADDR 0x08
+#define DS3231_ALARM_HOUR_ADDR 0x09
+#define A1M4 0x80
 
 #define BOOT_BUTTON_PRESS ( !( PA_IDR & (1 << 3) ) )
 #define UP_BUTTON_PRESS ( !( PC_IDR & (1 << 3) ) )
@@ -251,11 +253,21 @@ void check_boot_button(void)
     	{
       		while(UP_BUTTON_PRESS);
 		time_or_alarm_flag = 1;
+		hour = reg2time(d[DS3231_ALARM_HOUR_ADDR]);
+		minute = reg2time(d[DS3231_ALARM_MINUTE_ADDR]);
+		spi( num2dig(hour) | 0x80); //first hour
+		spi( num2dig(minute / 5) );
+		LATCH;
     	}
 	if(DOWN_BUTTON_PRESS)
     	{
       		while(DOWN_BUTTON_PRESS);
 		time_or_alarm_flag = 0;
+		hour = reg2time(d[DS3231_HOUR_ADDR]);
+		minute = reg2time(d[DS3231_MINUTE_ADDR]);
+		spi( num2dig(hour) ); //first hour
+		spi( num2dig(minute / 5) | 0x80);
+		LATCH;
     	}
     }
 	  
