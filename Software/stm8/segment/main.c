@@ -259,6 +259,7 @@ void check_boot_button(void)
     }
 	if(time_or_alarm_flag == 2)
 	{
+		beep_deinit(); // close alarm
 		enable_interrupts();
 		return;
 	}
