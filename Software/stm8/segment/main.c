@@ -227,7 +227,7 @@ void button_init(void)
 
 void check_boot_button(void)
 {
-  unsigned char time_or_alarm_flag = 0;
+  unsigned char time_or_alarm_flag = 2;
   if(BOOT_BUTTON_PRESS)
   {
     disable_interrupts();
@@ -253,7 +253,15 @@ void check_boot_button(void)
 		spi( num2dig(minute / 5) | 0x80);
 		LATCH;
     	}
+	spi( num2dig(reg2time(d[DS3231_ALARM_HOUR_ADDR]) ) ); //first hour
+	spi( num2dig(reg2time(d[DS3231_ALARM_MINUTE_ADDR]) / 5) );
+	LATCH;	    
     }
+	if(time_or_alarm_flag == 2)
+	{
+		enable_interrupts();
+		return;
+	}
 	  
 	setting_minute(); // set minute and hour
 	if(setting_flag == 1)
