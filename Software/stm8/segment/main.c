@@ -239,7 +239,14 @@ void check_boot_button(void)
 		time_or_alarm_flag = 1;
 		hour = reg2time(d[DS3231_ALARM_HOUR_ADDR]);
 		minute = reg2time(d[DS3231_ALARM_MINUTE_ADDR]);
-		spi( num2dig(hour) | 0x80); //first hour
+			if(hour > 11)
+			{
+				spi( num2dig(hour - 12) ); //first hour
+			}
+			else
+			{
+				spi( num2dig(hour) ); //first hour
+			}
 		spi( num2dig(minute / 5) );
 		LATCH;
     	}
@@ -249,7 +256,14 @@ void check_boot_button(void)
 		time_or_alarm_flag = 0;
 		hour = reg2time(d[DS3231_HOUR_ADDR]);
 		minute = reg2time(d[DS3231_MINUTE_ADDR]);
-		spi( num2dig(hour) ); //first hour
+			if(hour > 11)
+			{
+				spi( num2dig(hour - 12) ); //first hour
+			}
+			else
+			{
+				spi( num2dig(hour) ); //first hour
+			}
 		spi( num2dig(minute / 5) | 0x80);
 		LATCH;
     	}
