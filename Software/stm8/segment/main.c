@@ -42,7 +42,7 @@ void decrease_hour(void);
 
 #define DS3231_ALARM_MINUTE_ADDR 0x08
 #define DS3231_ALARM_HOUR_ADDR 0x09
-#define A1M4 0x80
+#define A1M4 0xC0
 
 #define BOOT_BUTTON_PRESS ( !( PA_IDR & (1 << 3) ) )
 #define UP_BUTTON_PRESS ( !( PC_IDR & (1 << 3) ) )
