@@ -7,19 +7,31 @@
 #define echoPin_R 16 // attach pin D16 Arduino to pin Echo_R of HC-SR04
 #define trigPin_R 17 //attach pin D17 Arduino to pin Trig_R of HC-SR04
 
+#define In_1 10 // attach pin D10 Arduino to pin In_1 of DRV8833
+#define In_2 9 // attach pin D9 Arduino to pin In_2 of DRV8833
+#define In_3 6 // attach pin D6 Arduino to pin In_3 of DRV8833
+#define In_4 5 // attach pin D5 Arduino to pin In_4 of DRV8833
+#define Fault 7 // attach pin D7 Arduino to pin Fault of DRV8833
+#define Sleep 4 // attach pin D4 Arduino to pin Sleep of DRV8833
+
 long duration_L; // variable for the duration of sound wave travel
 int distance_L; // variable for the distance measurement
 
 long duration_R; // variable for the duration of sound wave travel
 int distance_R; // variable for the distance measurement
 
-void setup ()
+void setup()
 {
   pinMode(trigPin_L, OUTPUT); // Sets the trigPin as an OUTPUT
   pinMode(echoPin_L, INPUT); // Sets the echoPin as an INPUT
   
   pinMode(trigPin_R, OUTPUT); // Sets the trigPin as an OUTPUT
   pinMode(echoPin_R, INPUT); // Sets the echoPin as an INPUT
+  
+  
+  
+  pinMode(Fault, INPUT); 
+  pinMode(Sleep, OUTPUT);
   /*
   Serial.begin(115200); // // Serial Communication is starting with 115200 of baudrate speed
   Serial.println("Ultrasonic Sensor HC-SR04 Test"); // print some text in Serial Monitor
