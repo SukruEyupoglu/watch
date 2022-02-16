@@ -20,6 +20,29 @@ int distance_L; // variable for the distance measurement
 long duration_R; // variable for the duration of sound wave travel
 int distance_R; // variable for the distance measurement
 
+
+void motor_L_faster()
+{
+  analogWrite(In_1, 150); // max 255
+  digitalWrite(In_2, LOW);
+}
+void motor_R_faster()
+{
+  analogWrite(In_3, 150); // max 255
+  digitalWrite(In_4, LOW);
+}
+void motor_L_slower()
+{
+  analogWrite(In_1, 25); // max 255
+  digitalWrite(In_2, LOW);
+}
+void motor_R_slower()
+{
+  analogWrite(In_3, 25); // max 255
+  digitalWrite(In_4, LOW);
+}
+
+
 void setup()
 {
   pinMode(trigPin_L, OUTPUT); // Sets the trigPin as an OUTPUT
@@ -29,9 +52,18 @@ void setup()
   pinMode(echoPin_R, INPUT); // Sets the echoPin as an INPUT
   
   
+  pinMode(In_1, OUTPUT);
+  pinMode(In_2, OUTPUT);
+  pinMode(In_3, OUTPUT);
+  pinMode(In_4, OUTPUT);
   
   pinMode(Fault, INPUT); 
   pinMode(Sleep, OUTPUT);
+  digitalWrite(Sleep, HIGH);
+  digitalWrite(In_1, LOW);
+  digitalWrite(In_2, LOW);
+  digitalWrite(In_3, LOW);
+  digitalWrite(In_4, LOW);
   /*
   Serial.begin(115200); // // Serial Communication is starting with 115200 of baudrate speed
   Serial.println("Ultrasonic Sensor HC-SR04 Test"); // print some text in Serial Monitor
@@ -89,6 +121,11 @@ void loop() {
   Serial.println(" cm");
   */
 }
+
+
+
+
+
 
 
 
