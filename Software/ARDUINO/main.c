@@ -55,8 +55,8 @@ void loop() {
   // distance_L = duration_L * 0.034 / 2; // Speed of sound wave divided by 2 (go and back)
   // distance = (duration-10) * 0.034 / 2 // maybe more clear
   distance_R = (duration_R * ( (34 / 1000) / 2) ); // Speed of sound wave divided by 2 (go and back)  
-  if( (distance_R < 50) |
-      (distance_L < 50) )
+  if( (distance_R < 50) | // 50cm 
+      (distance_L < 50) ) // 50cm
   {
     if(distance_L < distance_R)
     {
