@@ -29,16 +29,47 @@ void setup ()
 
 void loop() {
   // Clears the trigPin condition
-  digitalWrite(trigPin, LOW);
+  digitalWrite(trigPin_L, LOW);
   delayMicroseconds(2);
   // Sets the trigPin HIGH (ACTIVE) for 10 microseconds
-  digitalWrite(trigPin, HIGH);
+  digitalWrite(trigPin_L, HIGH);
   delayMicroseconds(10);
-  digitalWrite(trigPin, LOW);
+  digitalWrite(trigPin_L, LOW);
   // Reads the echoPin, returns the sound wave travel time in microseconds
-  duration = pulseIn(echoPin, HIGH);
+  duration_L = pulseIn(echoPin_L, HIGH);
   // Calculating the distance
-  distance = duration * 0.034 / 2; // Speed of sound wave divided by 2 (go and back)
+  // distance_L = duration_L * 0.034 / 2; // Speed of sound wave divided by 2 (go and back)
+  distance_L = (duration_L * ( (34 / 1000) / 2) ); // Speed of sound wave divided by 2 (go and back)
+  
+  
+  // Clears the trigPin condition
+  digitalWrite(trigPin_R, LOW);
+  delayMicroseconds(2);
+  // Sets the trigPin HIGH (ACTIVE) for 10 microseconds
+  digitalWrite(trigPin_R, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin_R, LOW);
+  // Reads the echoPin, returns the sound wave travel time in microseconds
+  duration_R = pulseIn(echoPin_R, HIGH);
+  // Calculating the distance
+  // distance_L = duration_L * 0.034 / 2; // Speed of sound wave divided by 2 (go and back)
+  // distance = (duration-10) * 0.034 / 2 // maybe more clear
+  distance_R = (duration_R * ( (34 / 1000) / 2) ); // Speed of sound wave divided by 2 (go and back)  
+  if( (distance_R < 50) |
+      (distance_L < 50) )
+  {
+    if(distance_L < distance_R)
+    {
+      motor_L_faster();
+      motor_R_slower();
+    }
+  
+    if(distance_R < distance_L)
+    {
+      motor_R_faster();
+      motor_L_slower();
+    }
+  }
   /*
   // Displays the distance on the Serial Monitor
   Serial.print("Distance: ");
