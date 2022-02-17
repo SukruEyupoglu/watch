@@ -48,6 +48,8 @@ void decrease_hour(void);
 #define UP_BUTTON_PRESS ( !( PC_IDR & (1 << 3) ) )
 #define DOWN_BUTTON_PRESS ( !( PD_IDR & (1 << 3) ) )
 
+#define IR_SENSOR_OK (PD_IDR & (1 << 2) )
+
 #define BUTTON_PRESSED 0
 
 // active high
@@ -87,6 +89,9 @@ int main(void)
 	PC_CR1 |= (1 << 4); // make push-pull
 	PC_ODR &= ~(1 << 4);// make low first
 		
+	// IR SENSOR INIT
+	PD_DDR &= ~(1 << 3);
+	
 	tim1_init(1);	// nearly 100ms 
 		
 	while(1)
@@ -170,7 +175,13 @@ int main(void)
 			}
 			
 		}
-		
+		if(IR_SENSOR_OK != 0)
+		{
+			if((BEEP_CSR & (1 << 5) ) == (1 << 5) ) // close alarm if alarm warning nearly 1 minute later
+			{
+				beep_deinit();
+			}
+		}	
 		check_boot_button();
 	}
 }
