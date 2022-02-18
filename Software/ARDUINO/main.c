@@ -85,6 +85,7 @@ void loop() {
   // distance_L = duration_L * 0.034 / 2; // Speed of sound wave divided by 2 (go and back)
   distance_L = (duration_L * ( (34 / 1000) / 2) ); // Speed of sound wave divided by 2 (go and back)
   
+  delayMiliseconds(100);
   
   // Clears the trigPin condition
   digitalWrite(trigPin_R, LOW);
@@ -99,6 +100,9 @@ void loop() {
   // distance_L = duration_L * 0.034 / 2; // Speed of sound wave divided by 2 (go and back)
   // distance = (duration-10) * 0.034 / 2 // maybe more clear
   distance_R = (duration_R * ( (34 / 1000) / 2) ); // Speed of sound wave divided by 2 (go and back)  
+  
+  
+  
   if( (distance_R < 50) | // 50cm 
       (distance_L < 50) ) // 50cm
   {
@@ -114,6 +118,29 @@ void loop() {
       motor_L_slower();
     }
   }
+  
+  // her iki gözde 0 - 20cm de engel algıladı , minimum 20cm
+  // sadece 1 gözde 0 - 20cm de engel algıladı , minimum 20cm
+  // her iki gözde 20 - 50cm de engel algıladı
+  // sadece 1 gözde 20 - 50cm de engel algıladı
+  // her iki gözde 50 - 100cm de engel algıladı
+  // sadece 1 gözde 50 - 100cm de engel algıladı
+  // her iki gözde 100 - 200cm de engel algıladı
+  // sadece 1 gözde 100 - 200cm de engel algıladı
+  // her iki gözde 200 + da engel algıladı veya engel algılanmadı
+  // sadece 1 gözde 200 + da engel algıladı veya engel algılanmadı
+  
+    // her iki gözde 0 - 20cm de engel algıladı , minimum 20cm
+  // sadece 1 gözde 0 - 20cm de engel algıladı , minimum 20cm
+  // her iki gözde 20 - 50cm de engel algıladı
+  // sadece 1 gözde 20 - 50cm de engel algıladı
+  // her iki gözde 50 - 100cm de engel algıladı
+  // sadece 1 gözde 50 - 100cm de engel algıladı
+  // her iki gözde 100 - 200cm de engel algıladı
+  // sadece 1 gözde 100 - 200cm de engel algıladı
+  // her iki gözde 200 + da engel algıladı veya engel algılanmadı
+  // sadece 1 gözde 200 + da engel algıladı veya engel algılanmadı
+  
   /*
   // Displays the distance on the Serial Monitor
   Serial.print("Distance: ");
