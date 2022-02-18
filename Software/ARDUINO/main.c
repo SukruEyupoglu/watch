@@ -21,27 +21,20 @@ long duration_R; // variable for the duration of sound wave travel
 int distance_R; // variable for the distance measurement
 
 
-void motor_L_faster()
+void motor_ileri(unsigned char mtr_hz_L , unsigned char mtr_hz_R)
 {
-  analogWrite(In_1, 150); // max 255
+  analogWrite(In_1, mtr_hz_R); // max 255
   digitalWrite(In_2, LOW);
-}
-void motor_R_faster()
-{
-  analogWrite(In_3, 150); // max 255
+  analogWrite(In_3, mtr_hz_L); // max 255
   digitalWrite(In_4, LOW);
 }
-void motor_L_slower()
+void motor_geri(unsigned char mtr_hz_L , unsigned char mtr_hz_R)
 {
-  analogWrite(In_1, 25); // max 255
-  digitalWrite(In_2, LOW);
+  analogWrite(In_2, mtr_hz_R); // max 255
+  digitalWrite(In_1, LOW);
+  analogWrite(In_4, mtr_hz_L); // max 255
+  digitalWrite(In_3, LOW);
 }
-void motor_R_slower()
-{
-  analogWrite(In_3, 25); // max 255
-  digitalWrite(In_4, LOW);
-}
-
 
 void setup()
 {
@@ -101,24 +94,6 @@ void loop() {
   // distance = (duration-10) * 0.034 / 2 // maybe more clear
   distance_R = (duration_R * ( (34 / 1000) / 2) ); // Speed of sound wave divided by 2 (go and back)  
   
-  
-  
-  if( (distance_R < 50) | // 50cm 
-      (distance_L < 50) ) // 50cm
-  {
-    if(distance_L < distance_R)
-    {
-      motor_L_faster();
-      motor_R_slower();
-    }
-  
-    if(distance_R < distance_L)
-    {
-      motor_R_faster();
-      motor_L_slower();
-    }
-  }
-  
   // her iki gözde 0 - 20cm de engel algıladı , minimum 20cm
   // sadece 1 gözde 0 - 20cm de engel algıladı , minimum 20cm
   // her iki gözde 20 - 50cm de engel algıladı
@@ -131,16 +106,113 @@ void loop() {
   // sadece 1 gözde 200 + da engel algıladı veya engel algılanmadı
   
     // her iki gözde 0 - 20cm de engel algıladı , minimum 20cm
+  if( (distance_R < 20) &
+      (distance_L < 20)
+    )
+  {
+    motor_geri(10 , 10);
+  }
   // sadece 1 gözde 0 - 20cm de engel algıladı , minimum 20cm
+  if( (distance_R < 20) &
+      (distance_L >= 20)
+    )
+  {
+    motor_ileri(10 , 20);
+  }
+  if( (distance_R >= 20) &
+      (distance_L < 20)
+    )
+  {
+    motor_ileri(20 , 10);
+  }
   // her iki gözde 20 - 50cm de engel algıladı
+  if( ( (distance_R >= 20) & (distance_R < 50) ) &
+      ( (distance_L >= 20) & (distance_L < 50) )
+    )
+  {
+    if(distance_R > distance_L)
+    {
+      motor_ileri(50 , 20);
+    }
+    else
+    {
+      motor_ileri(20 , 50);
+    }
+  }
   // sadece 1 gözde 20 - 50cm de engel algıladı
+  if( (distance_R < 50) &
+      (distance_L >= 50)
+    )
+  {
+    motor_ileri(20 , 50);
+  }
+  if( (distance_R >= 50) &
+      (distance_L < 50)
+    )
+  {
+    motor_ileri(50 , 20);
+  }
   // her iki gözde 50 - 100cm de engel algıladı
+  if( ( (distance_R >= 50) & (distance_R < 100) ) &
+      ( (distance_L >= 50) & (distance_L < 100) )
+    )
+  {
+    if(distance_R > distance_L)
+    {
+      motor_ileri(75 , 50);
+    }
+    else
+    {
+      motor_ileri(50 , 75);
+    }
+  }
   // sadece 1 gözde 50 - 100cm de engel algıladı
+  if( (distance_R < 100) &
+      (distance_L >= 100)
+    )
+  {
+    motor_ileri(50 , 75);
+  }
+  if( (distance_R >= 100) &
+      (distance_L < 100)
+    )
+  {
+    motor_ileri(75 , 50);
+  }
   // her iki gözde 100 - 200cm de engel algıladı
+  if( ( (distance_R >= 100) & (distance_R < 200) ) &
+      ( (distance_L >= 100) & (distance_L < 200) )
+    )
+  {
+    if(distance_R > distance_L)
+    {
+      motor_ileri(90 , 75);
+    }
+    else
+    {
+      motor_ileri(75 , 90);
+    }
+  }
   // sadece 1 gözde 100 - 200cm de engel algıladı
+  if( (distance_R < 200) &
+      (distance_L >= 200)
+    )
+  {
+    motor_ileri(75 , 90);
+  }
+  if( (distance_R >= 200) &
+      (distance_L < 200)
+    )
+  {
+    motor_ileri(50 , 75);
+  }
   // her iki gözde 200 + da engel algıladı veya engel algılanmadı
-  // sadece 1 gözde 200 + da engel algıladı veya engel algılanmadı
-  
+  if( (distance_R >= 200) &
+      (distance_L >= 200)
+    )
+  {
+    motor_ileri(90 , 90);
+  }
   /*
   // Displays the distance on the Serial Monitor
   Serial.print("Distance: ");
