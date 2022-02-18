@@ -104,11 +104,13 @@ void loop() {
   }
   if(distance_R < 20)
   {
-    distance_R = 0;
+    motor_geri( (distance_R / 4) , (distance_L / 4) );
+    delaySeconds(2);
   }
   if(distance_L < 20)
   {
-    distance_L = 0;
+    motor_geri( (distance_R / 4) , (distance_L / 4) );
+    delaySeconds(2);
   }
   motor_ileri( (distance_R / 4) , (distance_L / 4) );
 }
