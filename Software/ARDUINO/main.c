@@ -94,6 +94,25 @@ void loop() {
   // distance = (duration-10) * 0.034 / 2 // maybe more clear
   distance_R = (duration_R * ( (34 / 1000) / 2) ); // Speed of sound wave divided by 2 (go and back)  
   
+  if(distance_R > 360)
+  {
+    distance_R = 360;
+  }
+  if(distance_L > 360)
+  {
+    distance_L = 360;
+  }
+  if(distance_R < 20)
+  {
+    distance_R = 0;
+  }
+  if(distance_L < 20)
+  {
+    distance_L = 0;
+  }
+  motor_ileri( (distance_R / 4) , (distance_L / 4) );
+}
+/*  
   // her iki gözde 0 - 20cm de engel algıladı , minimum 20cm
   // sadece 1 gözde 0 - 20cm de engel algıladı , minimum 20cm
   // her iki gözde 20 - 50cm de engel algıladı
@@ -213,13 +232,11 @@ void loop() {
   {
     motor_ileri(90 , 90);
   }
-  /*
   // Displays the distance on the Serial Monitor
   Serial.print("Distance: ");
   Serial.print(distance);
   Serial.println(" cm");
   */
-}
 
 
 
