@@ -65,7 +65,7 @@ void setup()
 }
 
 void loop() {
-  // Clears the trigPin condition
+ // Clears the trigPin condition
   digitalWrite(trigPin_L, LOW);
   delayMicroseconds(2);
   // Sets the trigPin HIGH (ACTIVE) for 10 microseconds
@@ -76,9 +76,9 @@ void loop() {
   duration_L = pulseIn(echoPin_L, HIGH);
   // Calculating the distance
   // distance_L = duration_L * 0.034 / 2; // Speed of sound wave divided by 2 (go and back)
-  distance_L = (duration_L * ( (34 / 1000) / 2) ); // Speed of sound wave divided by 2 (go and back)
-  
-  delayMiliseconds(100);
+  distance_L = (duration_L * 17);
+  distance_L = (distance_L / 1000);
+  delay(100);
   
   // Clears the trigPin condition
   digitalWrite(trigPin_R, LOW);
@@ -92,8 +92,8 @@ void loop() {
   // Calculating the distance
   // distance_L = duration_L * 0.034 / 2; // Speed of sound wave divided by 2 (go and back)
   // distance = (duration-10) * 0.034 / 2 // maybe more clear
-  distance_R = (duration_R * ( (34 / 1000) / 2) ); // Speed of sound wave divided by 2 (go and back)  
-  
+  distance_R = (duration_R * 17);
+  distance_R = (distance_R / 1000);
   if(distance_R > 360)
   {
     distance_R = 360;
