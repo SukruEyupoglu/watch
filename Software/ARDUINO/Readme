@@ -1,1 +1,16 @@
+#################################################################
 Arduino nano setting
+
+Kart: "Arduino Mini"
+İşlemci: "ATmega168"
+Port: "/dev/ttyUSB0"
+Kart Bilgisi Al
+
+Programlayıcı: "Arduino as ISP"
+Önyükleyiciyi Yazdır
+#################################################################
+
+
+
+
+
