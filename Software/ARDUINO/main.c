@@ -21,14 +21,14 @@ long duration_R; // variable for the duration of sound wave travel
 int distance_R; // variable for the distance measurement
 
 
-void motor_ileri(unsigned char mtr_hz_L , unsigned char mtr_hz_R)
+void motor_geri(unsigned char mtr_hz_L , unsigned char mtr_hz_R)
 {
   analogWrite(In_1, mtr_hz_R); // max 255
   digitalWrite(In_2, LOW);
   analogWrite(In_3, mtr_hz_L); // max 255
   digitalWrite(In_4, LOW);
 }
-void motor_geri(unsigned char mtr_hz_L , unsigned char mtr_hz_R)
+void motor_ileri(unsigned char mtr_hz_L , unsigned char mtr_hz_R)
 {
   analogWrite(In_2, mtr_hz_R); // max 255
   digitalWrite(In_1, LOW);
