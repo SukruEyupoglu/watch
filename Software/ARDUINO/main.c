@@ -73,8 +73,9 @@ void loop() {
   delayMicroseconds(10);
   digitalWrite(trigPin_L, LOW);
   // Reads the echoPin, returns the sound wave travel time in microseconds
-  // duration_L = pulseIn(echoPin_L, LOW);
-  distance_L = 0;
+  //distance_L = 0;
+  duration_L = pulseIn(echoPin_L, HIGH);
+/*
   while( distance_L < 0xF0F0F0F )
   {
     distance_L++;
@@ -83,7 +84,7 @@ void loop() {
       break;
     }
   }
-  
+  */
   // Calculating the distance
   // distance_L = duration_L * 0.034 / 2; // Speed of sound wave divided by 2 (go and back)
   distance_L = (duration_L * 17);
@@ -98,8 +99,9 @@ void loop() {
   delayMicroseconds(10);
   digitalWrite(trigPin_R, LOW);
   // Reads the echoPin, returns the sound wave travel time in microseconds
-  // duration_R = pulseIn(echoPin_R, LOW);
-  distance_R = 0;
+  // distance_R = 0;
+   duration_R = pulseIn(echoPin_R, HIGH);
+/*
   while( distance_R < 0xF0F0F0F )
   {
     distance_R++;
@@ -108,6 +110,7 @@ void loop() {
       break;
     }
   }
+  */
   // Calculating the distance
   // distance_L = duration_L * 0.034 / 2; // Speed of sound wave divided by 2 (go and back)
   // distance = (duration-10) * 0.034 / 2 // maybe more clear
