@@ -99,18 +99,19 @@ void loop() {
   }
   if( duration_L < 1160 ) // if distance smaller than 20 cm go back 20 * 58 = 1160
   {
-    motor_geri( 100 , 255 );
+    motor_geri( 50 , 150 );
     delay(500); // 500ms go back
   }
   if( duration_R < 1160 ) // if distance smaller than 20 cm go back 20 * 58 = 1160
   {
-    motor_geri( 255 , 100 );
+    motor_geri( 150 , 50 );
     delay(500); // 500ms go back
   }
   if( ( !(duration_L < 1160) ) |  ( !(duration_R < 1160) ) ) // if every sensor return value bigger than 20 cm go through
   {
-    motor_ileri( (duration_L / 70) , (duration_R / 70) );
-    delay(1000); // 1sn go go go
+    //motor_ileri( (duration_L / 70) , (duration_R / 70) );
+    motor_ileri( 130 , 100 );
+    delay(60); // 1sn go go go
   }
 }
 /*  
