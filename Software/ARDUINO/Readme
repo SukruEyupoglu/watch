@@ -10,9 +10,9 @@ Programlayıcı: "Arduino as ISP"
 Önyükleyiciyi Yazdır
 #################################################################
   // HC-SR04 SPECS
-  digitalWrite(trigPin_L, HIGH);
+  digitalWrite(trigPin, HIGH);
   delayMicroseconds(10);
-  digitalWrite(trigPin_L, LOW);
+  digitalWrite(trigPin, LOW);
   // Duration return value for Arduino nano 6200 per meter nearly
   duration = pulseIn(echoPin, HIGH); // 6200 per meter
   delay(60); // 60ms delay look at HC-SR04 datasheet
