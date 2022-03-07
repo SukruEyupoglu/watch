@@ -113,6 +113,7 @@ void loop() {
   // distance = (duration-10) * 0.034 / 2 // maybe more clear
   distance_R = (duration_R * 17);
   distance_R = (distance_R / 1000);
+  delay(100);
   
   if(distance_R > 360)
   {
@@ -132,7 +133,10 @@ void loop() {
     motor_geri( (distance_R / 4) , (distance_L / 4) );
     delay(100);
   }
-  motor_ileri( (distance_R / 4) , (distance_L / 4) );
+  if( ( !(distance_L < 20) ) |  ( !(distance_R < 20) ) )
+  {
+    motor_ileri( (distance_R / 4) , (distance_L / 4) );
+  }
 }
 /*  
   // her iki gözde 0 - 20cm de engel algıladı , minimum 20cm
