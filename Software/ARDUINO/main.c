@@ -125,12 +125,12 @@ void loop() {
   if(distance_R < 20)
   {
     motor_geri( (distance_R / 4) , (distance_L / 4) );
-    delaySeconds(2);
+    delay(100);
   }
   if(distance_L < 20)
   {
     motor_geri( (distance_R / 4) , (distance_L / 4) );
-    delaySeconds(2);
+    delay(100);
   }
   motor_ileri( (distance_R / 4) , (distance_L / 4) );
 }
