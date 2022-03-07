@@ -15,10 +15,8 @@
 #define Sleep 4 // attach pin D4 Arduino to pin Sleep of DRV8833
 
 unsigned long duration_L = 0; // variable for the duration of sound wave travel
-unsigned long distance_L = 0; // variable for the distance measurement
 
 unsigned long duration_R = 0; // variable for the duration of sound wave travel
-unsigned long distance_R = 0; // variable for the distance measurement
 
 
 void motor_geri(unsigned char mtr_hz_L , unsigned char mtr_hz_R)
@@ -57,6 +55,10 @@ void setup()
   digitalWrite(In_2, LOW);
   digitalWrite(In_3, LOW);
   digitalWrite(In_4, LOW);
+  
+   digitalWrite(trigPin_L, LOW);
+   digitalWrite(trigPin_R, LOW);
+  
   /*
   Serial.begin(115200); // // Serial Communication is starting with 115200 of baudrate speed
   Serial.println("Ultrasonic Sensor HC-SR04 Test"); // print some text in Serial Monitor
@@ -65,80 +67,49 @@ void setup()
 }
 
 void loop() {
- // Clears the trigPin condition
-  digitalWrite(trigPin_L, LOW);
-  delayMicroseconds(2);
   // Sets the trigPin HIGH (ACTIVE) for 10 microseconds
   digitalWrite(trigPin_L, HIGH);
   delayMicroseconds(10);
   digitalWrite(trigPin_L, LOW);
   // Reads the echoPin, returns the sound wave travel time in microseconds
   //distance_L = 0;
-  duration_L = pulseIn(echoPin_L, HIGH);
-/*
-  while( distance_L < 0xF0F0F0F )
-  {
-    distance_L++;
-    if( digitalRead(echoPin_L) )
-    {
-      break;
-    }
-  }
-  */
+  duration_L = pulseIn(echoPin_L, HIGH); // 5800 per meter
   // Calculating the distance
   // distance_L = duration_L * 0.034 / 2; // Speed of sound wave divided by 2 (go and back)
-  distance_L = (duration_L * 17);
-  distance_L = (distance_L / 1000);
-  delay(100);
+  delay(60); // recomended from datasheet
   
-  // Clears the trigPin condition
-  digitalWrite(trigPin_R, LOW);
-  delayMicroseconds(2);
   // Sets the trigPin HIGH (ACTIVE) for 10 microseconds
   digitalWrite(trigPin_R, HIGH);
   delayMicroseconds(10);
   digitalWrite(trigPin_R, LOW);
   // Reads the echoPin, returns the sound wave travel time in microseconds
   // distance_R = 0;
-   duration_R = pulseIn(echoPin_R, HIGH);
-/*
-  while( distance_R < 0xF0F0F0F )
-  {
-    distance_R++;
-    if( digitalRead(echoPin_R) )
-    {
-      break;
-    }
-  }
-  */
+   duration_R = pulseIn(echoPin_R, HIGH); // 5800 per meter
   // Calculating the distance
   // distance_L = duration_L * 0.034 / 2; // Speed of sound wave divided by 2 (go and back)
-  // distance = (duration-10) * 0.034 / 2 // maybe more clear
-  distance_R = (duration_R * 17);
-  distance_R = (distance_R / 1000);
-  delay(100);
+  delay(60); // recomended from datasheet
   
-  if(distance_R > 360)
+  if( duration_L > 17400) // if distance bigger than 3 meter set max value to 3 meter
   {
-    distance_R = 360;
+    duration_L = 17400; // 3 * 5800 = 17400
   }
-  if(distance_L > 360)
+  if( duration_R > 17400) // if distance bigger than 3 meter set max value to 3 meter
   {
-    distance_L = 360;
+    duration_R = 17400; // 3 * 5800 = 17400
   }
-  if(distance_R < 20)
+  if( duration_L < 1160 ) // if distance smaller than 20 cm go back 20 * 58 = 1160
   {
-    motor_geri( (distance_R / 4) , (distance_L / 4) );
-    delay(100);
+    motor_geri( 100 , 255 );
+    delay(500); // 500ms go back
   }
-  if(distance_L < 20)
+  if( duration_R < 1160 ) // if distance smaller than 20 cm go back 20 * 58 = 1160
   {
-    motor_geri( (distance_R / 4) , (distance_L / 4) );
-    delay(100);
+    motor_geri( 255 , 100 );
+    delay(500); // 500ms go back
   }
-  if( ( !(distance_L < 20) ) |  ( !(distance_R < 20) ) )
+  if( ( !(duration_L < 1160) ) |  ( !(duration_R < 1160) ) ) // if every sensor return value bigger than 20 cm go through
   {
-    motor_ileri( (distance_R / 4) , (distance_L / 4) );
+    motor_ileri( (duration_L / 70) , (duration_R / 70) );
   }
 }
 /*  
