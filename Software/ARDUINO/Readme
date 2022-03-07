@@ -13,8 +13,8 @@ Programlayıcı: "Arduino as ISP"
   digitalWrite(trigPin, HIGH);
   delayMicroseconds(10);
   digitalWrite(trigPin, LOW);
-  // Duration return value for Arduino nano 6200 per meter nearly
-  duration = pulseIn(echoPin, HIGH); // 6200 per meter
+  // Duration return value for Arduino nano 5882 per meter nearly
+  duration = pulseIn(echoPin, HIGH); // 5800 per meter(clearly)
   delay(60); // 60ms delay look at HC-SR04 datasheet
   
  #################################################################
