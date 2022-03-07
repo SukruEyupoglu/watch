@@ -110,7 +110,7 @@ void loop() {
   if( ( !(duration_L < 1160) ) |  ( !(duration_R < 1160) ) ) // if every sensor return value bigger than 20 cm go through
   {
     motor_ileri( (duration_L / 70) , (duration_R / 70) );
-    delay(2000); // 2sn go go go
+    delay(1000); // 1sn go go go
   }
 }
 /*  
