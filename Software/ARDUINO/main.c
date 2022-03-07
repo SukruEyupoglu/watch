@@ -76,7 +76,7 @@ void loop() {
   duration_L = pulseIn(echoPin_L, HIGH); // 5800 per meter
   // Calculating the distance
   // distance_L = duration_L * 0.034 / 2; // Speed of sound wave divided by 2 (go and back)
-  delay(60); // recomended from datasheet
+  delay(1);
   
   // Sets the trigPin HIGH (ACTIVE) for 10 microseconds
   digitalWrite(trigPin_R, HIGH);
@@ -87,7 +87,7 @@ void loop() {
    duration_R = pulseIn(echoPin_R, HIGH); // 5800 per meter
   // Calculating the distance
   // distance_L = duration_L * 0.034 / 2; // Speed of sound wave divided by 2 (go and back)
-  delay(60); // recomended from datasheet
+  // delay(60); // recomended from datasheet
   
   if( duration_L > 17400) // if distance bigger than 3 meter set max value to 3 meter
   {
@@ -100,12 +100,12 @@ void loop() {
   if( duration_L < 1160 ) // if distance smaller than 20 cm go back 20 * 58 = 1160
   {
     motor_geri( 50 , 150 );
-    delay(500); // 500ms go back
+    delay(200); // 500ms go back
   }
   if( duration_R < 1160 ) // if distance smaller than 20 cm go back 20 * 58 = 1160
   {
     motor_geri( 150 , 50 );
-    delay(500); // 500ms go back
+    delay(200); // 500ms go back
   }
   if( ( !(duration_L < 1160) ) |  ( !(duration_R < 1160) ) ) // if every sensor return value bigger than 20 cm go through
   {
