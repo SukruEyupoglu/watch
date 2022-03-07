@@ -14,11 +14,11 @@
 #define Fault 7 // attach pin D7 Arduino to pin Fault of DRV8833
 #define Sleep 4 // attach pin D4 Arduino to pin Sleep of DRV8833
 
-long duration_L; // variable for the duration of sound wave travel
-int distance_L; // variable for the distance measurement
+unsigned long duration_L; // variable for the duration of sound wave travel
+unsigned long distance_L; // variable for the distance measurement
 
-long duration_R; // variable for the duration of sound wave travel
-int distance_R; // variable for the distance measurement
+unsigned long duration_R; // variable for the duration of sound wave travel
+unsigned long distance_R; // variable for the distance measurement
 
 
 void motor_geri(unsigned char mtr_hz_L , unsigned char mtr_hz_R)
@@ -73,7 +73,7 @@ void loop() {
   delayMicroseconds(10);
   digitalWrite(trigPin_L, LOW);
   // Reads the echoPin, returns the sound wave travel time in microseconds
-  duration_L = pulseIn(echoPin_L, HIGH);
+  duration_L = pulseIn(echoPin_L, LOW);
   // Calculating the distance
   // distance_L = duration_L * 0.034 / 2; // Speed of sound wave divided by 2 (go and back)
   distance_L = (duration_L * 17);
@@ -88,7 +88,7 @@ void loop() {
   delayMicroseconds(10);
   digitalWrite(trigPin_R, LOW);
   // Reads the echoPin, returns the sound wave travel time in microseconds
-  duration_R = pulseIn(echoPin_R, HIGH);
+  duration_R = pulseIn(echoPin_R, LOW);
   // Calculating the distance
   // distance_L = duration_L * 0.034 / 2; // Speed of sound wave divided by 2 (go and back)
   // distance = (duration-10) * 0.034 / 2 // maybe more clear
