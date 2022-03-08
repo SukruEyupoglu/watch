@@ -53,7 +53,7 @@ void loop() {
   duration_L = pulseIn(echoPin_L, HIGH); // 5800 per meter
   // Calculating the distance
   // distance_L = duration_L * 0.034 / 2; // Speed of sound wave divided by 2 (go and back)
-  delay(1);
+  // delay(1);
   
   // Sets the trigPin HIGH (ACTIVE) for 10 microseconds
   digitalWrite(trigPin_R, HIGH);
