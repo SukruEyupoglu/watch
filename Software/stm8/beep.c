@@ -1,6 +1,8 @@
 #include "stm8s.h"
 #include "beep.h"
 
+// BEEP_CSR = 0; // close beep look at datasheet
+
 // beep frequency 500hz,1Khz,2Khz,4Khz
 // 0 = 500hz , 1 = 1Khz , 2 = 2Khz , 4 = 4Khz
 void beep_init(unsigned char beep_freq)
