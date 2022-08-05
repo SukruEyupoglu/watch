@@ -13,22 +13,30 @@ void i2c_read_arr(uint8_t *buf, int len);
 
 void beep_init(unsigned char beep_freq);
 
-// active high
-// #define LATCH PC_ODR |= (1 << 4);PC_ODR &= ~(1 << 4)
+// ACTIVE HIGH FOR 74HC595 LATCH(STCP) PIN
+#define LATCH PC_ODR |= (1 << 7);PC_ODR &= ~(1 << 7)
+#define STOP_BEEP BEEP_CSR = 0
 
+#define EN (1 << 4)   // DISABLE STAT , FOR ENABLE MAKE '0' THIS BIT
+#define RW (1 << 5)   // READ STAT , FOR WRITE MAKE '0' THIS BIT
+#define RS (1 << 6)   // DATA STAT , FOR COMMAND MAKE '0' THIS BIT
 
-
+#define LED (1 << 7)
 
 int main(void)
 {
+unsigned char arr[20]; // 20X1 CHARACTER LCD ARRAY
 CLK_CKDIVR = 0; // 16mhz
 BEEP_CSR = 0; // close beep look at datasheet
 spi_init();
 
+//  20X1 CHARACTER LCD INIT
+PC_DDR |= (1 << 7); // SPI MISO PIN SET AS GPIO OUTPUT FOR LATCH
+PC_CR1 |= (1 << 7); // MAKE PUSH-PULL,DEFAULT MAYBE OPEN DRAIN FOR LATCH
+PC_ODR &= ~(1 << 7); // LATCH OUTPUT LOW
 
-
-
-
+// spi( ( (~(EN) | ~(RW) ) | ~(RS) ) | LED);
+LATCH;
 
 }
 
