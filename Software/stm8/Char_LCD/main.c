@@ -13,11 +13,11 @@ void i2c_read_arr(uint8_t *buf, int len);
 
 void beep_init(unsigned char beep_freq);
 
-// ACTIVE HIGH FOR 74HC595 LATCH(STCP) PIN
+// ACTIVE HIGH FOR 74HC595 LATCH(STCP) PIN LOW-TO-HIGH FOR ENABLE
 #define LATCH PC_ODR |= (1 << 7);PC_ODR &= ~(1 << 7)
 #define STOP_BEEP BEEP_CSR = 0
 
-#define EN (1 << 4)   // DISABLE STAT , FOR ENABLE MAKE '0' THIS BIT
+#define EN (1 << 4)   // DISABLE STAT , FOR ENABLE MAKE '0' THIS BIT , HIGH-TO-LOW FOR ENABLE
 #define RW (1 << 5)   // READ STAT , FOR WRITE MAKE '0' THIS BIT
 #define RS (1 << 6)   // DATA STAT , FOR COMMAND MAKE '0' THIS BIT
 
@@ -35,7 +35,7 @@ PC_DDR |= (1 << 7); // SPI MISO PIN SET AS GPIO OUTPUT FOR LATCH
 PC_CR1 |= (1 << 7); // MAKE PUSH-PULL,DEFAULT MAYBE OPEN DRAIN FOR LATCH
 PC_ODR &= ~(1 << 7); // LATCH OUTPUT LOW
 
-// spi( ( (~(EN) | ~(RW) ) | ~(RS) ) | LED);
+
 LATCH;
 
 }
