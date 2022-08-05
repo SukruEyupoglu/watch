@@ -1,5 +1,5 @@
-#include "stm8s.h"
-#include "spi.h"
+#include "../stm8s.h"
+#include "spi/spi.h"
 #include "hc595.h"
 
 // ACTIVE HIGH FOR 74HC595 LATCH(STCP) PIN LOW-TO-HIGH FOR ENABLE
