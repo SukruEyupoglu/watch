@@ -2,8 +2,8 @@
 
 
 #include "char_lcd.h"
-#include "hc595.h"
-
+#include "hc595/hc595.h"
+#include "delay/delay.h"
 
 
 
