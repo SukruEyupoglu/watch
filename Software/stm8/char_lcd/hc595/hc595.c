@@ -1,4 +1,4 @@
-#include "../stm8s.h"
+#include "../../stm8s.h"
 #include "spi/spi.h"
 #include "hc595.h"
 
