@@ -2,6 +2,7 @@
 #include "spi/spi.h"
 #include "hc595.h"
 
+// RISING EDGE TRIGGERED
 // ACTIVE HIGH FOR 74HC595 LATCH(STCP) PIN LOW-TO-HIGH FOR ENABLE
 #define LATCH PC_ODR |= (1 << 7);PC_ODR &= ~(1 << 7)
 
