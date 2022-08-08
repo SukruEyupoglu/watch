@@ -49,12 +49,12 @@ void char_lcd_4_bit_send_command(unsigned char cmd)
 			    
 void char_lcd(unsigned char data[20] , unsigned char size)
 {
+	unsigned char f;
 	char_lcd_4_bit_send_command(0x01); // clear lcd
 	char_lcd_4_bit_send_command(0x80); // set coursor to 0
-	if( size > 20 ) size = 20;
-	
-	
-	
-	
-	
+	if( size > 20 ) return;
+	for( f = 0 ; f < size ; f++)
+	{
+		char_lcd_4_bit_send_data(data[f]);
+	}
 }
