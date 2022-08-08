@@ -5,22 +5,21 @@
 #include "hc595/hc595.h"
 #include "delay/delay.h"
 
+#define LCD_EN (1 << 4) // falling edge triggered
+#define LCD_RW (1 << 5) // 0 = write , 1 = read
+#define LCD_RS (1 << 6) // 0 = command , 1 = data
+
 
 
 void char_lcd_4_bit_init(void)
 {
-	unsigned char cmd = 0;
-	cmd |= LCD_EN;
-	cmd &= ~LCD_RW;
-	cmd &= ~LCD_RS;
 	delay_ms(15); // power-on initialization time
-	hc595_send(cmd);
-	delay_ms(3);
-	char_lcd_4_bit_send( cmd , 0x02);
-	char_lcd_4_bit_send( cmd , 0x20);
-	char_lcd_4_bit_send( cmd , 0x01);
-	char_lcd_4_bit_send( cmd , 0x0C);
-	char_lcd_4_bit_send( cmd , 0x06);	
+	char_lcd_4_bit_send_command(0x00);
+	char_lcd_4_bit_send_command(0x02);
+	char_lcd_4_bit_send_command(0x20);
+	char_lcd_4_bit_send_command(0x01);
+	char_lcd_4_bit_send_command(0x0C);
+	char_lcd_4_bit_send_command(0x06);	
 }
 
 void char_lcd_4_bit_send(unsigned char cmd , unsigned char data)
@@ -39,9 +38,23 @@ void char_lcd_4_bit_send(unsigned char cmd , unsigned char data)
 	delay_ms(3);
 }
 
-void char_lcd_4_bit_write(unsigned char data)
+void char_lcd_4_bit_send_data(unsigned char data)
 {
+	char_lcd_4_bit_send( ( LCD_EN | LCD_RS ) , data);
+}
+void char_lcd_4_bit_send_command(unsigned char cmd)
+{
+	char_lcd_4_bit_send( LCD_EN , cmd);
+}
+			    
+void char_lcd(unsigned char data[20] , unsigned char size)
+{
+	char_lcd_4_bit_send_command(0x01); // clear lcd
+	char_lcd_4_bit_send_command(0x80); // set coursor to 0
+	if( size > 20 ) size = 20;
+	
+	
+	
+	
 	
 }
-
-
