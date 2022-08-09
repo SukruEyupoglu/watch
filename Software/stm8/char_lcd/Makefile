@@ -1,7 +1,7 @@
 #!/bin/sh
 #export PATH := $(PATH):$(HOME)/local/sdcc/bin
 VPATH =/home/qwe/stm8/sdcc-3.6.0/bin
-MCU  = stm8s103f3
+MCU  = stm8s003f3
 ARCH = stm8
 
 F_CPU   ?= 16000000
