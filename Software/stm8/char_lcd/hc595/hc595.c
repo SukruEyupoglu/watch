@@ -18,9 +18,9 @@ void hc595_init(void)
 }
 void hc595_send(unsigned char data)
 {
-  while ( (SPI_SR & (1 << SPI_SR_TXE) ) != (1 << SPI_SR_TXE) );
-  SPI_DR = data;
-  //LATCH;
   PC_ODR |= (1 << 7);
+  SPI_DR = data;
+  while ( (SPI_SR & (1 << SPI_SR_TXE) ) != (1 << SPI_SR_TXE) );
+  //LATCH;
   PC_ODR &= ~(1 << 7);
 }
