@@ -39,6 +39,7 @@ void char_lcd_data(unsigned char data)
 
 void char_lcd_4_bit_init(void)
 {
+	hc595_init();
 	delay_ms(15); // power-on initialization time
 	char_lcd_cmd(0x02);
 	char_lcd_cmd(0x28);
