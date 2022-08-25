@@ -11,6 +11,20 @@
 
 
 
+void char_lcd_cmd(unsigned char cmd)
+{
+    hc595_send( ( (cmd >> 4) & 0x0F) | LCD_EN); // send high 4 bit with EN-HIGH
+    delay_ms(1);
+    hc595_send( (cmd >> 4) & 0x0F); // ONLY EN HIGH-TO-LOW FOR ENABLE
+    delay_ms(10);
+
+    hc595_send( (cmd & 0x0F) | LCD_EN); // send high 4 bit with EN-HIGH
+    delay_ms(1);
+    hc595_send(cmd & 0x0F); // ONLY EN HIGH-TO-LOW FOR ENABLE
+    delay_ms(10);
+}
+
+
 void char_lcd_4_bit_init(void)
 {
 	delay_ms(15); // power-on initialization time
