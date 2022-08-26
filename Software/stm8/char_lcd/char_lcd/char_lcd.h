@@ -8,7 +8,7 @@
 void char_lcd_cmd(unsigned char cmd);
 void char_lcd_data(unsigned char data);
 void char_lcd_4_bit_init(void);
-void char_lcd(unsigned char data[20] , unsigned char size);
+void char_lcd(unsigned char data[16] , unsigned char size);
 
 
 
