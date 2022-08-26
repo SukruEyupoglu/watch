@@ -7,6 +7,8 @@
 
 void hc595_init(void)
 {
+  // MAX SPEED 16MHZ
+  CLK_CKDIVR = 0;
   // SPI SIMPLEX MODE , ONLY MOSI AS SPI
   SPI_CR2 |= ( (1 << SPI_CR2_BDM) | (1 << SPI_CR2_BDOE) );
   SPI_CR1 = (1 << SPI_CR1_MSTR) | (1 << SPI_CR1_SPE);
