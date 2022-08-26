@@ -46,12 +46,12 @@ void char_lcd_4_bit_init(void)
 	char_lcd_cmd(0x0F);
 }
 
-void char_lcd(unsigned char data[20] , unsigned char size)
+void char_lcd(unsigned char data[16] , unsigned char size)
 {
 	unsigned char f;
 	char_lcd_cmd(0x01); // clear lcd
 	char_lcd_cmd(0x80); // set coursor to 0
-	if( size > 20 ) return;
+	if( size > 16 ) return;
 	for( f = 0 ; f < size ; f++)
 	{
 		char_lcd_data(data[f]);
