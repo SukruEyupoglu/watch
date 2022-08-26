@@ -46,6 +46,7 @@ void char_lcd_4_bit_init(void)
 	char_lcd_cmd(0x0F); // set blink cursor vb.
 }
 
+// for 16x01 character lcd
 void char_lcd(unsigned char data[16] , unsigned char size)
 {
 	unsigned char f;
@@ -59,4 +60,5 @@ void char_lcd(unsigned char data[16] , unsigned char size)
 		}
 		char_lcd_data(data[f]);
 	}
+	char_lcd_data(data[f]); // NOT BUG NECESSARY FOR LAST CHAR
 }
