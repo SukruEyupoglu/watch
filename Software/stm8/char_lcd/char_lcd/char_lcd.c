@@ -60,5 +60,6 @@ void char_lcd(unsigned char data[16] , unsigned char size)
 		}
 		char_lcd_data(data[f]);
 	}
+	// dummy data for many character lcd
 	char_lcd_data(data[f]); // NOT BUG NECESSARY FOR LAST CHAR
 }
