@@ -41,9 +41,9 @@ void char_lcd_4_bit_init(void)
 {
 	hc595_init();
 	delay_ms(15); // power-on initialization time
-	char_lcd_cmd(0x02);
-	char_lcd_cmd(0x20);
-	char_lcd_cmd(0x0F);
+	char_lcd_cmd(0x02); // set 4 bit operation
+	char_lcd_cmd(0x28); // 0x20 for only 8 char , 0x28 for 16 char for 16x1 lcd
+	char_lcd_cmd(0x0F); // set blink cursor vb.
 }
 
 void char_lcd(unsigned char data[16] , unsigned char size)
