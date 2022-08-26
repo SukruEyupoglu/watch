@@ -52,7 +52,7 @@ void char_lcd(unsigned char data[16] , unsigned char size)
 	char_lcd_cmd(0x01); // clear lcd
 	//char_lcd_cmd(0x80); // set coursor to 0
 	if( size > 16 ) return;
-	for( f = 0 ; f < (size + 2) ; f++)
+	for( f = 0 ; f < (size + 1) ; f++)
 	{
 		if(f == 8)
 		{
