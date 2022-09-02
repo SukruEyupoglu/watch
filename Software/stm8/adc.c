@@ -22,6 +22,7 @@ unsigned char adc_read(unsigned char channel,unsigned char clk_div)
 }
 // int is 8 bit for stm8
 // ADC1 MAX CONVERSION SPEED , ONLY 3,4,5,6 CHANNEL FOR STM8S003C8T6
+// void adc(4 , 10 , &val);
 void adc(unsigned char channel , unsigned char count , int *data_h)
 {
 	unsigned char f;
@@ -45,11 +46,13 @@ void adc(unsigned char channel , unsigned char count , int *data_h)
 		while (!(ADC1_CSR & (1 << ADC1_CSR_EOC)));
 		// add sum of conversion
 		*data_h += (ADC1_DRH / count);
-		// clear EOC flag for start new converion
+		// if last turn close ADC
+		if(f = (count - 1) ) ADC1_CR1 &= ~(1 << ADC1_CR1_ADON);
+		// clear EOC flag for start new converion if ADC working
 		ADC1_CSR &= ~(1 << ADC1_CSR_EOC);
 	}
 	// close ADC
-	ADC1_CR1 &= ~(1 << ADC1_CR1_ADON);
+	// ADC1_CR1 &= ~(1 << ADC1_CR1_ADON);
 }
 
 
