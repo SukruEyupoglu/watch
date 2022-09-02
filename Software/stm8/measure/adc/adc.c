@@ -19,9 +19,11 @@ unsigned char adc_read(unsigned char channel,unsigned char clk_div)
 	// return only MSB
 	return ADC1_DRH;;
 }
-// int is 8 bit for stm8
+// int is 8 bit for stm8 and pointers are EVERYTIME INTeger
 // ADC1 MAX CONVERSION SPEED , ONLY 3,4,5,6 CHANNEL FOR STM8S003C8T6
 // void adc(4 , 10 , &val);
+// data_h is summary of conversion count EXAMPLE count = 3
+// data_h = ( (conversion_1 + conversion_2 + conversion_3) / count) // count = 3
 void adc(unsigned char channel , unsigned char count , int *data_h)
 {
 	unsigned char f;
