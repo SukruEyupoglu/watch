@@ -6,14 +6,14 @@ void ds3231::read_data(void)
   i2c_start();
   i2c_write_addr(0xD1); // read
   i2c_read_arr(ds3231.data,0x13); // inside i2c_stop(); there are
-  ds3231.data[SEC] = ds3231::reg2time( ds3231.data[SEC]);
-  ds3231.data[MIN] = ds3231::reg2time( ds3231.data[MIN]);
-  ds3231.data[HOUR] = ds3231::reg2time( ds3231.data[HOUR]);
-  ds3231.data[A1SEC] = ds3231::reg2time( ds3231.data[A1SEC]);
-  ds3231.data[A1MIN] = ds3231::reg2time( ds3231.data[A1MIN]);
-  ds3231.data[A1HOUR] = ds3231::reg2time( ds3231.data[A1HOUR]);
-  ds3231.data[A2MIN] = ds3231::reg2time( ds3231.data[A2MIN]);
-  ds3231.data[A2HOUR] = ds3231::reg2time( ds3231.data[A2HOUR]);
+  ds3231.data[SEC] = ds3231::reg2time( ds3231.data[SEC] );
+  ds3231.data[MIN] = ds3231::reg2time( ds3231.data[MIN] );
+  ds3231.data[HOUR] = ds3231::reg2time( ds3231.data[HOUR] );
+  ds3231.data[A1SEC] = ds3231::reg2time( ds3231.data[A1SEC] );
+  ds3231.data[A1MIN] = ds3231::reg2time( ds3231.data[A1MIN] );
+  ds3231.data[A1HOUR] = ds3231::reg2time( ds3231.data[A1HOUR] );
+  ds3231.data[A2MIN] = ds3231::reg2time( ds3231.data[A2MIN] );
+  ds3231.data[A2HOUR] = ds3231::reg2time( ds3231.data[A2HOUR] );
 }
 
 void ds3231::restart_counting(void)
