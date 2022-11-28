@@ -11,6 +11,7 @@ extern "C" {
 
 class ds3231 {
 	public:
+		unsigned char data[0x13];
 		void read_data(void);
 		void place_cursor(unsigned char x);
 		void restart_counting(void);
