@@ -1,3 +1,8 @@
+#include "../stm8s.h"
+#include "i2c/i2c.h"
+
+
+
 void ds3231::restart_counting(void)
 {
   // RESET FLAGS FOR CONTINUE
