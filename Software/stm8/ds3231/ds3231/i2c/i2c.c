@@ -1,5 +1,5 @@
 #include "i2c.h"
-#include "stm8s.h"
+#include "../../stm8s.h"
 
 void i2c_init(void) {
     I2C_CR1 = 0;
