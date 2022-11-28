@@ -9,11 +9,16 @@ void ds3231::read_data(void)
   ds3231.data[SEC] = ds3231::reg2time( ds3231.data[SEC] );
   ds3231.data[MIN] = ds3231::reg2time( ds3231.data[MIN] );
   ds3231.data[HOUR] = ds3231::reg2time( ds3231.data[HOUR] );
-  ds3231.data[A1SEC] = ds3231::reg2time( ds3231.data[A1SEC] );
-  ds3231.data[A1MIN] = ds3231::reg2time( ds3231.data[A1MIN] );
-  ds3231.data[A1HOUR] = ds3231::reg2time( ds3231.data[A1HOUR] );
-  ds3231.data[A2MIN] = ds3231::reg2time( ds3231.data[A2MIN] );
-  ds3231.data[A2HOUR] = ds3231::reg2time( ds3231.data[A2HOUR] );
+  ds3231.data[DATE] = ds3231::reg2time( ds3231.data[DATE] );
+  ds3231.data[MONTH] = ds3231::reg2time( ds3231.data[MONTH] & 0x7F );
+  ds3231.data[YEAR] = ds3231::reg2time( ds3231.data[YEAR] );
+  ds3231.data[A1SEC] = ds3231::reg2time( ds3231.data[A1SEC] & 0x7F );
+  ds3231.data[A1MIN] = ds3231::reg2time( ds3231.data[A1MIN] & 0x7F );
+  ds3231.data[A1HOUR] = ds3231::reg2time( ds3231.data[A1HOUR] & 0x7F );
+  ds3231.data[A1DATE_DAY] = ds3231::reg2time( ds3231.data[A1DATE_DAY] & 0x3F );
+  ds3231.data[A2MIN] = ds3231::reg2time( ds3231.data[A2MIN] & 0x7F );
+  ds3231.data[A2HOUR] = ds3231::reg2time( ds3231.data[A2HOUR] & 0x7F );
+  ds3231.data[A2DATE_DAY] = ds3231::reg2time( ds3231.data[A2DATE_DAY] & 0x3F );
 }
 
 void ds3231::restart_counting(void)
