@@ -5,7 +5,7 @@ void ds3231::read_data(void)
 {
   i2c_start();
   i2c_write_addr(0xD1); // read
-  i2c_read_arr(data,0x13); // inside i2c_stop(); there are
+  i2c_read_arr(ds3231.data,0x13); // inside i2c_stop(); there are
 }
 
 void ds3231::restart_counting(void)
@@ -14,8 +14,8 @@ void ds3231::restart_counting(void)
   i2c_start();
   i2c_write_addr(0xD0);
   i2c_write(0x0E);
-  i2c_write(0x7F & data[0x0E]);  // control register
-  i2c_write(0x7F & data[0x0F]);  // control/status register
+  i2c_write(0x7F & ds3231.data[0x0E]);  // control register
+  i2c_write(0x7F & ds3231.data[0x0F]);  // control/status register
   i2c_stop();
 }
 
