@@ -28,7 +28,15 @@ void ds3231::place_cursor(unsigned char x)
   i2c_stop();
 }
 
+unsigned char ds3231::time2reg(unsigned char time)
+{
+    return (((time / 10) << 4) + (time % 10));
+}
 
+unsigned char ds3231::reg2time(unsigned char reg)
+{
+    return (((reg >> 4) * 10) + (reg % 16));
+}
 
 
 
