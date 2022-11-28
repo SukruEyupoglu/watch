@@ -1,4 +1,11 @@
-#include "char_lcd/char_lcd.h"
+#include "ds3231/ds3231.h"
+
+// before anything
+//#ifdef c_plusplus
+ #ifndef __cplusplus
+  #define __cplusplus
+ #endif
+//#endif
 
 int main()
 {
