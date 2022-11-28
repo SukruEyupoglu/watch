@@ -8,7 +8,18 @@ extern "C" {
 
 #define DS3231_ALARM_MINUTE_ADDR 0x08
 #define DS3231_ALARM_HOUR_ADDR 0x09
+
+class DS3231 {
+  public:
+    void read_data();
+    void place_cursor(unsigned char x);
+    
+    
+	private:
   
+	protected:
+  
+};
 
 #ifdef __cplusplus
 }
