@@ -1,4 +1,4 @@
-void restart_counting(void)
+void ds3231::restart_counting(void)
 {
   // RESET FLAGS FOR CONTINUE
   i2c_start();
@@ -9,7 +9,7 @@ void restart_counting(void)
   i2c_stop();
 }
 
-void place_cursor(unsigned char x)
+void ds3231::place_cursor(unsigned char x)
 {
 // I2C TAKE THE CURSOR TO START
 i2c_start();
