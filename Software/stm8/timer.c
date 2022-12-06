@@ -59,7 +59,12 @@ void T1_CH4_PWM_init(unsigned char PSCR_H,unsigned char PSCR_L,unsigned char ARR
   TIM1_BKR    |= (1 << 7);    // OC and OCN outputs are enabled
 }
   
-  
+void T1_CH4_PWM_deinit(void)
+{
+  TIM1_CR1    = 0;  // Disable TIM1
+  TIM1_BKR    = 0;  // OC and OCN outputs are disabled
+  TIM1_CCER2  = 0;  // DISABLE TIM1_CH3,CH4 CHANNEL
+}
   /*
   
 {
